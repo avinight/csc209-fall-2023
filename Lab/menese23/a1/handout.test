@@ -1,0 +1,7 @@
+total 329
+-rwx------  1 reid  staff    1734 Jun 22 14:52 prog
+-rw-------  1 reid  staff   21510 Apr  6 12:10 tmp.txt
+-rwxr-xr-x  1 reid  staff    8968 Feb  1 2013 xyz
+-rw-r--r--  1 reid  staff      88 Feb 15 2013 xyz.c
+drw-r--r--  1 reid  staff      81 Feb 16 2013 abc.c
+-rwxrwxrwx  1 reid  staff      1 Feb 17 2013 cde.c
