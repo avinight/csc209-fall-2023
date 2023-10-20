@@ -37,7 +37,13 @@ int main(int argc, char **argv) {
     char *name = argv[2];
 
     // Your code goes here
-
+    strncpy(greeting, argv[1], sizeof(greeting));
+    greeting[19] = '\0';
+    
+    if (strlen(greeting) < 20) {
+        strncat(greeting, " ", sizeof(greeting) - strlen(greeting) - 1);
+        strncat(greeting, name, sizeof(greeting) - strlen(greeting) - 1);
+    }
 
     printf("%s\n", greeting);
     return 0;

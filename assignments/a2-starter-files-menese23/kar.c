@@ -27,7 +27,18 @@ int main(int argc, char *argv[]) {
     // main should only need to check arguments and
     // call the appropriate functions
 
-    print_help();
-
+    if (argc >= 4 && strcmp(argv[1], "create") == 0) {
+        char *files_to_add[argc - 3];
+        for (int i = 0; i < argc - 3; i++) {
+            files_to_add[i] = argv[i + 3];
+        }
+        return create_archive(argv[2], argc - 3, files_to_add);
+    } else if (argc == 3 && strcmp(argv[1], "extract") == 0) {
+        return extract_archive(argv[2]);
+    } else if (argc == 2 && strcmp(argv[1], "--help") == 0) {
+        print_help();
+    } else {
+        return 1;
+    }
     return 0;
 }

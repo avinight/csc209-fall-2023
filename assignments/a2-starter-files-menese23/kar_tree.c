@@ -12,9 +12,17 @@
 
 void free_tree(arch_tree_node *root) {
     // TODO: This needs to be implemented
-    printf("free_tree not implemented\n");
+    if (root == NULL) {
+        return;
+    }
+    if (root->next_file == NULL && root->dir_contents == NULL) {
+        free(root);
+    } else {
+        free_tree(root->next_file);
+        free_tree(root->dir_contents);
+        free(root);
+    }
 }
-
 
 /*
 ** Some helper functions so that you don't get
@@ -45,4 +53,3 @@ void valid_path(char path_buffer[], char *directory, char *filename){
     }
     strcat(path_buffer, filename);
 }
-// WARNING

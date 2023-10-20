@@ -1,0 +1,19 @@
+#ifndef SORTS_H
+#define SORTS_H
+
+typedef void (*SortFunc_t)(int *, int);
+
+void bubble_sort(int *, int);
+void selection_sort(int *, int);
+void insertion_sort(int *, int);
+
+
+typedef struct {
+    char *name;
+    SortFunc_t sort_func;
+} sort_info;
+
+extern const int NUM_SORTS;
+extern sort_info SORTS[];
+
+#endif // SORTS_H
