@@ -1,0 +1,91 @@
+In this video we will use a fairly simple example program to illustrate several different kinds of error checking.  
+
+Error checking and appropriate error messages are important for several reasons.  First, users of your program need useful feedback if they use your program incorrectly, or if the program fails for any reason. Second, checking for errors helps you discover bugs more quickly.
+
+This program is a simple version of a Linux command line program called "head". It prints the first N lines of a file. The number of lines to print and the name of the file are passed in as command line arguments to the program.
+
+The first command line argument is the number of lines to print.  We have to convert the string representation of the number to an integer so we can use it as a number in the loop below.
+
+numlines is declared as a long because that is the return type of strtol. We could have cast the return value of strtol to an int before assigning it to numlines, but this method simplifies the error checking later.
+
+The name of the file to read from is the second command line argument, so we can just open the file for reading.
+
+We use fgets to read each line from the file and store it in a character array buf.  We are assuming that BUFSIZE will always be big enough to hold a line of input. Then we use printf to print buf to standard output.  The loop iterates numlines times.
+
+I'm running our program on a short file. It does what we expect and prints the first 3 lines of the program.
+
+But suppose we forgot the order of the arguments and tried
+
+We get no output. That is kind of puzzling, but we don't have any information that might help us figure out what is wrong.
+
+Or suppose we run it with no arguments?
+
+We get a segmentation fault. We don't want to ever show a user a segmentation fault, so this is definitely something that needs fixing.
+
+Let's take a look at how we handle arguments.
+
+First, let's check that we received the correct number of arguments.
+
+We print a useful message to stderr if the program is being called incorrectly.
+
+Now let's run head1 with no arguments again.
+And we've eliminated the segmentation fault.
+
+
+But what about getting the argments in the wrong order?
+
+We were just checking for the right number of arguments, so there still isn't any indication of what went wrong.
+
+The second argument is supposed to be a file name, so maybe the fopen is failing.
+
+We will check the fopen call and  print a message if it fails. Since fopen calls a system call, we should use perror to print the message.
+
+Now, it is more obvious that the program thinks the second argument should be a filename.
+
+But what about the first argument? Let's provide an invalid number of lines to display.
+
+If we pass in a non-numeric string, we get no output because strtol can't convert a string to a number so returns 0.  This means that the loop doesn't iterate.
+
+Providing a negative value is similar -- the loop doesn't iterate.
+
+The first case seems like one that we should handle -- if the user gives us nothing numeric, then they probably aren't calling the program correctly.
+
+It isn't difficult to handle the second case at the same time, so we do so. But what about other cases?
+
+In these cases, strtol is able to convert the first part of the string to a number (2 in both cases), so that is the value that numlines takes.
+
+Here's another example. In this case, we've passed in a number that is too large to be represented by a long int, and our program runs for a very long time.
+
+We could add error checking code for both of these cases.
+
+In the first case, we can use the second argument of strtol to determine how successful the conversion from string to number was.
+
+And in the second case, strtol will even set errno to ERANGE. But at this point, it is worth asking how important it is to check for these cases.
+
+How likely is a user to enter numbers like these and expect a reasonable output? What's the cost of not checking -- will it introduce a security hole? Introduce error checks when it makes sense to do so -- when it will help the user use your program correctly and when not doing so carries a significant cost.
+
+All the work we have done in error checking so far is simply to verify that the command line arguments are valid, so now we can go look at the loop.
+
+If we tell our program to print more lines than are in the file, then the last line is repeated. In this case, the 8 lines of testfile1 are printed correctly, but then the last line is repeated two more times. Why?
+
+The program does not check to see when the end of the file is reached.
+
+If fgets returns NULL before we get to the end of the loop then something has gone wrong.
+
+So, we will print an error message when fgets returns NULL.
+
+There is one more case that we have not looked at. What happens when the length of the line is larger than BUFSIZE? In the code we set BUFSIZE to 256 which is probably a sensible choice. It seems likely that most files will not have lines as long as 256 characters, but it could happen.
+
+We have two options to test this case. The first option is to construct a test input file where a line has more than 256 characters. The other way to test for this case is to set BUFSIZE to a much smaller value, like 10.
+
+The latter is better. It takes effort to construct appropriate tests for large cases, and then they can be difficult to interpret. A small test is easier to understand.
+
+This looks like only the first two lines were printed.  What is actually happening is that we need to call fgets multiple times to print the first line because it wasn't able to consume the whole line with one call.
+
+To fix this we can check to see if fgets read a newline character, and keep calling fgets until it finally reads a newline character. Now we have a program that is prints a reasonable message under most error conditions, and we even fixed a bug at the end.
+
+Our program doubled in length by adding all of these checks and error messages, and it is definitely harder to read, so is it worth adding all of these checks?
+
+The answer is "It depends". As we discussed earlier, you should introduce tests when it makes sense to do so. If you are writing a short program that you don't plan to use again, then excessive error checks aren't necessary, but if you expect someone else to use your program, or you expect to use it multiple times, or the cost of the program failing is high, then the error checking is extremely valuable.
+
+If you get into the habit of *always* checking the number of arguments, and checking the return values of every system call, the it doesn't seem like a big job to do the error checking and your code will be clearer and easier to use.

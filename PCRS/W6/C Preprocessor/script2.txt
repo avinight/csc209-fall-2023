@@ -1,0 +1,95 @@
+In this video, we'll continue our exploration of C's preprocessor by delving further into how macros are expanded. In particular, we'll look at macro expansion in the presence of function-like macros. But before we start, two words of caution. First, some of the features that we will be demonstrating are system specific, so they may not work the same way on your computer. Second, for this and other reasons using function-like macros is rarely, if ever, a good idea. You will encounter them in existing code, but I *do not* recommend using function-like macros in your own code. More on that later in the video.
+
+Let's start with an example. These macros are from an operating system simulator.
+
+The first six macros define a series of bit flags -- for the virtual memory system, if you're interested. In the last video, we said that it's a good habit to wrap all macro values in parentheses, but in many real world examples, like this one, you'll find that macros with simple values, like integers, don't do so.
+
+The last line is an example of a function-like macro. The macro defines an operation called SET that operates on two parameters. The bit at the position identified by the parameter "flag" is set in the variable "var".
+
+Here are two examples of the macro in use. Let's look at how they are expanded.
+
+The SET macro is used as if it were a function: it receives arguments, and the user added a terminating semicolon so that the operation runs on its own, as a statement.
+
+Every instance of the two parameters is replaced by the arguments in the corresponding positions. var becomes page_flag, and flag becomes the number 3.
+
+It's 3, instead of PAGE_USER, because PAGE_USER is also a macro.
+
+The second expansion of SET is similar but with a different second argument provided.
+
+The results make sense. When we set the PAGE_USER flag, which is bit 3, we see that the resulting value is 2 to the power of 3 -- or 8. And setting PAGE_DIRTY, which is bit 4, results in 2 to the power of 4.
+
+This OS example is a bit more complex, because various macros interact. 
+
+Let's compile and run it.
+
+In this example, a warning message tells us that PAGE_USER is set.
+
+This is implemented using nested macros. The ISSET macro is used to supply a condition to the WARN macro.
+
+The WARN macro checks the condition and emits the condition as a warning message if the condition evaluates to true. The macro introduces some new features, so let's take it apart.
+
+The core of the WARN macro is wrapped in a do-while. Since the condition in the while is false, and will
+always be false, the body will execute exactly once. So why use the do/while at all? It has two purposes. 
+
+First, it enforces a requirement that the WARN macro be used as a statement.
+
+Here, let me show you. If the semicolon is omitted -- suppose for example that we were to use the macro in a place where a semicolon doesn't make sense -- then you'll get an error during compilation.
+
+The second purpose for a do/while structure in a macro doesn't apply here. It allows macros to include multiple statements -- and some of those statements can be local variables. They'll exist within the loop but not outside. If that makes you cringe, I'm glad -- but you may see it in systems or legacy code.
+
+The last interesting piece of the warn macro is this extra #. This is the stringification operator.
+
+This operator preserves the argument as a string. In this case, the argument is a macro application, which is kept from expanding.
+
+It will also preserve C code as a string.
+
+As you can see, function-like macros can be very useful. 
+So why did I say that using function-like macros is rarely a good idea?
+
+Take a look at this macro. It looks simple, but it's the canonical example for why macros are difficult to use correctly. As you can see, the macro GREATER expands to an expression that evaluates to the greater of its two arguments.
+
+Let's say that we want to take the greater of x or y -- but only after incrementing y. Here's one way to do it -- update y, then check which is greater -- in separate steps.
+
+And here is another, where y is updated within the expression. But we get a different result. Why?
+
+Let's look at what the preprocessor generates from this code for the body of the printf statement
+ 
+The programmer probably intended that the argument be evaluated first, as it would for a function, but instead, ++y gets executed twice because it is simply copied into the macro.
+
+So the issue is that the macro *looks* like a function. Since it looks like a function, we expect it to act like one.
+
+Here's another example. Do you see a problem with SET?
+
+Let's use SET as an expression instead of a statement. In this case, it'll work. An assignment statement evaluates to the value that was assigned, so we'll print what we expect.
+
+So, since that worked, someone less careful than you might decide to nest the SET calls to try to set both bits. Fortunately, when that fails, we get a relatively comprehensible error message.
+
+Let's look at what the preprocessor generates for our program.
+We see that the nested SET calls expand to this mess.
+
+First the inner use of the SET macro ...
+
+is expanded to this expression. 
+
+And then that expression is used as the second parameter "var" in the expansion of the
+outer SET call. The problem is that C won't allow us to assign to an expression.
+
+so we are warned that we can't assign to an expression. If we had wrapped the code in a do-while, we'd get a slightly cleaner message.
+
+But that doesn't fix all of the problems. You may have wondered why all of our examples include so many parentheses.
+
+The issue is order of operations. A user can pass in a macro -- or any arbitrary expression. The parentheses around the arguments force them to evaluate first, as would occur if a function were being called. Without these parentheses, we don't know if the arguments will evaluate first -- or after part of the internals of the macro evaluate.
+
+Similarly, the parentheses around the macro force the entire macro to be evaluated, regardless of where the macro is placed. This is another attempt to make macros act like functions, which evaluate fully before returning a value.
+
+So by convention, we always use parentheses around the arguments as well as around the entire macro.
+
+But if we have so many conventions that are trying to make macros look like functions, why not just use functions?
+
+One argument in favour of macros is that they are faster, since they don't require a function call, but inlining a function removes that argument.
+
+The other argument is that macros are type-neutral. Our GREATER macro works on any type. But that flexibility is also a weakness. By operating outside of the type framework, misapplications of GREATER -- onto a double and an int, for example -- occur silently, without the assistance of the compiler.
+
+Another weakness of macros is that most compilers do not include macros in their debugging information which can make it harder to debug problems with macros.
+
+Almost anything that can be done with defines can be done within the C system. So, my recommendation is that you only use function macros in rare cases. However, lots of legacy code uses macros, so it useful to be able to read them.

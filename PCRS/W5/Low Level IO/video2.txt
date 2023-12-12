@@ -1,0 +1,56 @@
+When we learned to read and write text files, we started with fgets which is a file-reading function. We were able to write a file, like the top ten scores, and then read it in with fgets.
+
+But creating a binary file is not so easy. So, instead of starting first with learning to read from a binary file, we'll start by learning to write into a binary file. Then we'll learning how to read that file in the next video.
+
+The function for writing binary data to a file is fwrite. We have four parameters to understand here.
+
+The first is a pointer to the data that we want to write to the file. This is typically the starting address of an array, but can also be a pointer to an individual variable if we want to write just one value.
+
+The second parameter is the size of each element that we're writing to the file.
+
+The third parameter is the number of elements that we are writing to the file. For an individual variable, the third parameter is one. For an array, it's typically the number of elements in the array.
+
+The final parameter is the file pointer to which we will write. That file pointer must refer to a stream open in binary mode. Note that this ordering of arguments is different from the ordering we saw when working with text files. There, the stream was the first parameter. In this case, it's the last.
+
+fwrite returns the number of elements successfully written to the file, or 0 on error. We typically add error-checking code after fwrite calls, just as we did with I/O calls that manipulate text.
+
+Let's start with an example of writing individual variable values to a binary file.
+
+These three lines declare three variables of different types. The variables are also given initial values, and these are the values that we'll write to our binary file.
+
+In this line, we open a file called my_data for writing as a binary file. If the file does not exist, then fopen will create it. If the file does exist, then fopen will destroy its contents before continuing. All of this is exactly what happens with text files, too.
+
+This is our first fwrite call, and it's job is to write the integer 512 to the file. Let's study the four arguments used to call fwrite.
+
+The first argument is a pointer to number, the integer we want to write to the file. The second parameter to fwrite is the size of each element that we are writing, so we pass in sizeof(int). sizeof is a convenient method for obtaining the size of any value, and using it is important for writing portable code. The third argument is one because we are writing only a single value here, not an array. Finally, the fourth argument is the name of the file pointer referring to my_file.
+
+The next two lines are very similar fwrite calls, except that they write a character and a floating-point number, respectively. In particular, it writes the letter 's' to the file. Keep that 's' in mind.
+
+We intended to write three items to the file, so we check to make sure that a total of three items were written.
+
+Finally, we close the file, just as we did for a text file.
+
+Let's run this program and look at the results. As expected, we see no output on the screen.
+
+However, we now have a file called my_data that contains an integer, character, and floating-point number.
+
+Let's open my_data in a text editor and take a look.
+
+Hopefully, you expect to see unreadable data here, because the file is a binary file. You'd be right. Most of the file is recognizable.
+
+But there's one bit we can recognize here: that character 's' that we wrote to the file. It turns out that character data is human-readable whether the file is a text file or binary file. In both cases, it is written in the same way. But everything else -- integers, floating-point numbers, and so on -- have different text and binary representations. You won't be able to use a text editor to see the integer or floating-point number in this file. But it's all there, just in binary form.
+
+Let's move on to another example of fwrite that demonstrates how to write entire arrays to a binary file. We're going to start with our existing program and make the necessary changes to write an array rather than individual variables.
+
+Rather than declare individual variables, let's declare an array. We'll call it numbers, and we'll initialize it with: 400, 800, 1200, 1600, and 2000. 
+
+The other change we'll want to make is to our fwrite calls. Let's remove the last two fwrite calls and just keep the first one.
+
+Now let's think about the first three parameters. The first parameter should be a pointer to the start of the memory holding the data to write. Remember that the name of an array is interpreted as a pointer to the first element of the array. So, numbers is the correct argument here. sizeof(int) is still correct, because each element that we're writing into the file is an integer. But the third argument is going to change from a 1 to a 5 because we are writing 5 values from the array, not 1.
+
+We also need to change the error checking. We're hoping to write 5 elements.
+
+Let's run this program and look at the results.
+
+There will now be a file called array_data in the current directory. It's a larger file than before, but how do we know if we wrote the data we wanted? In the next video, we will learn how to read this file back into our program.
+

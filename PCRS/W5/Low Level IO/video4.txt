@@ -1,0 +1,30 @@
+Let's put together what you've learned so far about reading and writing binary data. In this video, we'll learn about how wav audio files are structured, so that we can manipulate audio files in later videos.
+
+In my current directory, I have a file called door.wav. I'll play it for you now.
+
+You may have used mp3 files in the past to play music. wav files are similar, but their structure is much simpler.
+
+A wav file has two parts. First comes the header, which is 44 bytes of data. The header contains information about the wav file, including parameters required to properly play the file in a music program.
+
+After the header comes one or more 2-byte values. Each two-byte value is called a sample. When a wav file is created, the audio signal is sampled many thousands of times per second. Each of these samples is stored as one of these two-byte integers. Since short integers are two bytes on the system we're using for this video, we will use them in our program when reading that part of the file.
+As wav files are binary files, viewing them in a text editor will not be productive. Linux and other operating systems come with utilities for viewing binary files. One useful utility is od, which prints out the values found in a binary file.
+Let's look at the structure of a very small wav file called short.wav.
+
+Did you hear anything? This file is so small that it will produce no discernable noise if we play it. What is the use of a sound file that produces no sound? Well, if we can understand a small file and how to write a program that works on it, we will be well on our way to making a program that works with larger files, too. That's a principle we use often when programming: understand small instances of the problem to solve large instances later.
+
+We will use od to print the contents of short.wav. We will need to give it several commandline options.
+
+The first option and argument translates od's output from the default of base 8 to a more convenient base 10.
+
+The next argument causes od to skip the first 44 bytes of the file. We're skipping these bytes because the header occupies those first 44 bytes, and we have no reason to look at or modify the header. Of course, if we found that our program wasn't working correctly and we suspected that our handling of the header was an issue, we could remove this option to look at the header, too.
+
+The next argument tells od that the file consists of two-byte values.
+
+Finally, the last argument is the filename. In this case, od will read short.wav, our small wav file.
+
+Let's try it.
+
+In the leftmost column, od provides the file position for the bytes given in that line. For example, in the first line of output, the leftmost column says 44, which means that we're starting at byte 44 of the file. The rest of that line -- 2, 2, 2, 2, 2, 8, and so on - are the two-byte integers found at bytes 44, 46, 48, 50, 52, 54, and so on. The next line is the data present starting at byte 60 in the file. The last line shows us that we end at byte 84 which means that the entire file is 84 bytes.
+
+The reason that we use od to look at wav files is so that we can compare wav files to make sure that our programs are doing the right thing. Think of od as a file viewer for binary files, much as a text editor lets you view text files. In the next video, we'll write a program to manipulate an audio file, and we'll use od to verify that our program is working as we expect.
+

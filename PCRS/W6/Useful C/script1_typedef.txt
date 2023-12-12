@@ -1,0 +1,35 @@
+In this module we will talk about two C language features that allow you to define aliases for values that may change. The first, typedef, allows you to create aliases for types and is evaluated by the compiler. The second, macros, lets you define keywords that are replaced by specified strings when your program is processed *before* being compiled. Both typedef and macros are relatively straight-forward to use, but we'll discuss a few gotchas in these videos. Let's get started with typedef.
+
+If you've been watching these videos in order, you have already seen the type size_t. It is the type of malloc's parameter and the return type of sizeof.  This line, usually found in the C standard library file stddef.h, declares size_t to be an unsigned int.
+
+typedef is the keyword. It allows you to define a name, in this case size_t, that refers to an existing type, in this case, unsigned int. In the future, if you decide that you'd rather size_t be an unsigned long, you could just change the typedef, and every piece of code that uses size_t would start to use unsigned long values rather than unsigned int values. Note that this doesn't create a new type in the sense that structs do: you're not creating a new, composite type with components that have their own names. Instead, you're providing a new name for an existing type.
+
+Some programmers argue that using typedef makes your code easier to read. For example, suppose you had a program that is dealing with ages and shoe sizes. Both values are represented by unsigned integers, but you could use typedef to give them their own, recognizable types.
+
+Then, in a function to print your skate size (two sizes larger than your shoe size by the way), you could make the parameter's type shoe_size_t. Then, it's clear what kind of value your function should take, so you won't put an age into your boot_size function.
+
+On the other hand, other programmers in the C community argue that this actually makes the code harder to read and modify, because when you see the type "shoe_size_t", you won't necessarily know how to use it. Can you add integers to it? Or is it a string?
+
+The typedef doesn't prevent a programmer from passing in an age, or for that matter, a character. The compiler won't complain about a shoe_size_t, age_t, size_t, or any other value that can be interpreted as an unsigned int. So, someone reading your code can't rely on the compiler to point out errors -- they must find the typedefs, so they know how to use the types you've declared.
+
+... And this is why we have header files. Header files store declarations away from definitions, to assist with ease of reading -- and to allow compilers to do some basic checks.
+
+One place where most people agree that typedef does make your code easier to read is when you declare a struct.
+
+Let's consider this code fragment that might look familiar to you from the videos on structs.
+
+When we wanted to declare a struct student we had to say "struct student" every time. And when we wanted p to point to one of these structs we had to say "struct student star-p".
+
+Let's add a type def to our code to make it clearer. We will use the common convention that the struct itself is named with a lowercase name and the typedef name starts with an uppercase letter.
+
+We are aliasing Student to be the type struct student.
+
+And now s is type Student (which is type struct student), and p is pointer to Student (which is type pointer to struct student).
+
+This is very common, so C allows us to combine the definition of the struct and the typedef.
+
+You need to add typedef here, so that we are both defining the struct and using typedef to create an alias for it. And then add the name of new type here *BEFORE* the semicolon.
+
+And we no longer need this line.
+
+You can even omit the name of the struct -- student -- although there are often times when you still want it. And there you have it -- we've used typedef to create a simple alias for our struct.

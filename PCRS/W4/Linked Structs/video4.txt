@@ -1,0 +1,81 @@
+In the last video, we built an insertion function that correctly inserted a new node into a linked list. However, we haven't yet tested our code thoroughly. In this video, we'll do a case analysis to help us gain confidence that our code is correct.
+
+We wrote code based on this diagram. So far, we've inserted in the middle. What else does that leave?
+
+If the middle works, then we need the beginning -- position 0. And the end -- position 4 in this list. And that reminds me that we should check an illegal insertion -- maybe something at -1 or at an illegally large index?
+
+That gives us four cases to check. Let's look first at the case where we
+insert at the end of the list.
+
+It looks like adding to the end isn't a special case.
+
+That makes sense. We need to make curr point to the last node before we insert, and that's a legal node. NULL is a legal value, so the pointer assignments are fine, too.
+
+But that raises an issue. If we want to insert at a very large index, we need curr to point to the node at the index before. Is that going to work?
+
+Segmentation fault. That's no good. We should add an error check to make sure that the index is valid. That should occur within the traversal.
+
+We need to make sure that curr is pointing to a node. Since it should point to the node before the insertion location, 
+it should never be NULL. 
+If it's NULL, that means that our traversal went past the tail of the list and that's a problem.
+How should we handle that?
+In C we often use the return values from functions to indicate success or failure. 
+
+So let's change the signature of insert to return an int.
+And we'll return 0 when our insert is successful,
+and return -1 to indicate that it failed.
+
+For now, we will just ignore the return values, but we could add code here to
+check if an insert was successful.
+
+Let's compile and run our code.
+
+
+Great! So now it doesn't insert 9000 beyond the end of the list. We could add a similar fix to deal with an insertion at an illegally small index -- but we'll leave that as an exercise for you.
+
+Now, our final case: insertion at the beginning.
+
+This should put a node with value 0 in front of the node with the value 1.
+
+Back to the drawing board. When something happens we don't expect, we should examine our process. Let's diagram it.
+
+We have the nodes 1-5.
+
+We want to insert a node with value 0 at position 0. And here's our problem. We want curr to point to the node before position 0. 
+But we don't have a node BEFORE position zero. 
+So let's look at the end result we would like.
+
+We would like to add node zero here with it's next pointer pointing to
+1 and front needs to be changed to point to our new node.
+
+Let's try putting an explicit check for inserting at the front and handling it separately
+as a special case.
+
+If we are inserting at the beginning of the list
+We'll create a new node
+and pass it the old value of front -- which is the rest of the list.
+And then we will set front to point to the new node we inserted.
+
+And nothing changes. Why?
+
+The issue is that we're changing the local variable front within the insertion function -- not the variable front in main, where our list was defined. They're different locations in memory. Although we change front within our insertion function, the change is discarded when the function returns.
+
+We're going to need the ability to change the actual front of the list -- the variable front in main.
+
+That means that our insertion function needs to take the address of front. A pointer to front.
+
+First we will change the parameter to be type pointer to pointer to Node. I'll change the
+name to be front_ptr as well to make it clearer. 
+
+And then every place where we used to access front, we will change that to access front
+by deferencing our new front_ptr variable
+
+And we have to change how we call the insert function to pass the address of front.
+
+Let's try our code.
+
+And now we correctly insert at the front of our list.
+
+And that's our last case. At this point, we've looked at an example from each of the cases we identified, so we should be fairly confident that our code works as expected. This technique -- listing and verifying every possible case -- is a powerful one. Add it to your development toolbox!
+
+Before you move on to the next video, take some time to make sure you understand the pointer issues this video has raised. Inserting into a linked list really gets at the core concepts in pointers and memory. 

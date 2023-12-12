@@ -1,0 +1,44 @@
+In our very first video about pointers, we learned that a pointer is a variable that holds the address of another variable, and we saw that these pointer variables themselves have addresses. In this video, we want to explore the idea that we can store the address of a pointer in another variable.
+
+Let's start with this hopefully familiar code fragment. i is an integer with value 81 and pt is a pointer that holds the address of variable i.
+
+When we put this fragment into a program and visualize it,
+
+we see that pt is stored at this address. Can we access this address using another pointer?
+
+If we wanted to get the address of pt, we would do so with the ampersand operator. But what is the type of q?
+
+q is the address of pt, so q is a pointer to pt. pt is type int *, so q is type pointer to int *
+
+So q is type int **. We say that q is a pointer to pointer to int.
+
+Now that we understand that q is a pointer to pt, we can improve the name.
+
+And now what happens if we dereference pt_ptr?
+
+Since pt_ptr is type int ** or pointer to pointer to int, when we dereference it, we
+
+get the value at the address stored in pt_ptr. That's still a pointer.
+
+So the type of r is pointer to int or int *.
+
+That's a lot of stars, so let's just review for a minute.
+
+In an expression, * is the dereference operator. In this case, we dereference pt_ptr. We are accessing the value to which pt_ptr points.
+
+In a declaration, * is the part of the type that makes a variable a pointer. In this case, the variable is of type pointer to int.
+
+So what is the type of *r? Since r is a pointer, we can dereference it. It was a pointer to an int, so
+
+we get an integer. But if all we wanted was the result of dereferencing twice, we don't even need the intermediate variable r.
+
+We can do this, which tells us to dereference pt_ptr twice. For this statement to be legal, pt_ptr must be a pointer to pointer to int. The statement assigns that int to k.
+
+Going in the other direction, if we took the address of pt_ptr, it's type would be pointer to pointer to pointer to int.
+
+And we could dereference it 3 times to access the int!
+
+This is kind of cool and it takes a bit to wrap your head around it. But the real question is why we would want to do this.
+What good is a pointer to a pointer, or a pointer to a pointer to a pointer? Do we ever use them in practice?
+
+Yes, all the time -- for example, for matrices or tables of data. We'll look at that in the next video.

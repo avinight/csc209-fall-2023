@@ -1,0 +1,77 @@
+What happens when a system call doesn't work correctly?
+
+Because system calls interact with resources outside the running program, it is possible for them to fail.  The reasons for a system call failing might not be something the program itself has any control over.
+
+In this example, we use fopen to open a file where the file name is given as a command line argument.  The file might not exist or might have the wrong permissions.
+
+You can see when we run the program with a filename that doesn't exist, the program crashes.
+
+It is the programmer's responsibility to check that a call succeeds before using its results. This is true for any function call -- but is particularly true for system and library calls. If you don't check, then strange things could happen later in the program without much indication why. In this case, we are running our program with a file that doesn't exist -- and it leads to a segmentation fault, which doesn't help us find the problem at all.
+
+Here are a few examples of system calls:
+
+We just saw an example that failed to check for an error on fopen. fopen opens a file and returns a file pointer that will be used for later operations on the file. If it cannot open the file, it returns NULL.
+
+malloc returns a pointer to a region of memory that it has allocated. If it cannot allocate enough memory, it returns NULL. Technically, malloc isn't a system call -- it's a system library function -- but it uses system calls to allocate memory, and it checks those calls and returns appropriate errors.
+
+The stat system call finds the information about the file pointed to by path, and stores that information in buf. It returns 0 if it succeeds and -1 if it encounters an error.
+
+As these examples show, the main way to indicate an error occurred is to return a special value, and nearly all system calls follow the same pattern.
+
+System calls that return an integer will return -1 to indicate that an error occurred.
+
+System calls that return a pointer will return a value of NULL to indicate that an error occurred.
+
+In the videos in this series, we explicitly checked for errors when we call system calls. However, we don't *just* want to know that an error occurred. We also want to know *why* the error occurred so that we can print a sensible error message to the user. The return value itself cannot be used to indicate the error type, so a global variable called errno is used to store the type of the error.
+
+errno is a global variable of type int.  A header file included with your system defines different codes for different types of errors
+
+When a error occurs in a system call, the system call returns -1 or NULL depending on the return type, *and* sets a value for errno to indicate the type of error.  For example, if malloc fails, it returns NULL and sets the value for errno to ENOMEM.
+
+The good news is that you don't need to remember the numeric codes for the error types.  You don't even need to know the named constants. The library provides a few functions that will map the error code to a string that explains the error. The one that you will use most often is perror
+
+perror prints a message to standard error. The message includes the argument s followed by a colon and then the error message that corresponds to the current value of errno.
+
+This is very useful when a system call has failed -- but don't use perror as a generic error message reporting function. Its real purpose is to display an error message based on the current value of errno. For other types of error messages, you should still use fprintf to stderr.
+
+Now let's go back a look at our example system calls again and see how to call them and check for errors. Let's begin with the code from our first example.
+
+In this program, we have two system calls, and we can add error checking for both of them. To do so, we check the return value of each functions. First, we'll add error checking to fopen. In this case, it makes sense to use perror, since fopen will set errno if it fails. Then, we add a call to exit. We use exit, rather than simply returning, since we want the program to terminate. In the case of in error in main, a return will usually terminate the program -- but it's a good habit to use exit, since errors you detect in other functions won't terminate the program if you simply return, rather than invoking exit.
+
+Next, we'll add error checking to fgets. Should we use perror or fprintf? In this case, we're checking if fgets is able to read any data from the file. If it can't, that's not an error that will set errno; it simply signals the end of the file. Hence, we will use fprintf, rather than perror, to explain the error.
+
+Now, when we run the program, our program detects that the file doesn't exist and generates the error, No such file or directory".
+
+This time, we'll run the program with no argument. This time, we get the message, "bad address". That is exactly what is happening: we passed a null pointer in as an argument -- but it's an obscure message because we should have checked argc and argv before using them.
+
+And if, for some reason we used the wrong argument to specify how to open the file.
+
+Then we would see the message "Invalid argument"
+
+Here, we're running on an empty file and we get the message we wrote. But what would perror have given us?
+
+perror reports "Undefined error: 0" because fgets didn't actually fail. It did what it was supposed to do: it attempted to read a line and found the end of the file. Using fprintf, rather than perror, was the right choice.
+
+Here is another example, this time with malloc. LONG_MAX is a huge number -- more than we have available.
+
+If the allocation fails, then perror reports that memory could not be allocated. This will occur if you run out of available memory, as well.
+
+Finally, let's take a look at the getsize program that uses stat to print the size of the file given as an argument to getsize.
+
+If we run getsize with an argument that is a real file, then we will see the output message "Size of realfile is XXX"
+
+But if we run getsize with an argument that is not a real filename we will see the message: "stat: No such file or directory"
+
+Suppose we did not include the error checking in getsize.c. What would happen if stat failed?
+
+If stat does not succeed then the values in sbuf are unknown, so we can't trust the result.
+
+While it is tempting to leave out error checking for some system calls, you will end up with more robust code, and your users will be grateful for more sensible error messages.
+
+
+
+
+
+
+
+

@@ -1,0 +1,73 @@
+So far, we've seen how to call a function that was already defined. We've used fmax, a function from the math library, and printf, a function from the standard I/O library. In this video, we will learn how to define new functions by writing our own implementation of fmax.
+
+Here's a shell for our program.
+
+First, let's declare the function we are going to write. Here is the function prototype for my_fmax. A prototype includes a name, return type, and list of arguments. The combination of the name, return type and list of argument types is called the function's signature.
+
+In previous videos, we included a file to tell the compiler about the signatures of the library functions, like printf, that we used, so that the compiler knows that we are calling the functions correctly. When we define our own functions, use a prototype to do the same thing.
+
+A function prototype is also called a function declaration. Just like a variable declaration, it starts with a type.
+
+This is the return type of the function. This double tells us, and the compiler, that the value returned by the function my_fmax will be a double.
+
+Next comes the name. I've chosen the name "my_fmax" since we're implementing our own version of the C library function fmax. This is the name that we use when we call the function.
+
+Finally, just like the original fmax, these are the arguments we will provide to the function: two different double values. For each argument we provide a type and a name. You can actually omit the names -- only the types are required --but in this declaration I'll include the names, too.
+
+The arguments go inside parethesis and the whole declaration is finished with a semi-colon.  So now we know how to call my_fmax -- but we also need to define what it does *and* call it. Let's add the call first.
+
+Remember main? It's a function -- a special function, because it forms the core of each program, but it turns out that when we were adding code to main, we were already defining our own function.
+
+Our main function already calls fmax, like the last few videos, but we're going to change it to call our implementation. Instead of using the name fmax, which is the name of the library function, we'll use the name my_fmax, which we just declared with a prototype.
+
+We don't need to change the arguments or return type, because our goal is to write a function that works exactly like fmax.
+
+So now we've declared a function my_fmax and used it. All that's left is to define the function -- to write the instructions that will be executed when we call the function.
+
+The header of a function definition looks just like a function prototype, followed by curly braces instead of the semicolon. 
+
+But this time the parameters *must* have names. Can you see why I provided them even though they were optional before?
+
+Inside the curly braces we write the instructions needed to implement the function. 
+
+The parameters we established in the header become variables inside of our function, so we have two doubles named x and y which we can use when we write our function.
+
+Before we start writing those instructions, we should quickly document what our function is supposed to do.
+
+I'm putting a comment above the header that describes what the function will do -- return the larger of the two values given as parameters.
+
+So how are we going to implement this function? Regardless of how we get there, we want to end up returning the correct value.
+
+For that, we'll need to use a return statement. So what are we returning? We have two options: we can return x, or we can return y.
+
+Which one we return depends on their relative values.
+
+We can use an if statement to determine which value to return. So under what condition would we return x? We're looking for the larger value, so we'll return x if it is greater than y.
+
+Now we've covered the case for returning x; what about y? If the first condition is not met, we know what y is greater than or equal to x, in which case y is the correct return value for the function.
+
+So we've already finished. If we don't enter the body of the if statement, then we'll return y instead.
+
+Let's recap. We just *defined* what our function my_fmax will do.
+
+We are calling our function in main. Main will be executed when we run our program.
+
+The compiler knows how to use my_fmax because we added this prototype.
+
+Now let's try it. It compiles fine. And it works!
+
+One last note -- what happens if you forget to tell the compiler how to call a function?
+
+Let's try removing the include statement that tells the compiler about printf.
+
+The compiler *warns* us that we are using printf without telling it what printf is. However, since it's a warning and not an error, it builds the program anyway. If we run that program, we do so at our own risk. That's not a good idea.
+
+Similarly, if we remove the function prototype, we get the same warning about using a function without declaring it. 
+
+However, we also get an error because the compiler had to guess how to call the function -- and didn't guess correctly. The program doesn't compile at all.
+
+So, we need the prototype when we declare our functions -- it lets the compiler do its job. But we have one more choice.
+
+We can also define our function *before* we use it. Instead of declaring the function with a prototype, we declare it and define it at the same time. That's kind of like declaring a variable and initializing it at the same time.
+
+The code runs fine, and you'll see us use this pattern often. Instead of using a prototype, we'll just define the function. However, there will be times -- far in the future -- when you won't be able to do this and will need to use prototypes. So don't forget them!

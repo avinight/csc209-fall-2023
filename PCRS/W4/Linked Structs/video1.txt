@@ -1,0 +1,30 @@
+In this series, we'll learn about "linked" data structures -- in particular, linked lists. A "linked" structure uses pointers to increase the number of items stored in the structure as you have need. Let’s compare this to the arrays we have been using to store and access collections of data.
+
+Arrays are built into the C language, but we will need to define our own "linked" structures. 
+
+Arrays are easy to access -- we just use an index to fetch or store from a particular location in the array -- but we will have to write our own functions to "traverse" linked structures. 
+
+The size of an array is set when we define it, but a linked structure can grow (or shrink) as we add and remove items from it. 
+
+This last issue -- dynamic resizing -- is why we need linked structures.
+
+What if you don't know exactly how large your array should be and you run out of space to store items?
+
+A linked list is a data structure that stores a sequence of items. In that sense, it's very much like an array. The simplest form of a linked list consists of a front pointer and elements referred to as "nodes".
+
+The front pointer is a pointer variable that holds the address of the first node in the list.
+
+Here is the third node in the linked list.
+Each node is like an element of an array -- it contains the data stored at a specific location.
+
+Each node also needs a "next pointer" -- a link to the next node in the list. Now you might see why we call this a linked list -- the next pointers connect the nodes in a list by "linking" them together.
+
+The next pointer for the last node in the list has nothing to point to. Its value is NULL.
+
+In C, nodes are represented using structs. In a data structures course, you'll learn about many different linked structures, including trees and circular lists, but in its most basic form, the node struct for a linked list contains two parts:
+
+the data that it stores, and
+
+a pointer to the next node in the list
+
+The front pointer and the next pointers play a pivotal role in linked list operations. By manipulating these pointers, we can add and remove nodes to the list. And by starting at the front and visiting subsequent "next" nodes, we can visit all of the nodes in the list -- also known as "traversing" through the list. We will learn about list traversals in the next video.

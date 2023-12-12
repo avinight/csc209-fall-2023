@@ -1,0 +1,61 @@
+You've already seen that we can use basic arithmetic operators to compute values in C, like the plus symbol for addition and the asterisk for multiplication. But there aren't enough symbols to represent all of the operations we might want to perform. For example, what operator would we use if we want to get the larger of two values? The C standard library comes with a number of built-in commands, called functions, that implement many of these operations for us. Let's look at a small program to help us understand functions.
+
+Here I've defined a double variable named larger_num.
+
+I'm adding a function call. This code calls the function fmax. fmax needs inputs -- which we will call arguments. In this case, the arguments are 2 and 3. fmax will evaluate its arguments and will return a result. The result will be assigned, using the assignment operator, to our variable larger_num. Can you guess what value larger_num will be assigned?
+
+If you guessed that fmax returns the larger of 2 and 3, then you're correct -- but let's confirm that.
+
+Does this look familiar? printf is also a function!  
+
+It works differently from fmax, in that we don't use it to get a value back -- it displays its arguments on the screen. 
+
+Its arguments are a little complicated. It prints the first argument -- the string literal, in quotes. However, we can put formatting markers into that string, indicated by percent symbols.  
+
+printf will insert the values of the subsequent arguments where there is a corresponding marker in the string.  
+
+There should be the same number of markers in the string as there are arguments following it.
+
+Let’s compile our program and run it.
+
+As you can see, the first argument to printf is displayed on the screen, but the value of larger_num replaces the %f.
+
+And since larger_num was assigned the result of our call to fmax, we’ve confirmed that fmax returned the value 3.
+
+What will happen if I change it like this?
+
+It set the value of larger_num to 12.
+
+So, to recap: functions, like fmax and printf, perform well-defined tasks. 
+
+We can use a function even though we don't know *how* it works, as long as we know how it will behave and what arguments it needs.
+
+To use a function, we *call* it using its name -- in this case, fmax.
+
+The name is followed by a set of parentheses. Inside the parentheses, we provide the arguments to the function.
+
+The arguments are the input for the function. You need to know what arguments the function expects. In this case, we know that fmax needs two numbers, so we provide fmax with the numbers 12 and 3.
+
+Many functions, like fmax, return a value. If a variable is like a box, where you can only put things in and take them out again, a function is more like a machine where you can put things in and get something different back.
+
+To understand how this works, you can think of the function call being replaced by the value it evaluates to.
+
+The value the function returns needs to be used. In this case, we assign the result of the function call to the variable larger_num.
+
+Finally, we also need to tell the compiler where our function comes from. In this case, fmax is defined in a collection of math-related functions, so we pound-include the appropriate header file, "math.h".
+
+Let's look at our other example.
+
+We also used the function printf. printf displays data on the screen.
+
+printf also takes arguments. The first argument is the string to display, including markers, and later arguments are the values that replace those markers.
+
+Unlike fmax, printf does *not* return a value that we use. Instead, it performs an operation that lets us see things on the screen.
+
+And like before with fmax, we had to tell the compiler where to find the function printf. In this case, it's in a collection of input-output -- or I/O -- functions.
+
+Earlier, we said that it's important to know what arguments our functions expect. How do we know what to provide to fmax, for example?
+
+This is the standard way that functions are described -- or "documented". Documentation for a function includes its prototype, which describes what arguments the function needs as well as what type of value it returns, and a description of what those arguments and return value are.
+
+As you learn to write programs you'll probably end up referring to documentation like this very often.

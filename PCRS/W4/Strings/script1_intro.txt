@@ -1,0 +1,28 @@
+So far, we have stored and used numeric data in our programs. For example, we know how to manipulate integer numbers like 18 or floating-point numbers like 98.6. 
+We have also stored individual characters using the char datatype. In this video, we introduce C strings. Strings are the typical way we handle text in our programs.
+
+Suppose we wanted to store the text 'hello'. One thing we could do is to use a char array of five elements, where each element holds one character of the text. 
+
+If we do that, there is no convenient way to print the text. We have to use a loop to print each character separately. 
+
+A more serious problem with this approach can be seen if we want to store different words in our char array at different times. 
+Maybe we intend to store words of different lengths, so we decide to make our array have 20 elements instead of 5. 
+But now, if we print out all 20 elements, [edit line 12], we end up producing garbage following our 'hello' text. 
+The reason is that the rest of the 
+array is uninitialized, because we haven't stored values in those elements.
+
+C strings solve these problems. If we use a string, we can print it and manipulate it in other ways without using explicit loops. 
+And we won't print garbage that happens to follow our text in memory.
+
+A C string is a character array that has a null character immediately after the final character of text.
+
+So, a string is _not_ a new data type. It is still a char array: a char array with a special null character to mark the end of the text.
+This null character is a special character that is never actually displayed as part of a string.  Its purpose is simply to mark the end of strings.  Inside a C program, we write the null character as backslash followed by 0.
+
+As soon as we add the null character, then 'text' is a string and not just an array of chars.
+
+This means that we can use C string facilities on 'text'. We show one example here: using %s as a printf format specifier to print the contents of the string.
+
+We'll learn about other useful things we can do with strings in this set of videos. 
+
+

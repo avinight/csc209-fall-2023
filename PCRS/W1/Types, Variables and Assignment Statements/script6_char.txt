@@ -1,0 +1,35 @@
+So far we've looked at some numerical data types -- int and double -- but it's also possible to store text characters in variables. This is done using the character or "char" data type.
+
+Here I've added a new char variable named "letter". Now let's say I want to set the value of "letter" to a lowercase 'a' -- there are two ways I could do this.
+
+One way would be simply assigning letter the value "a" enclosed in single quotes, like so.
+
+Another way would be by assigning our letter variable a numerical value.
+
+Since we can only store numbers inside a computer's memory, each character is assigned a number.
+
+Most computers use a code known as 'ASCII', which assigns each character values somewhere in the range from 0 to 255.
+
+Here's a list of characters whose values are between 32 and 127. As mentioned earlier, there are more chars than this, but these are the ones you are most likely to use.
+
+While you really don't need to memorize these, one thing that is useful to know is that the codes for lowercase letters are contiguous (one after the other without a gap). In other words the code for lowercase 'b' is one more than the code for lowercase 'a'. Similarly, uppercase letters are also grouped together, as well as the numbers 0 to 9. However, there *are* gaps between these groups, so don't expect a lowercase 'a' if you add 1 to an uppercase 'Z'. 
+
+If we look at this list, we can see that the ASCII code for lowercase 'a' is the number 97.
+
+Let's run the visualizer and see what happens.
+
+Here we see that letter currently stores a lowercase a.
+
+As expected, executing the next line does not change the value of our variable.
+
+Before we finish here, let’s do one more thing with our example.
+
+What do you think will happen when I add this line?
+
+From previous videos, we know how expressions are evaluated. 
+
+First, the right-hand side of this expression is evaluated. And then, that value will be assigned to the variable on the left hand side. But what do we get when we add 1 to a char?
+
+When I press next to execute the statement, we see that letter changes to ‘b’. That’s because the code for b is one more than the code for a (so 98).
+
+C programmers sometimes take advantage of the fact that the ASCII codes for letters come in order. 

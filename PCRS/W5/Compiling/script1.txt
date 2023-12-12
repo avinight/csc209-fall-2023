@@ -1,0 +1,52 @@
+When you compile your program, what's happening? In this video, we'll take a high level look at the "compiler toolchain" -- the set of applications that, together, allow us to transform source code into a running program.
+
+As we've experienced it, the compilation process happens in a single step.
+
+Here's the canonical helloworld program. We use gcc to compile it, and gcc creates an executable a.out. When we execute a.out, the instructions in the program execute, so we see "hello, world" printed on the screen.
+
+But the compiler isn't a single program. The gcc compiler we used has to work on many different systems -- linux machines, PCs, and macs running on processors built by different companies that speak different languages.
+
+While we're using gcc to compile C, the gnu compiler project has produced a family of compilers that supports many different languages. So what does a "compiler" actually look like?
+
+Generally speaking, a compiler is any program that translates code in one language to a different language.
+
+Typically, we think of compilers accepting input in some high level language -- like C -- and producing output in a lower-level language like assembly code.
+
+You can run just this part of gcc using the -S flag. The result, helloworld.s, is in assembly. Assembly code is a human readable language that represents the instructions that a computer actually runs.
+
+If you look closely at the assembly code, you can see some familiar things like the "Hello World" string and the call to "_printf"
+
+The compiler runs in three phases. The first phase is a "front end" that translates the source code to a largely language-independent intermediate representation.
+
+gcc, for example, transforms all of its input languages into two languages called GIMPLE and GENERIC. You can think of them as abstract syntax trees, or graph structures where each node is an element of the program. This syntax tree example shows how the assignment statement x = 3 + y-squared is represented.
+
+The third phase is a "back end" that translates the intermediate language into the assembly language of the computer that will run the program.
+
+In between, we have the descriptively named "middle end". In the "middle end", the compiler optimizes your code: it looks for ways to make it run faster.
+
+One word of warning: the toolchain we're presenting is idealized. In reality, some of the distinctions between components are blurred. For example, optimizations also occur in the front and back ends of the compiler. Look for a specialized compiler course or text for more details.
+
+What we've just seen is called the "compiler", but we're not done yet. The back end we've just shown you produces assembly code, not a .out file that you can execute.
+
+We need to "assemble" the assembly code into object code (which after one more stage will become the 
+executable). This is the job of the aptly named "assembler".
+
+We can invoke the assembler directly with the command "as". The output isn't human readable any more: it's an object file that contains machine code instructions and data. But we can't run this object file yet. Something is missing.  We need one more step to create a file that is an executable.
+
+Running gcc on helloworld.s produces the file a.out. It assembles our code, and also invokes the final step to produce an executable file.
+
+Using the "file" command we can see the the format of the files and confirm that gcc is invoking more than the assembler, because the file it generates is an executable, rather than an object.
+
+The final step in the compilation process is called "linking". The "linker", which can be invoked with the command "ld", takes one or more compiled and assembled object files and combines them to create a file that is an executable format. The final executable file is a package that contains all of the instructions in the program in addition to a data section -- containing items like constant strings -- and links to dynamic libraries. The libraries contain the object code that implements functions such as printf.
+
+This executable is *not* "portable". That is, you can't copy it to another machine and know that it will run. Everything from the assembly code to the object file and executable is produced for a specific type of machine, and the executable, in particular, is specific not only to the type of machine but also the operating system and even system configuration.
+
+So far we've seen that the compiler toolchain is pretty big. It contains multiple components, including the compiler itself, an assembler, and a linker.
+
+But there's a bit more. The executable needs to be loaded into memory when you execute it. That's the job of the "loader", which is operating system specific.
+
+And we haven't mentioned that before we even start the compiler we need a "preprocessor" to prepare the source code for the front end. The preprocessor adds function prototypes for library and system calls required by the program and interprets preprocessor directives like macros.
+
+Basically, every line of a program that starts with a hash has to be cleaned up by the preprocessor. We discuss preprocessor directives in more detail in a separate set of videos.
+
+The compiler toolchain also includes tools to help with compilation, such as make and the debugger. We've discussed debugging with gdb separately, and we'll talk about make in an upcoming video.

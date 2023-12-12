@@ -1,0 +1,50 @@
+We have now seen how to write some interesting programs with if statements. However, we have always used the same structure for the if statement: *if* the condition is true, then execute these statements, *else* execute these statements. In this video, we'll explore some other possible structures for if statements.
+
+Our first variation omits the "else" block from an if statement. There is an if block, but no else. You can think of this structure of an if statement as a piece of code which is only executed some of the time: "IF the age is between 13 and 18, then print a message. Otherwise, ignore this code and move on."
+
+When we run this program, we see that the if block is ignored, but the second message "Program done." is printed out.
+
+One place we often see such if statements is in a sequence of checks or conditional operations in a program.
+
+In this example, we declare and initialize three variables.
+
+We want to figure out how many of these numbers are even. Eventually, we store the result in num_evens.
+
+This program has separate if statements for each of the three variables. Each if statement checks whether one of the variables is even and, if so, increments num_evens. The important thing to see here is that all three if statements are evaluated every single time through the program.
+
+Now let's change our first program to print a message depending on the value of "age".
+
+Suppose we wanted to add some extra information and print different messages depending on whether the age is too old or too young. One way that we could do this is with a *nested* if statement.
+
+This is the body of the else block. The code that gets executed with the first condition is false.
+
+Let's replace this single print statement with another if statement.
+
+We'll have another condition here checking if age is less than 13. This inner if statement will have an if block and an else block.
+
+Now let's trace our code with age set to 5 at the start.
+
+When the first condition is checked and is false, the code in the else block is executed.
+
+But the code in the else block is another if statement.
+
+So the same thing happens: we check the second condition, which is true, since 5 is less than 13.
+
+Then the code in the inner if block is executed, and the "too young" message is printed out.
+
+But what if we wanted to print out a different message if the age is between 0 and 5, or between 65 and 100? You can imagine we would get a lot of nested if blocks, which becomes difficult to read.
+
+There is a different, more concise format that we can use.
+
+This code is identical in behaviour to the previous code, but you may find it a little easier to read.
+
+When this program is run, the first condition is checked. If it is true, its block executes.
+
+If the first condition is false, then the second condition (beside the else-if) is checked. If that condition is true, then the second block executes.
+
+Otherwise, the else block gets executed.
+
+C allows us to have as many "else if" blocks as we want, not just one. It is possible for us to print out different messages for many different age ranges - 0 to 5, 13 to 18, 20 to 40, 65 to 100 - with a series of else-if blocks. Just remember that the conditions are checked one at a time starting from the top, and that the *first* time a condition is true, the corresponding block of code is executed, and then no more conditions are checked.
+
+By the way, you can also have if and else-if blocks, even without a final else. You can think of such if statements as saying, The first time one of these conditions is true, execute the corresponding code.
+Otherwise, ignore this entire section and move on."

@@ -1,0 +1,71 @@
+Several statements that you've seen us use in C programs aren't, strictly speaking, part of the C language. Any line that starts with a # symbol (or you might refer to it as a hash sign) contains a preprocessor directive. Preprocessor directives are used to modify the C source code before it is compiled. Let's take a look at some examples to understand what that means.
+
+Our first example is a fragment of C code that defines a global value.
+
+The appropriately named define directive defines a macro that associates the string MY_INT with the string 42 in parentheses.
+
+By very strong convention, all defined macros are capitalized. Doing otherwise is bad style.
+
+In a later video, we'll see that using macros can lead to several difficult to debug errors. To avoid these errors, it's a good idea to place parenthesis around values you expect to be placed into expressions. It's not necessary in this case, where we're inserting a single number that will be treated like an int, but it's a good habit to get into.
+
+This command executes the preprocessor on the file ex1.c. The preprocessor transforms the code by
+executing all the directives and expanding all the macros. This ultimately
+creates a stream of tokens that are passed to the compiler's parser.
+
+When the preprocessor executes this #define directive, all instances of the string MY_INT are replaced with the string 42. Yes, string. The preprocessor doesn't care that 42 is an integer. It just replaces text with text.
+
+Even text that is in a comment.
+
+There are some exceptions: the C preprocessor respects the use of quotes to define strings, so patterns found within quotes are not replaced.
+
+And the preprocessor is looking for whole tokens, so it won't replace part of a word that matches a macro.
+
+Macros are expanded even within other macros. In this example, we use one macro within the definition of another.
+
+We'll revisit this example in a later video, but for now, the important point is that macros are fully expanded.
+
+The preprocessor also includes several predefined macros.
+
+Several of these are common across all systems and provide general information about when and how the program was compiled. Notice that these predefined macros are surrounded by double underscores -- a convention that identifies them as system defined.
+
+They can be used to provide information for a help or intro message.
+
+Other macros are defined by specific systems.
+
+For example, on my machine, which is a mac, I see this.
+
+But on a linux box, the linux macro is defined while the APPLE macro is not. Clearly, these macros are useful if you need your code to behave differently based on the system that is compiling and running it.
+
+However, we can't use these macros to print informational messages -- the macros are only defined when they are true. We need a conditional statement.
+
+A full set of conditional directives are supported, including #if, #elif, and #else. In this case, we've used conditionals to define a string with an appropriate value for the OS of the system. The block of code guarded by the first #if is terminated by the #elif. The block of code guarded by the #elif is terminated by #else. And the block corresponding with #else is terminated by #endif. Since the macro language doesn't use curly braces, each block in the sequence of conditionals needs to be terminated by another directive.
+
+In this case, we could produce the same result using #ifdef and the defined operator.
+
+The original version, with #if, checks the value of each macro. If __APPLE__ is not defined, it has value 0, or false. On my mac, the value of __APPLE__ is 1, so the condition would evaluate to true. In the second version, with #ifdef, we are simply checking if the macro is defined. The value associated with it is not relevant. If __APPLE__ is defined, the condition is true, regardless of its value. Since the system macros are usually only defined when they are true, these two versions are equivalent.
+
+I hope these examples show you that that the preprocessor is useful for changing how your program behaves based on conditions at the time that the program is compiled. This example demonstrates how the preprocessor can be used to set system-specific constants and, commonly, to include system-specific libraries.
+
+The preprocessor is also commonly used to turn on debugging information when the developer needs additional information. Here, we've wrapped a print statement within an #ifdef.
+
+Normally, the program runs without executing the print statement.
+
+In fact, the print statement has been entirely omitted from the program, since DEBUG is not defined.
+
+But we can define macros on the command line using the -D flag. Here, we define DEBUG when we compile the program, so the print statement is executed.
+
+By default, the macro is defined with value 1, which is "true", but we can set it to take another value. Combined with a build system, like Make, this can allow us to quickly reconfigure a system to provide varying amounts of debugging information.
+
+All of this makes the preprocessor seem pretty useful, doesn't it? But be careful. macros can be easily abused, and some people argue that you should always use C language features, rather than the preprocessor. In fact, everything we've seen so far can be performed with C language features.
+
+But the preprocessor fills in an important role in the compiler toolchain. For example, look at this code: a simple include statement.
+
+The C compiler processes a single file at a time, so the preprocessor is used to create a single file that contains the contents of header files and the source file being compiled. In this case, the contents of the header file, sorts.h, were copied into the source file. header files depend entirely on preprocessor support.
+
+By the way, this is why we can have issues with multiply defined symbols when variables are defined within header files or when an improperly guarded header file is included twice.
+
+The contents of sorts.h is included twice after our source file is preprocessed.
+
+As you can see by the log left by the preprocessor, when it got to line two of the source file, it included sorts2.h, and since macros are fully expanded, sorts.h is included a second time.
+
+In this video, we've introduced C's preprocessor and demonstrated how it processes simple macros and header files. The preprocessor macro system can be used to specialize your code for a specific system or configuration and are a necessary part of the compilation chain. In the next video, we'll take a look at the use of function-like macros which can take arguments.

@@ -1,0 +1,40 @@
+It is possible to change, or _redirect_, a stream when a program is executed. As you learned in the previous video, standard input refers to the keyboard by default. You can change this using input redirection.
+
+This is a small program that uses scanf to read an integer. By default, the program will read an integer from the keyboard.
+
+First, we compile readint.c from the commandline.
+
+Now, we run the program. First, let's run the program by simply typing its name at the commandline:
+
+I'll type a number on the keyboard and press enter. The program prints the expected result.
+
+Here is a text file containing a single number. We are going to run readint so that it reads this number from the file instead of a number from the keyboard.
+
+To do that, we will use the less than symbol followed by the filename.
+
+Notice that the program no longer waits for any input from the keyboard. It read the number from the file.
+
+This is what we call input redirection. We are redirecting standard input to read from the file number.txt, instead of reading from the keyboard
+
+In addition to input redirection, we can also perform output redirection. Output redirection causes the output of a program to go into a file rather than the screen.
+
+This is a small program that uses printf to output a message. By default, the program will write the text to the screen.
+
+First, we compile outputprog.c from the commandline.
+
+Now, we run the program. First, let's run the program by simply typing its name at the commandline:
+
+The output prints the expected result on the screen. Remember that whats happening is that the output is going to standard output and standard output is by default being sent to the screen.
+
+Next, let's run the program again, this time using output redirection. To do so, we use the greater than symbol followed by a filename.
+
+Notice that we don't see the message: it wasn't printed on the screen. Instead,
+we can see the message in the file that was used for output.
+
+Be careful with output redirection. If a file already exists, and you use output redirection with that filename, the file will be overwritten.
+
+Input and output redirection are not C features. They're features of your operating system, and are useful for a variety of programming tasks. For example, it's common to run programs that produce a lot of output. Instead of scrolling through the window looking for specific parts of that output, it can be convenient to use output redirection to save the results. Then, you can view those results in a text editor.
+
+Input and output redirection do have limitations. The most important limitation is that only one file can be used for input or output redirection. It is impossible, for example, to read from two different files by redirecting standard input. For this kind of flexibility, we require using C files, which we cover in the next video.
+
+

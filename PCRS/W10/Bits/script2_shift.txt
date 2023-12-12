@@ -1,0 +1,39 @@
+In the first video on bit manipulation, you learned about the bitwise operators in C. To make use of these operators, let's explore a couple of problems.
+
+Given a variable b, set the third bit to 1 and leave the other bits unchanged.
+
+First, given a variable b, set the third bit to 1. No other bits should be changed.
+
+We count bits from right to left starting at position 0.  So the bit at position 3 in our variable b has the value 0.
+
+We can use the bitwise or operator here. 1 or 0 is 1. 1 or 1 is also 1.
+
+Let's use the value 8. In binary representation, the value 8 has a 1 at the third bit. Using bitwise or, any value we combine with 8 will end up with a 1 at the 3rd bit.
+
+Now let's tackle another problem. Given a variable b, check if the second bit is has the value 1.
+
+We will use the & operator, because the only way that bitwise and results in 1 is if both bits are 1.
+
+We use the value 4, since it has a 1 at the position we want to check. If the second bit of b were 1, then 1 & 1 would be 1, but in our example, the second bit is 0, so 1 and 0 is 0.
+
+Suppose we want to make these problems more general. Our solutions so far rely on us knowing exactly which position we want to check, so now we need a way to create a value with an arbitrary bit set to one.
+
+For that will use C's shift operator.  There are actually two shift operators -- shift left and shift right. Think of them as arrows pointing in the direction of the shift.
+
+The shift operators take two operands, the first operand -- to the left of the operator -- is the value to shift, and the second -- to the right -- tells us how many places to shift.
+
+If we shift the value 1 to the right 3 positions, we end up with ... 2 ... 4 ... 8. So, by replacing the second operand with a variable, we can generate a value with any singel bit set. This allows us to solve our general problems.
+
+To set the kth bit of var, we will bitwise-or var with 1 shifted k times.
+
+And similarly we can check if the kth bit is set by bitwise anding var with 1 shifted k times.
+
+These two operations -- setting and checking a single bit -- are very common. It's worth learning these useful programming idioms.
+
+However, we can use the shift operators on values other than 1. In this example, we shift a 1 byte value -- that is, an 8 bit value -- to the left by one position. The leftmost bit is discarded and the rightmost bit is set to 0. The other bits are shifted 1 bit to the left.
+
+If we shift by 2, then the leftmost two bits are discarded, the rightmost two bits are set to 0, and the other bits are shifted 2 to the right.
+
+Here's another way to think about the left shift operator. Look at what happens whenever we shift a number one bit to the left. I'm sure you can see the pattern.  It's the same as multiplying the number by two.
+
+We have focused on the left shift operator in this video because it was useful for our problem, but the right shift operator is also useful -- and works in the same way. In this example, you can see that right shift works like integer division.

@@ -1,0 +1,55 @@
+Welcome to C-online!  These online modules are designed to complement courses in introductory C programming or systems programming.  We've developed some online tools to help you learn to write programs in the C-programming language, including a system to help you visualize your programs.
+
+In this module, we'll introduce you to basic programming concepts and practices. My goal is that by the end of this video you should know enough to write your first C program. You should be able to declare variables, assign them values, manipulate them with simple expressions and print output to the screen.
+
+We keep talking about "programs" and "programming."  If you've ever used a computer, you've used a program.
+
+But what are they, exactly?
+
+Programs are sequences of instructions to a computer -- that's it!  
+
+But we can do a lot with a sequence of instructions to a computer.  
+
+The computer itself is not "smart"; put simply, it's a machine that lets us move pieces of information around and make simple calculations with arithmetic and boolean logic.
+
+The power of computers lies in the way we write programs; the way that we tell the CPU what to compute.
+
+Programming languages such as C are designed to make these instructions faster and more intuitive for us to write.  
+
+This is a very simple, complete C program.  There's a lot happening behind the scenes, because another program -- called a compiler -- will convert our C code into a much more detailed set of machine instructions that the computer can understand.
+
+Most programs interact with the user in some way. They might ask the user for input, or present the user with output, or both.  This example shows us how to output information to the screen.
+
+Let's break it down into its instructions.
+
+This is called the "main function.  You can think of it as a wrapper for the core of a program.  When we tell the computer to run our program, it will execute the instructions in the main function.
+
+For now, every instruction you write will be inside these curly braces.
+
+This line tells the computer to output some text to the screen; the sentence "Hello, world!".
+
+You can see that the text we want to print to the screen is enclosed in quotation marks.
+
+The quotation marks are important to differentiate the text we want to output from other instructions, like "printf", and "int main." 
+
+The text inside of the quotation marks is called a "string literal" -- it's a string of text characters which we put directly into our code.
+
+Finally, a semicolon signifies the end of this instruction.
+
+Before the closing curly brace, we use a return statement, which tells the computer to finish executing the main function.  Any statements after the return statement would not be executed by the computer.
+
+Finally, we need to specify that we want our program to be able to use input and output, since that's not built into the core of the C language.  We place an #include directive at the top of the program.  This isn't an instruction to be executed when we run our program; it just adds code from another file to your own code.  It makes instructions like "printf" available for your program to use.
+
+C code needs to be compiled before we can run it -- that means there's a program, called a compiler, that converts your C code into a different language that the processor can understand.  The C-online system automatically compiles your code for you when you submit your programs. Since it's already compiled, let's run our program!
+
+The instructions are sent to the computer's processor sequentially -- meaning one at a time and in the order specified by our code. With the visualizer, we can step through each instruction and see the results.
+
+First, our program tells the computer that it is starting the main function.
+
+When we start our main function, you can see "main" appear in the top right.
+
+When the program prints "Hello, World!" the output shows up in our Standard Output box.
+
+Finally, the return statement gets executed, signifying the end of the main function.  
+
+Now our program is finished executing!

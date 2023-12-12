@@ -1,0 +1,16 @@
+Until now, we have been using text files when performing file input or output, but not all files contain text. All files ultimately contain binary data (bytes made up of 8 bits that are either one or zero), but in text files, each of these bytes can be interpreted as a human-readable text. In this next series of videos, we explore files where the contents aren't text.
+
+This top ten scores file and our C programs are text files. Text files contain human-readable characters, and in past videos, we have read lines from a text file using fgets. But some files are not text files.
+
+Some files are binary files. If you open a binary file like a compiled C program, you will notice that it is not human-readable. It will be displayed as junk, since the data in the file is not intended to be read.
+
+Why would we want to store files in this binary format, rather than a readable text format? One major reason is that there is often no convenient way of storing something as text. For example, image files like jpg or gif, or music files like wav or mp3, have no obvious text in them. They hold numeric representations of pictures or music. There is no reason to invent some way to display these files as text. In addition, we may choose to store data in a binary format when the intended consumer is a computer, rather than a human, or if we are concerned about the size of the file, since storing data in binary format typically leads to smaller files than storing it in a text format.
+
+So, if binary files are smaller and more versatile than text files, why not use binary files for everything? As we have shown, binary files are not directly viewable or editable. In applications where you want humans to view or edit the content, a text format is appropriate.
+
+We handle binary files in much the same way as we deal with text files. First, we must open the file so that we can use it in a C program. For example, you have seen calls of fopen, like this one, that open text files.
+
+Opening a binary file requires a different mode. To open a binary file, we include a letter b in the mode that we pass to fopen. Also note that the name of the file lacks the "txt" extension. txt stands for "text" so it would be misleading to name a binary file with that extension. Binary files come with many different extensions -- no extension at all, "dat", "jpg", "mp3", etc. The extension tells us how we should interpret the contents.
+
+Now that the binary file is open, we will want to read and write the file. Unfortunately, the functions you have learned so far -- fgets, fprintf, fscanf -- are not useful for binary files. For one, binary files have no notion of "line". The data in a binary file is not broken up into lines as is the case for text files. Also, functions you have seen so far read and produce text, not binary data. In the next few videos, we'll look at functions for writing and reading binary data.
+

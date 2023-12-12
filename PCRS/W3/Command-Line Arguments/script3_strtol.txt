@@ -1,0 +1,80 @@
+So far we have learned about converting between different types of numbers --
+integers to doubles and doubles to ints. You've also seen use convert back and forth between
+integers and characters. In this video we will learn how to convert from a string
+to an integer.
+
+Depending on the order in which you are watching these video lessons you may not have
+learned much about strings yet. If you haven't, don't worry -- you'll cover them later.
+But to understand this lesson, you need to know that C strings are special arrays of
+char elements and that we can declare and initialize a string literal variable like this.
+
+Now, suppose we have a string literal that we might want to interpret as a number.
+
+Now s points to the string one - seven.  Notice that I didn't say "seventeen". s is a
+string with 2 characters - the first is the character representing the digit 1 and the
+second is a seven. Each of those characters takes 1 byte of memory and holds the
+appropriate ASCII code for its digit.
+
+But there are some important situations where we would like to take s and use its value
+(one - seven) to set an integer variable to the value 17.
+
+We need something like this:
+
+This program uses a function that takes the string s as a parameter and returns the
+integer represented by the string.
+
+The function strtol 
+is just what we need. It does these simple conversions and also helps us avoid issues in
+more complicated cases. 
+
+The name stir-to-L stands for string to long, 
+but sometimes people call it stir-toll. As you might guess, the function
+returns a long. But as you learned earlier in this module, we can assign a long to a
+double without losing information.
+
+The first parameter is the string that we want to convert.
+
+We can set the second parameter to NULL for now. We'll come back to it later.
+
+The third parameter 'base' is the base of the number system that we want to use to
+interpret the string we are converting. You and I just assumed that one-seven should be read
+and understood using base 10, our usual number system, but strtol is actually much more
+powerful. For example, if you had a string of zeros and ones representing a number in
+binary -- or base 2 -- you could specify 2 as the last parameter, and strtol would do the
+conversion correctly. We'll just set the base to 10.
+
+Let's try running our program.
+
+Another way in which strtol is more powerful than you might have first thought is that
+it can handle leading spaces and a leading plus or minus sign.
+
+Let's change our value of s to see this.
+
+Nice!
+
+Now about that second parameter. Suppose our string begins with an integer but then
+the digits are followed by other non-numeric characters. strtol still extracts the
+integer correctly and it uses the middle parameter to tell the caller where the
+"leftover" piece of the string starts. Notice that the second parameter is of type
+pointer to pointer to char. That's the address of a pointer to char. If instead of
+NULL, we pass in the address of a pointer to char, strtol sets that pointer to point to
+the first character of the "leftover" -- or "unconverted" -- part of the first parameter.
+
+Let's change our example to demonstrate this.
+
+First, we'll update our string s to include non-numeric characters.
+
+Next, we need a pointer that will refer to the first character strtol didn't use to generate
+the number it is returning. Notice that leftover is type pointer to char (char *).
+
+We need a pointer to a pointer to char, so we'll pass the address of leftover. &leftover is type char **.
+
+And now we'll just print the remainder, so we can verify how strtol works.
+
+After the call to strtol, leftover is set to point to the space character between the 7
+and the 'o' from other junk. strtol skips over leading whitespace, but trailing
+whitespace is considered to be unconverted.
+
+There are are a few other fine points of handling error situations that might come up
+with strtol but you can learn about them from the man page as you need this extra
+information during your own programs.

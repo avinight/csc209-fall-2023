@@ -1,0 +1,35 @@
+There are a variety of functions in the C standard library that you can use to read from streams. The most appropriate one to use depends in part on the kind of data that you're reading.
+
+When reading text or complete lines of data, fgets is often the right choice.
+
+fgets takes three parameters.
+
+The third argument, stream, is the source of the data -- where fgets acquires its input.
+
+The first argument, s, is a pointer to memory where text can be stored. For example, s can be a char array, or a block of memory allocated by malloc.
+
+On success, fgets returns s. fgets signals an error by returning NULL.
+
+The second argument, n, is the maximum number of characters that fgets is allowed to put in s, including a null character at the end of the string. For example, if you pass a value of 5 for n, then fgets will get at most 4 characters from the source of the data, and then end the string with a null character.
+
+In this example, fgets won't always read 4 characters. fgets reads at most n-1 characters from the stream, and fgets always stops reading when it reaches the end of a line of text in the stream.
+
+Let's use fgets to read the ten lines from the top ten scores file from the previous video.
+
+Our datafile is text and is broken into short lines. We define a maximum line length of 80 characters. No line in the file has this many characters, so we will always read one full line at a time. If a line in the file had more than 80 characters, then it would end up being split across multiple fgets calls.
+
+In this line, we define the char array that will hold each line of the file. Notice that we account for the null terminator that fgets will add by adding 1 to our defined line length.
+
+This loop uses fgets to read every line in the file. If fgets fails to read any characters at all, then it returns NULL. Otherwise, fgets has successfully read a line and added a null terminator to the end. In this example, we just print the line that fgets has read.
+
+When reading from a file, picture a cursor keeping track of your current position in the file. Before reading anything, the file cursor is before the first character in the file. After a successful call of fgets, the file cursor move to the start of the second line. After another successful fgets, the file cursor will move to the start of the third line, and so on. This is why repeatedly calling fgets gives successive lines of the file, until the end of the file is reached.
+
+Incidentally, fgets and other file-reading functions can also be used to read from standard input. After all, standard input is a stream just like a file. fgets is often more useful than scanf for reading strings from the keyboard, because scanf stops reading at a space character whereas fgets stops reading after the newline character that ends a line.
+
+Here is an example that uses fgets to read from standard input.
+
+notice that we now use stdin — the name of standard input. This program will now read strings from standard input rather than a file.
+
+As long as standard input has not been redirected, then the program reads strings from the keyboard.
+
+

@@ -1,0 +1,87 @@
+We know that programs are sequences of instructions to the computer, and you've seen how to create an instruction to output strings of text to the screen.  What are some other instructions that we might give a computer?
+
+One of the most important parts of programming is the ability to store and access information.
+
+Computers store information in a component called "memory."
+
+You can think of memory like a giant grid with millions of cells, where each cell has an address and contains a piece of information.
+
+The way that a program stores a value is by reserving a small section of memory and giving it a name.  This named piece of memory is called a "variable" you can think of a variable like a placeholder for that particular piece of memory.
+
+For example, let's say we have a program in which we need to store the population of Canada.
+
+We'll need a variable that can store an integer value, since population is counted in whole numbers.
+
+This line of code creates a new variable: it's called a "variable declaration statement."  
+
+First specify the type of value we want to store -- int stands for integer.  
+
+All data in memory is represented as binary numbers, so by specifying the type of variable, we can tell the program how to interpret the numbers stored in memory.  
+
+We're using integers in this case, but there are other types of variables, such as ones which allow fractions. We'll talk about that later.
+
+After the type, we specify the name.  We'll call this variable "canada_population."
+
+Variable names have to follow a couple of rules: they can only contain: letters; numbers; and underscores.
+
+They also cannot start with a number; and they are case-sensitive, so a variable named "canada_population" with capitalized letters would be treated as a different variable from the one we've declared here.
+
+As we did in the "Hello, World" example, we end the statement with a semicolon.
+
+We'll be using the C-online visualizer throughout these modules to show how our program is represented in memory after each statement is executed.
+
+You can see in the visualizer that when we execute this statement, the name of the variable shows up in our table of names, and there's an associated piece of memory inside the main function on the right.
+
+So now we have a piece of memory that we can refer to by name.  But we haven't stored any information in it yet.  
+
+Right now, whatever junk was stored in that piece of memory before we declared our variable is still there.
+
+As far as our program is concerned, our new variable doesn't yet have a meaningful or useful value.
+
+So let's give our variable a value.
+
+This is called an "assignment statement."  
+
+We're telling the computer to take whatever value is on the right-hand-side of the equals sign and store it in the variable on the left-hand side.
+
+The equals symbol, in C, is called the "assignment operator."
+
+Our variable "canada_population" is associated with the piece of memory located at this address. 
+
+There's already a value there, but it's not the one that we want!
+
+When we execute the assignment statement, you can see the value in that memory location change!
+
+It's really important to note that the assignment operator doesn't mean the same thing as a mathematical equality symbol, but rather it *sets* the value of the variable.
+
+Here's another example. 
+
+Programs are very useful for performing calculations, so let's say we want to calculate the area of a rectangle, and we know the measurements for the base and the height.
+
+We'll declare variables for base, height, and area.  Since they're all going to be integers, we can do this within the same statement, separating the variable names with commas.
+
+Now, we can assign values for the base and the height.
+
+We'll set the base to 12 and the height to 7.
+
+We need to use another assignment statement to set the value of the rectangle's area, but we don't have an explicit value to work with.  Instead, we'll use an "expression" to calculate the area using the variables for base and height.
+
+Expressions are ways of performing calculations, using arithmetic and logical operators.
+
+You can see the familiar assignment operator, but this time we have two variables and an additional symbol on the right side.
+
+When the computer executes any assignment statement, it first evaluates whatever is on the right-hand-side of the assignment operator.  
+
+In this case, it will fetch the values for base and height from memory. 
+
+Remember that a variable is like a placeholder: so here, we are literally telling the computer to: "calculate the result of multiplying the value of base by the value of height".
+
+This expression, on the right hand side of the assignment operator, does *not* change the values of the base and height variables.  Note that the values in those memory locations stay the same.
+
+Instead, the numerical result of the evaluated expression will be assigned to the variable on the left-hand-side of the assignment operator.
+
+In the visualizer, you can see that the result of that expression -- 12 times 7 is 84 -- 
+
+is now stored in the 'area' variable.
+
+Got that? Evaluate the expression on the right-hand-side, then assign the resulting value to the variable on the left-hand-side.

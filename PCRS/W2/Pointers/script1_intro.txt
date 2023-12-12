@@ -1,0 +1,102 @@
+We've seen in the memory visualizer that variables have addresses and values.
+We'll see in this video how we can store the *address* of one variable as
+the *value* of another. This second address-holding variable is called a pointer.
+This idea, that we can manipulate memory addresses as values, is a powerful
+concept, but it's not any more difficult than the concepts you've already seen.
+Let's get started.
+
+In this program we declare an integer named i stored on the stack
+and assign it the value 5.
+Next we print the value using printf.
+We can also print the address where that value is stored
+using a new operator -- ampersand.
+
+When applied to a variable name, the ampersand operator
+returns the address of the variable.
+
+Let's look at this program in the memory visualizer.
+
+I've already stepped through the program to the point where line 6 has been executed
+and we are almost ready to return.
+If I hover over i in the nametable you can see its address and value in the stack
+segment of the memory map. Notice that the printf statements printed exactly these
+numbers, so we see them in the output box.
+
+Now let's add a new data type called a pointer.
+
+If a variable is a pointer, its value is a memory address.
+When we declare the pointer, we have to specify the type of the value that
+will be stored at that memory address.
+Here we declare a pointer to an integer called pt. Here we are saying
+ that pt is a variable that
+will hold the address of an integer. We refer to the type of pt as
+"int star" or  "pointer to int".
+
+Using the ampersand operator again,
+we assign the address of i to pt.
+Remember that when using an assignment statement
+"The new value of the variable on the
+LHS is the result of evaluating the expression on the RHS".
+
+Now we say that "pt points to i". Or "i is pointed at by pt"
+
+Let's look again at the visualizer and start at the point where we
+are about to declare pt.
+
+When pt is declared
+it appears in the stack name table and its type is int star.
+It is stored starting at this address. On my machine running the visualizer,
+addresses are 8 bytes -- or if you prefer, 64-bits --
+so a variable of type int star needs 8 bytes.
+The visualizer shows the address for both of the four-byte
+pieces allocated for pt.
+Here is the initial value of pt. We haven't set it yet, so it just holds whatever
+junk was previously stored at this address.
+
+Let's execute the next line of our program.
+We assign the address of i
+to pt.
+
+So pt holds this address. (pause)
+and this address (pause)
+holds 5. It is important to understand that when we allocated space for pt, we
+only allocated space for a pointer -- and *not* also for an integer. The integer
+was allocated when i was created. We only use pt to hold the address of that memory.
+
+
+Now, we would like to access the value in the memory pointed at by pt.
+
+Let's add one more line of code to our program.
+
+The star operator is applied to a pointer and evaluates to the
+value of the memory pointed at by the pointer.
+
+This is called "dereferencing a pointer".
+
+In our new line we use *pt to print the value stored at the memory pointed to
+by pt.
+
+Let's run that last line in the visulizer.
+So pt holds a memory address and that memory address
+holds the value 5.
+So *pt evaluates to 5.
+
+Notice that we used the star symbol in front of pt earlier in our program.
+In this line we were declaring pt
+to have type int *.
+That use of * (inside a declaration) is NOT a deference. It's part of the type.
+But here, inside an expression, the star symbol is the dereference operator. It
+tells the compiler to use the value stored in the address that is stored in pt.
+
+So far we've only seen pointers to integers, but we can have pointer to other
+types.
+Let's visualize this program which declare a char variable ch to hold the
+value upper-case Y.
+declares a pointer to char  ch_pt
+points it at ch
+and finally prints out the deferenced value.
+
+Before continuing to the next video, I suggest that you download the two example
+programs and step through them yourself in the visualizer.
+Pay attention to the values that are being printed and the
+values and addresses of the variables in the memory map.

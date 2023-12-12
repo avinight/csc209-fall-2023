@@ -1,0 +1,31 @@
+We're now going to look at functions for copying and concatenating strings.
+
+When we _copy_ a string, we overwrite what was previously there. When we _concatenate_ a string, we are adding to the end of what was previously there. Keep this in mind throughout the video.
+
+Let's start with copying a string using the function strcpy.
+
+strcpy copies the characters from string s2 into the beginning of array s1. As strcpy overwrites whatever was at the start of s1 anyway, s1 isn't required to be a string when strcpy is called. But s2 _is_ required to be a string when strcpy is called
+Here is an example of strcpy in use. In this line, we use strcpy to copy the characters from s2 to s1. When we then print s1 and s2, we see 'university of' printed twice because this is what was copied from s2.
+
+Be careful! strcpy is known as an unsafe function.
+
+This example demonstrates why strcpy is unsafe. Suppose we change s1 to allocate only five chars. s2 is a long string of 15 characters (14 characters plus the null terminator) and so cannot possibly fit into s1. What should happen? This case is "undefined" -- different compilers will handle it in different ways.
+
+On one machine, when we run this code, we see that the compiler realizes that the string being copied in is too big, so it raises an error. This seems bad, but it's actually a good result, because you know you have a bug to fix.
+
+Let's run this code on a different machine. Since no error is being raised, it may appear that the program is working just fine, with no problems at all. In fact, this is the worst possible outcome. It may lead you to believe that your program is OK, when in fact it has a bug.
+Let's run the code with a slightly different value for s2.
+
+When we run this code, we don't get the correct output. We see now that strcpy doesn't check if s2 can fit into s1. Instead, it simply copies everything, even though s1 does not have the required space.
+Remember: All bets are off when strcpy is used in an unsafe way. The program might run just fine for you right now, but if anything small changes -- or if your friend runs it on another computer -- you could see problems.
+
+We know now that strcpy is unsafe. What can we do to remedy this? For many unsafe functions in the C standard library, there are also safe counterparts. The safe versions of the unsafe functions often add an n somewhere in their name; this n indicates that there is a new n parameter added to the function to control how much activity the function is allowed to do before stopping. In the case of strcpy, we have the safe function strncpy
+
+The new parameter n indicates the maximum number of characters that s1 can hold, and therefore the maximum number of characters, including any null character, that can be copied from s2 into s1.
+
+Here is an attempt to safely use strncpy. Line 7 uses strncpy to copy at most 5 characters into s1. Remember that sizeof(char) is 1, so sizeof(s1) gives the number of elements allocated to s1.
+
+Unfortunately, this code is also unsafe. The reason has to do with a tricky fact about strcpy: it is not guaranteed to add a null terminator, unless it finds one in the first n characters of s2.
+Notice that s1 is not a string. It contains five characters, none of which are a null termination character. It is therefore incorrect to try to print s1 in line 8.
+Here is how to correctly and safely use strncpy. We ensure that the string ends with a null character by explicitly adding it.
+

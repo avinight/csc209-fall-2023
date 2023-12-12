@@ -1,0 +1,68 @@
+So far we have learned how to communicate between processes using pipes and signals.  To communicate using pipes, the processes have to be created using forking. Signals can be used to communicate between unrelated processes. However, both pipes and signals can only be used to communicate between processes that are on the same machine.
+
+In this series of videos, we are going to learn about sockets and how we can use sockets
+to communicate between two processes running on two different machines.
+
+First we need to know just a tiny bit about the internet. There is a lot to know, and
+we are just going to barely scratch the surface.
+
+Each machine has an internet protocol, or IP, address: an address that can be used to send a message to it from any other machine that is connected to the internet.
+
+Although a machine might have only one IP address, it might be running
+lots of different programs that need to communicate over the internet. Messages sent across
+the internet are destined for a particular program. So we need more than just the machine
+to specify which program. That's what PORTS are for. If a machine's address is like a street address, then a port is like an apartment number in the building at that address.  The full location of a program
+running on a machine connected to the internet is its machine address plus the port.
+
+Messages sent from one machine are enclosed in packets. You can think of them as packages. They contain
+both the address and a payload -- the contents of the packet or package. However, the packet
+does not specify the route that they it travel to get to the destination.  The route is determined as
+the packet moves. When the packet leaves the machine, it is received by another device, called a router, that
+facilitates transfer of packets between networks. Routers are connected to multiple networks and know which network the
+packet should be sent to in order to get it closer to its final destination.  That machine
+looks at the final destination and sends the packet onto the next stage of its journey.
+
+You might have also heard the terms "client" and "server". A server is a program running on a specific port of
+a certain machine waiting for another program (or maybe many other programs) to send a message. Many common services have defined ports. Web pages are typically served on port 80. Secure web pages use port 443. In other cases, the person running the server publishes the machine address and port saying effectively, "if you want to run
+my program, or play my game, or use my service ... then send data to me at this address and this port. I'll be sitting
+here waiting for messages whenever you are ready."
+
+A user runs a client program when they want to start
+interacting with a server. The client program sends the initial message. In some cases, the client sends only a single message. In other cases, the client begins a "connection": a conversation between the two machines that involves multiple messages.  In this case, the client sends the first message to initialize the connection. Once the programs have established a communication channel, then either machine can send data to the other.
+
+So, how *will* we "establish a communication channel". Well, in these videos we will use sockets.
+
+There are a few different types of sockets, and they different types all rely on the same system calls. As a result, these system calls have many different (and sometimes confusing) options to allow you to set up the kind of socket you want. We are going to demonstrate only one kind of socket. The sockets we will use in our work are "stream sockets" built on the TCP protocol. These are connection-oriented sockets that guarantee that messages will not be lost in transit and that messages will be delivered in the order in which they are sent. These are strong guarantees: the postal service doesn't even provide that quality of service! You can learn about other types of sockets, such as datagram or domain sockets, on your own.
+
+The first system call you need is socket
+
+This system call is used to create an endpoint for communication. When we ultimately get everything set up, we will
+need one endpoint in the client program and one endpoint in the server. So both programs will independently invoke
+this system call.
+
+The return value is type int. It will be -1 if there is an error and on success
+it will be the index of an entry in the file-descriptor table.
+
+So what about the 3 parameters? domain, type and protocol?
+
+Domain sets the protocol (or set of rules) used for communication.
+For our purposes, you can either set this parameter to the defined constant PF_INET or AF_INET, since we
+are communicating over the internet. If you look carefully
+at the header file socket.h, you'll see that they are defined to be the same. Why you ask? Historical
+reasons. Original designers expected that an address family (that's the AF) might include
+a number of protocol families (the PF), but that never actually happened. So either value is fine.
+
+The second parameter is type.
+
+We will use stream sockets.
+
+So if domain, sets the protocol family, and within that family we want SOCK_STREAM sockets,
+what is the protocol parameter used for?
+The parameter configures which protocol the socket will use for communication. STREAM
+sockets use the the TCP protocol. If you are interested, you can check out available protocols on a
+unix system by looking at the public file /etc/protocols. Since TCP is the only protocol available for
+STREAM sockets, you should just set this third parameter to 0 (which tells the socket system call to
+use the default protocol for this type of socket.)
+
+Both our client and server programs will call socket like this and create a socket endpoint. The file descriptor returned by the function will be used by the system calls that establish a connection.  In the next video we will learn how to configure the socket in our server program to wait for connections on a specific port and address.
+

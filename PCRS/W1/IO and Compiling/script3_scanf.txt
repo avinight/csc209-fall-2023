@@ -1,0 +1,38 @@
+In the previous video, you learned about the printf function that produces output on the screen. printf is an output function. We also will want an _input_ function to read what the user types at the keyboard. In this video, we introduce scanf, which is a function that lets us capture what the user types at the keyboard.
+
+We will demonstrate scanf by writing a program that converts centimeters to inches.
+
+The user will type in a number of centimeters, and the program will output the number of inches. Let's develop the program together.
+
+There are a few similarities between printf and scanf. Remember that to use printf, we needed to include an I/O library?
+
+We need the same library for scanf.
+
+Another similarity is that both printf and scanf use format specifiers to indicate the kind of data that we're using. While we can use an f for a double in printf, scanf needs and lf (standing for long float)
+to read in a double. 
+
+Before we call scanf, we use printf to give the user some instructions for what they should type. This is a common pattern. You'll often see printf used before scanf to prompt the user to type what the program expects. Without the printf, the user may not know what to do.
+
+Since this call uses the %lf conversion specifier, scanf will read a floating-point number from the keyboard. Since the string contains one format specifier, %lf, we must provide one further parameter after the string. This is very similar to printf: the number of parameters after the string must be equal to the number of format specifiers in the string.
+
+But notice the & symbol before the variable cm. Why is this here? We didn't see this & symbol at all when using printf -- but it's *very* important!
+
+In order for scanf to change the value of cm to what the user types at the keyboard, it is necessary to tell scanf the *location* (the memory address) of that cm variable. & is the symbol that gets the location of a variable, so in this case, we're passing in the location of a floating point number to scanf. Then, scanf places the number the user inputs into that location, so we can use it.
+
+& is related to a powerful C concept known as pointers, and we will study that in-depth later. For now, just know that scanf requires & before each numeric variable that you pass to scanf. If you forget it, your code won't work!
+
+In this code, we finish the conversion, using the value in the variable cm that the user input.
+
+When we run the program, we see the prompt that we printed.
+
+We enter a number. When we hit enter, scanf will accept our input and run the rest of the program.
+
+And we see that our input has been accepted correctly, because 2.54 cm is 1 inch.
+
+Like printf, scanf also supports multiple format specifiers.
+
+Here, we use scanf to read two floating-point numbers from the user. The user can type, for example: 4.5, space, 5, and the program shows that both numbers were read successfully.
+
+Let's run our program one more time, and this time I'll type lots of space between the two numbers.
+
+And it works!

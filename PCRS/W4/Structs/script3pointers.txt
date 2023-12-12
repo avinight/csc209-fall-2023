@@ -1,0 +1,20 @@
+Everything you know about pointers to integers or pointers to floats applies in the same way to pointers to structs.
+We can declare pointer variables that point to structs, modify structs through pointer variables, and pass struct pointers so that functions can modify the structs. Therefore, this video is largely a review that links what you know about pointers and structs.
+
+Let's work on an example together. Our example uses the struct student from previous videos.
+
+We declare a variable s of type struct student and initialize it to the given first name, last name, year and GPA.
+
+We also define a pointer p that will point to a struct student. Recall that an uninitialized pointer cannot be dereferenced, since it does not point to an allocated space. We initialize p to refer to the address of s, so that p now points to a struct student.
+
+We now have two ways to access the members of s. We can use s directly, as we did in the initialization block. Or we can go through p.
+
+We first use p to change the GPA from 3 point 2 to 3 point 8. The syntax is tricky here. We must do two things: first, we must dereference p to get to the struct. And then we must use the dot operator on the struct to access the gpa member.
+
+The reason that *p is in parentheses is because dot has a higher precedence than star, but we require the star to happen first. If we let the dot happen first, then the dot would be trying to access a member of a _pointer_, which doesn't make sense because pointers don't have members. We can only access a member of a struct. That syntax is unwieldy due to the parentheses, star, and dot operator.
+
+Fortunately, C has alternate syntax that makes it easier to refer to a member of a struct through a pointer. The syntax involves a new operator, arrow, which is identical to the above syntax in meaning but is easier to write and read.
+
+For more practice, we use the arrow operator again to change the first name of s as well.
+
+This program prints out the members of s, so let's run it to make sure that our changes worked. Remember that three of these members have been changed through the pointer p.

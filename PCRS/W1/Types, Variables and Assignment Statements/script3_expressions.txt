@@ -1,0 +1,44 @@
+A computer can perform all of the basic arithmetic you're used to - addition, subtraction etc. 
+
+This chart shows the different possible arithmetic operations and the symbols we use in C to represent them.
+
+Notice anything missing?
+
+C doesn't have a built-in exponentiation operator, but we'll show you how to work with exponentiation later in the course.
+
+These operators follow the same order of operations as you're used to in mathematics, for example multiplication takes precedence over addition.
+
+You may be familiar with the acronyms BEDMAS or PEMDAS, depending on where you're from!  In programming, we call this "operator precedence."
+
+Let's see what happens in memory when we play around with variables and expressions.  
+
+We'll use an expression that looks like a factored quadratic equation and assign it to the variable 'y'.  
+We'll start by giving x a value -- in this case, 2.  Now we can use it in an expression.
+
+Notice that unlike mathematical notation, we need to put the multiplication operator between the parenthesized expressions.
+
+The expression will evaluate according to operator precedence, so it starts with the parentheses, to give us 4 * 7.  Then it'll multiply those together.
+
+You can see in the visualizer that once the expression is evaluated, the resulting value, 28, gets stored in y.  So what will happen if we change x?
+
+Let's assign the value 10 to x.  
+
+The visualizer shows us that the value of x has changed, but the value of y hasn't.  
+
+This is one of the key differences between "assignment" and mathematical equality.  
+
+While the form of the evaluated expression is a factored quadratic, any future changes to the value of x will not affect y because the statement is only executed once. 
+
+At the time that the statement is executed, the expression is evaluated using the values of any variables on the right-hand side at that moment. 
+
+And the result gets assigned to the variable on the left as a static value.  Changing the variable we used within the expression -- that's x -- after the expression has been evaluated has no effect on the variable that stored the result of the expression -- that's y.
+
+However, if we evaluate the same expression as before with the new value of x, the computer will replace the old value of y with the result of the new expression calculated using x's new value, 10.  
+
+You can see that y's new value is 180.
+
+So let's review. 
+
+Variables have values, and these values can change during the execution of a program.
+
+When an assignment statement is executed, the right-hand side is evaluated using the current value of any variables involved, and then the result of this evaluation is assigned to the variable on the left-hand side.

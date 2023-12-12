@@ -1,0 +1,42 @@
+You've seen that you can alias types using typedef. 
+But what if you want an alias for something other than a type? Then, you might use a macro. We'll just introduce the idea in this video: the macro language in C is very powerful, but we'll just use it to replace constant values and to evaluate simple expressions.
+
+The directive for a macro starts with a pound -- pound-define. A macro is evaluated during pre-processing -- just like #include statements.
+
+In this case, the #define directive tells the pre-processor to replace occurences of MAX_NAME_LENGTH with 40.
+
+So, this code, which includes MAX_NAME_LENGTH, would be changed to char name 40 by the pre-processor, before compilation.
+
+This is obviously very useful for constants -- so you don't place mysterious numbers everywhere in your code. For example, if you were writing code that uses the current tax rate, you could set the tax rate once and then when the government increase taxes, you could update the tax rate in just one place.
+
+Just remember: the macro language isn't C. You don't need an equals sign, for example, or a semi-colon.
+
+For example, after pre-processing, this bad example will have "= 80" where there should be a numerical expression. You'll get an "expected expression" error from the compiler.
+
+Macros can also take parameters. Let's go back to our taxes example and define a macros that takes a price and returns that price with the taxes added.
+
+When we use this macro in our code, it takes the parameter purchase and the preprocessor replaces it like this.
+
+A macro with a parameter is like a little function -- except that it happens even before compilation so is much more efficient.
+
+Now here are a couple of gotchas. First, you can't have any space between the macro name and the opening parenthesis.
+
+If you leave any space the pre-processor thinks the macro has no parameters and replaces WITH_TAX with the rest of the line -- including the (x) that you thought was the parameter list.
+
+Second, inside the macro definition, you should place the parameter name (in our case x) and the entire definition in parenthesis. Why? x could be anything -- a variable, like purchase; a number, like 9.99; or even an expression. If its an expression, then you want to make sure that it is fully evaluated before you do your multiplication.
+
+For example, suppose with our program we have two purchases and we want to know the total with tax. Let's compile and run our code. The total is just over $24.
+
+Now suppose we forgot to put the x in parenthesis in our macro definition.
+
+Let's recompile and rerun.
+
+Wow, we've save about 80 cents. Of course if we are the vendor, we aren't very happy. Can you see what went wrong?
+
+If WITH_TAX were a function call, the *values* of these two variables would be used to calculate the value of the resulting expression and that would be passed to the function. But a macro isn't a function. Instead the string "purchase + purchase2" is substituted in for x.
+
+Since there are no parentheses around x, the multiplication is performed before the addition, so tax only gets applied to purchase2.
+
+You can work out a similar example with an order of operations problem that can happen if you omit the outer parentheses in the macro definition. I'll leave that for you as an exercise.
+
+The macro system is very powerful. You can, for example, place macros within macros or use macros or conditionally execute code. We've done a few simple examples, but as you learn more about C, you may find that you need to learn about more advanced macro options.

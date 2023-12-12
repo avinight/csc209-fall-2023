@@ -1,0 +1,36 @@
+Functions are one of the most important tools in programming, and there are many places they can be used. In this video, we'll demonstrate how to use more complex expressions for function arguments and how to use function calls within expressions.
+
+In the last video, we called the function fmax using values as arguments. This call to fmax uses expressions.
+
+The expressions are evaluated before any values are passed as parameters, so it's equivalent to just passing computed values into the function. The return value, then, is the larger of the results of the two expressions. 16.2 is definitely smaller than 191.77.
+
+The expressions we use can be arbitrarily complex. Here, we use variables to represent values. And, just as with expressions, using a variable as a paremter for a function doesn't change its value.
+
+See? We get the value we expect, and the values of num1 and num2 are unchanged.
+
+Finally, a function call can be used in an expression. Like a variable, a function call is a placeholder for a value. After the function is evaluated, the value it returns is used in the expression. In short, we can use a function call anywhere we might have otherwise used a variable or a fixed value.
+
+Here's an example that puts everything together.
+
+First, you can see that we are using the result of this call to fmax as an argument to another call to fmax.
+
+This is no different than storing the result of our inner fmax call in a variable and then using the variable in the second call to fmax. Furthermore, it's evaluated in the same way. 
+
+First, the inner fmax is evaluated. Once its return value is available, it is used to call the outer fmax.
+
+The key is that before a function is called, its arguments must be fully evaluated. If an argument contains a function call, then that function call -- the one in the argument -- must be evaluated first.
+
+What else is going on in this example?
+
+We're also evaluating a simpler expression within the inner call.
+
+Just as before, this is equivalent to computing the expression earlier and storing its value in a variable.
+
+As you can see, we get the same result on both sides. But which piece of code is better?
+
+This code is more compact.
+
+This code takes more space on the screen, but it doesn't take any longer to execute. So the question is, which piece of code is easier for you and your colleagues to write and understand? If this code is easier for you to understand, then write it this way.
+
+But even if you prefer the un-nested code, some people will write nested code that you’ll need to
+understand. So you need to be able to read it -- or to unroll it yourself.

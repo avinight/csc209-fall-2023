@@ -1,0 +1,56 @@
+In the past two videos, we've looked at a particular kind of loop: the for loop. However, there are two other common loops in C, both based on the keyword "while". These loops emphasize the "condition" that stops the loop.
+
+Here's a really simple for loop. It simply loops 5 times, printing the loop counter for that iteration each time.
+
+The for loop has three components that help set up and maintain the loop.
+
+But a while loop only has one component -- the condition. Let's rewrite this for loop as a while loop.
+
+Our first job is to replace the loop header.
+
+The condition for while works exactly the same way as it does with a for loop. *If* the condition evaluates to true, then the loop body is executed again.
+
+Do *not* read this statement as *while* the condition evaluates to true. Although that statement is correct, it's misleading: the loop body does not suddenly stop executing the moment the condition becomes false. 
+
+As was the case with for loops, the condition is checked at a specific time, before the loop body is executed again.
+
+So translating the condition is easy, but what about the initialization and update statements? It turns out that a for loop is a convenience structure -- what we sometimes call "semantic sugar". It's very common to need to initialize a loop counter and update it, so for-loops were designed to provide places to do that. While loops do not have any initialization or update built in.
+
+So we have to add these statements ourselves. The initialization occurs before the loop begins. And in this case, the update occurs right at the end of the loop body, before the condition is checked again.
+
+And there we have it. A for-loop translated to a while-loop. But why would we *want* to do this?
+
+The strength of a for loop is its convenience. But that convenience comes with a price: the flow through the loop is structured in a particular way. For example, there's an expectation that there's an initialization and an update, and that's not always true.
+
+One situation where that this expectation often fails is when we are working with user input. Here's a problem: what if you want to write a function that accepts integers from the user until they enter a zero?
+
+This problem is especially interesting because we know that we want to accept at least one integer from the user.
+
+There is a form of loop, called a do-while loop, that fits this need. In the do-while loop, the loop body is executed *before* the condition is checked.
+
+Here's a skeleton for our program.
+
+Notice that I've already added the final printf statement. This printf needs the running total, which I'm calling sum.
+
+While loops -- and do-while loops, in particular -- don't have an initialization section, so we just initialize the sum before the loop.
+
+Inside the loop, we know that we want to ask the user for an integer.
+
+We need to define an integer to accept the value from the user.
+
+We update our running total with the new integer. That's our body -- in each iteration of the loop, we ask for input and add it to our total.
+
+And now we need to think about how to *stop* this loop.
+
+Here's a trick. The condition in a loop -- any loop -- is a *continuing condition*. If the condition is true, keep going. However, as programmers, we most often think about *stopping conditions*.
+
+So when do we want this loop to stop?
+We want to stop when the current integer is 0.
+
+To change our stopping condition into a continuing condition, just negate it. This condition says "continue while the current int isn't 0." Or, "stop when the current int is 0."
+
+So there's our running program.
+
+Remember: we'll often use a while or do-while loop for user input.
+
+But it's not just for user input. More generally, we use while loops when the code doesn't match the structure a for-loop expects. If there isn't a clean initialization or update, then consider using a while loop.

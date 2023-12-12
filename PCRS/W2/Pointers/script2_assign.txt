@@ -1,0 +1,81 @@
+In the previous video, we learned that a pointer is variable that holds the address
+to another variable.  We saw that the ampersand operator gives us the address of a
+variable and that the star operator is used to derefrence a pointer -- to get the
+value at an address stored in a pointer. In this video we will look at changing the
+value in the memory pointed to by a pointer.
+
+Let's step through this code quickly in the memory visualizer.
+
+First, i is declared and assigned the value 7.
+
+Then pt is declared -- it is type int * or pointer to int. That means that pt's value
+should be the address of an integer, but it hasn't been initialized yet.
+
+Then pt is assigned the address of i.
+
+When this next line is executed, the left-hand side is *pt. That's pt
+dereferenced, which means that the result of the right-hand side should be
+stored at the location pt points to -- not to pt itself. So although pt's value doesn't
+change, the value pt points to changes to 9.
+
+Now, what has happened to the variable i? pt pointed to i.
+
+If we look at the output of the print statement -- or of i in the visualizer --
+we confirm that its value has changed to 9. i and *pt are aliases -- they're both
+a way to get to the same location in memory.
+
+Now let's add one more line to our program and trace it again in the visualizer.
+
+Let's remind ourselves of what happened when this line executed. A stack variable
+j was created. j's type is int. j's initial value is the result of evaluating the expression on
+the rhs of this assignment statement. That expression is just i, so it evaluates to 7. So j's initial
+value is 7.
+
+Carrying on, pt is declared.
+pt is assigned to point to i
+
+So now we have two locations in memory that both hold the value 7, and pt points to one of them.
+
+If we change the value stored in the address pointed at by pt to 9, then only that value changes.
+Both *pt and i refer to the same address in memory,
+but j is at a different address.
+
+Let's do one more thing in our program.
+We've just used *pt on the left hand side of an assignment statement. That is how we
+assign to the variable pointed at by pt.
+
+And earlier we saw the use of *pt on the rhs of an expression. That accesses the value
+pointed at by pt.
+
+Let's add a line that uses *pt on both the left and right hand sides.
+
+To understand how this statement is evaluated, return to our model of how assignment
+statements work.
+"The result of evaluating the expression on the RHS is assigned to the memory address from the LHS"
+*pt evaluates to 9, and 9 + 1 is 10
+So this assignment is like having *pt = 10
+10 is assigned to the location pointed to by pt.
+
+And indeed this memory location changes to 10, and a 10 is printed out.
+
+Before we leave the topic of assigning to pointers, 
+I'd like to talk about a common gotcha.
+
+Consider this single line of code that declares variable pt 
+and assigns it an initial value.
+What is the type of variable q?
+Let me ask the question a different way. Is this statement equivalent to
+
+int *pt;
+pt = q;
+
+or
+
+int *pt;
+*pt = q;
+
+The first option is correct. As we've said before, even though convention has us place
+the * next to the name, the * in the declaration is  part of the type -- not a
+dereference. pt is a variable of type int*, and pt is assigned the value of q.
+So the type of q must be int *, and q's value is assigned to pt -- NOT to the deferenced
+value of pt.

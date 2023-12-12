@@ -1,0 +1,67 @@
+In the previous videos in this unit, we've looked at various forms of loops: for-loops, which are the most common type, and while loops, which we use when we don't need to initialize or update a loop variable.  
+
+All of these loops are based on the idea of a continuing condition: a boolean condition that determines if the next iteration of the loop will be executed However, there are two commands -- break and continue -- which you can also use within loops.
+
+These commands are *dangerous*, not because they'll make your code inherently bad -- but because they can easily be misused. The important part of this video isn't *how* to use these commands. It's *why* you might.
+
+Here's an example from the last video.
+
+The code in the loop body asks the user for an integer. It adds the integer that is received to the total.
+
+And then stops when the integer received is a 0.
+
+What if we wanted to change this code so that the loop stops *immediately* when the integer is *negative*?
+
+Here's a simple fix. We'll just change the condition.
+
+We want it to stop when the current integer is less than or equal to 0, so we have the loop continue while the current integer is greater than 0.
+
+Is that what you expected? 4 is the sume of 3 + 3 + -2. But if we wanted the loop to terminate when a negative integer is *received*, then we didn't print the correct value.
+
+The issue is that we need to stop the loop *before* the integer is added to the sum.
+
+So we could restructure the code. By initializing curr_int to 0, it's safe to add it to sum. And then we can do the addition at the beginning of the loop.
+
+That way, we check the condition immediately after the integer is received. If it's zero or negative we stop.
+
+And if it's positive, then we add it to the sum at the top of the next iteration of the loop.
+
+This works fine -- but I don't like that code. It's got a trick in it, and that makes it harder to understand. You have to see that the task for a single iteration of the loop -- accepting a number and adding it to the sum -- is split over two iterations.
+
+This is one place where you might consider using break. Here's *why* we use it: the code that is created will be easier to read.
+
+Let's go back to our original program.
+
+The keyword break *terminates the current loop iteration*. So if this break is executed, then we will exit the loop.
+
+We guard the break statement with a conditional. If we want to stop -- if the current integer is 0 or negative -- then we execute the break to end the loop. I kind of like this, because it's natural: we like to think about stopping conditions.
+
+And here's an important point: I replace the loop condition with a strange value. 1 always evaluates to true, and anyone who sees it will know that this loop is *infinite*. It will never terminate by itself.
+
+This is a *flag*. It tells the reader that something interesting is happening inside the loop. And it's an important part of using break. If you don't flag to the user that you're using break, then they may not see it, and the code will be harder to understand.
+
+And, again, our code works.
+
+So we have two working versions. They're functional. So now we need to ask: which one is better? Good programmers can honestly disagree about this example, but my opinion is that the version with break is easier to understand, because it keeps the job for one iteration of the loop within a single iteration, rather than splitting it across two iterations.
+
+Let's take a look at a different example. This code uses a nested loop print a square of asterisks.
+
+What if I wanted to *not* print asterisks on the diagonal?
+
+We need to add a conditional.
+
+In this case, the clean thing to do is to use if-else. Print a space if the row and column numbers are the same. Print an asterisk otherwise.
+
+As you can see, this runs fine.
+
+But there's another option: continue.
+
+Continue, if executed, causes the rest of the loop body to be skipped. The loop continues execution by performing its update, checking the condition, and possibly executing the next iteration of the loop.
+
+But that means, in this case, that if i and j have the same value, that the printf statement is skipped.
+
+This solution also works.
+
+So which one is better? Again, two good developers can disagree on this question, but in this case, I would *not* use the continue statement. First, it makes the code harder to read: There's no flag, so if I look at the for loop, I think every iteration is going to be executed. Second, the code is not significantly shorter or cleaner: it's about the same length and complexity. We *can* use continue here, but there's *no compelling reason* to do so.
+
+Many developers don't like using break or continue. However, they are useful commands, if used in moderation and for the correct reasons. Never use these statements just because you *can* or because it feels like a shortcut -- that can and often does lead to very difficult to read code. Instead, compare the code that results with a break or continue to the code you'd write if you didn't use these statements, and determine which code is better.

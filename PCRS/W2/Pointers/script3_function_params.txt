@@ -1,0 +1,92 @@
+In the last two videos we've seen the mechanics of declaring, assigning
+and dereferencing pointers. But we haven't really seen WHY pointers are
+useful ... and they are INCREDIBLY useful. I hope that by the end of this video
+you understand why. Let's get started.
+
+
+Suppose that I submit an assignment -- maybe a C program -- that earns a B.
+
+Let's print out that value.
+
+But unfortunately I was a little careless and missed the deadline and so
+my professor applied a late penalty and my mark of B is lowered to a C.
+
+Let's print out that value.
+
+Notice by the way that applying the ++ operator to a char, increments the value of the char by 1.
+And since the ASCII codes for the letters of the alphabet
+are in order, grade_Michelle++ evaluates to C.
+
+That's all fine.
+
+Felipe was also late with his assignment, but he started with an A.
+
+Since lots of students are late, it makes sense to create a helper
+function to apply the deduction.
+
+
+
+We call our helper apply late penalty. It
+has a void return type, which means that it won't return
+a value to the calling function.
+
+The only parameter is a char named grade.
+
+To apply the late penalty, grade is incremented by 1. This is the
+same as what we did earlier to Michelle's grade. 
+So if grade is A it will become B, B will become C, etc.
+Oh but what about F. Once someone has an F the late penalty doesn't change
+anything.
+
+Let's add an if statement to handle this.
+
+Now let's change our main to call the new function on both Michelle and
+Felipe.
+
+and let's print out Felipe's original grade and his adjusted grade.
+
+Now when we run the code what do we get?
+
+What happened?  Let's consider the case when we call the function on Felipe.
+
+Remember that function parameters are local variables in the stack frame of
+their corresponding function. They are assigned the value of the calling
+argument. So in this case, grade within the stack frame for apply_late_penalty
+is assigned the value 'A'.
+
+Then it's changed to be 'B' inside the function, but this has no effect on the
+argument that gave it the initial value.
+
+You might decide to fix it by returning the updated value, but then we'd have to
+assign the return value to a variable. Instead, we can use a pointer to change the value
+directly.
+
+I'll make a copy of our function so that you can see both the correct and incorrect version.
+
+Just for clarity, let's change the name to reflect that the parameter is
+now a pointer.
+
+Now we need to deference grade_ptr to access the grade before we compare
+it to 'F'. 
+
+And dereference it here too before we increment it. 
+And we need to worry about order of operations. We want to increment the
+dereferenced value (not the pointer address itself) so we need the dereference
+to happen first. So we use parenthesis to force this operation to be first.
+
+The function looks good, but now we need to pay attention to
+how we are calling it. Let's leave Michelle using the old incorrect
+function and have Felipe use the new one. Our new helper function
+is expecting the address of Felipe's mark so we need to use the ampersand
+operator in the call.
+
+And as you can see, the value for grade_Felipe is being changed.
+
+Before you continue to the next video, it is very important that you understand how
+to use a pointer as a function parameter so that from inside a function you can
+change a variable that is stored outside the stack space of that function.
+
+I strongly recommend that you download the code used in the video and step through
+it in the visualizer to make sure you understand the concept -- and that you then
+do a few exercises that require you to use these ideas in code.
+

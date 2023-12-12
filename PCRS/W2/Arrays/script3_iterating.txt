@@ -1,0 +1,69 @@
+In the last two videos we introduced the idea of arrays. We saw that an array is a list of
+elements all the same type, that are accessed based on their position or index. And we saw that
+we could use a variable for the index. If we combine this idea with using a loop, we will really
+start to see how useful arrays can be. Let's do that now.
+
+Here is our final program about the daily high temperatures from the first video in this series.
+The only change I've made is to initialize all 4 elements right away in the declaration.
+
+This statement is particularly unwieldy. Imagine how awful it would be if we were calculating the
+average for entire month or year?
+
+Notice that we are doing exactly the same thing with each and every element of our array.
+This kind of repetition is a good place for a loop.
+
+First we will separate out this declaration from the assignment.
+
+And to make things a tiny bit clearer, let's move this division by 4 to
+happen in its own statement as well. That lets us drop these parentheses.
+
+Now we can see clearly that our loop needs to access each element in our array and add the value
+of that element to a total. In the end our variable average_temp will be used to hold the average
+but at this point, we can use it to hold the running total.
+
+So before we add in any array elements the variable starts at 0.
+
+And for each element in our array we will add that element into average_temp. I've used i here as the
+index variable. So what values does i need to loop through so that I'll get every element in my array?
+We can see from our old statement that i started at 0 -- the first element of the array -- and finished
+at 3 -- the last element.
+
+So we will start i at 0, go until we get 3 as our last value, and access each array element in turn.
+
+Can you see a different way to write this comparison?
+It is actually more common to see it written this way and you'll see why soon.
+
+We need to do one more thing here to make our loop work properly. Do you see what it is?
+
+We need to declare our variable i. In some versions of C you can do this inside the loop header itself
+where we initialized i to 0, but in others that isn't allowed, so I'll put it here.
+
+Let's add a couple of printf statements to the program so that you can see it
+looping over the array elements.
+
+And compile and run our program.
+
+On the 4 iterations of the loop, i went from 0 to 3 and on each iteration accessed the appropriate element of the array.
+
+Now let's think about what would need to change in our program if we had the temperatures
+for an entire year -- 365 measurements.
+
+Our array would need 365 elements and we would need to initialize them somehow. That
+would still be a bit ugly for now but by the end of the course, you'll know how to read
+these values in from a file.
+
+Our average would be over 365 values, so this would change.
+
+And now our loop would start at 0 and go up to but not including 365.
+In all three of these locations, we are using the size of the array.
+
+In fact, this is a good place to use a #define constant so that if we change our
+program to work on a different number of days, we won't miss one of the places that
+needs to change.
+
+Now I'll bet you can see why it is more conventional to write the loop condition using
+less than, rather than less than or equal to.
+
+We have seen how to combine arrays and loops to write short yet powerful code to
+perform tasks on large quantities of data. We will see many more examples of using arrays
+and loops together in later videos.

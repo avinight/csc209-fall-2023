@@ -1,0 +1,54 @@
+We've seen how to declare and assign values to variables that could store integers. But what if we wanted
+to store a value that wasn't a whole number? What if we needed to store 4.7 or 98.1? In this video we will
+introduce a new variable type called a double that allows you to store a floating point value.
+
+Here we declare an integer variable named temperature and set it to 32.
+
+When I press next we see tha tthe variable of type it has been declared and at its address is stored the value 32.
+
+Now what will happen when I press next again and this statement is executed? Have you made your prediction?
+
+Is that what you predicted? The value in the variable temperature was set to 98. The .1 was not saved.
+Only an integer value is stored.
+
+If you try to assign a floating point number to an integer variable, the number will be truncated at the decimal point before assignment; the fractional part will just be discarded.
+
+If we want to work with non-integer numbers, we can use another variable type, called a double.
+
+The only difference with declaring a double variable is that we change the type keyword.
+
+Now let's run our program again.
+
+You can see in the visualizer that it stores a non-integer result.
+
+Notice that on the stack the double has 2 addresses and takes 8 bytes of memory. It takes DOUBLE the memory
+of an integer -- hence the name.
+
+The double type is very useful if you want to work with real numbers, but it has limited precision.  Remember that variables are given a certain amount of space in memory.  Because of this limited space, a double value has a limited number of significant digits.
+
+One thing that might surprise you is that when you perform division using two integers as the
+operands (the numerator and the denominator) the result is NOT a double -- but just an integer.
+
+Let me demonstrate.
+
+Suppose I add this line to my program. I'm declaring a double named quotient and assigning it the
+result of 9 divided by 4. What do you expect to see as the value of quotient? 
+
+Did you expect 2.0 ? Or were you thinking it would be 2.25?
+
+The result stored in quotient is 2.000 because the operation 9/4 gives an integer result of 2.
+Then THAT integer is converted to a double by the assignment statement. 
+
+We will learn more about types and converting between types later in the course.
+
+But before we finish, I'd like to introduce one more operator. 
+
+The modulo operator -- represented with a percent symbol -- gives us the remainder of an integer division operation.
+
+I would say this line as modulo is assigned 9 mod 4. Some people would say 9 remainder 4.
+
+When I execute the statement we see that the quotient was 2 and the reminder was 1.
+
+The result of our integer division is 2, with 1 left over.
+
+Add 1/4 to 2 and you get the result of 9/4.

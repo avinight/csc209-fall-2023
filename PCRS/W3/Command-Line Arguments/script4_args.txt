@@ -1,0 +1,26 @@
+In this video we will learn how to pass values to your programs using commandline arguments. This is a particularly powerful idea because it allows a single program to have different behaviour based on information that is provided when the program begins running.
+
+So far in our programs, we have always used a main function with no arguments, but
+
+... there is another version of main with two arguments.
+
+The first parameter is an int. You *could* name this variable anything you like, but it is typically called argc -- based on "argument count". You should follow this convention. argc holds the number of commandline arguments.
+
+The second parameter is type char **. Alternately, you will sometimes see it declared as ...
+
+an array of character pointers. The second parameter is conventionally called argv, for argument vector, and it stores an array of strings. Each character pointer in the array refers to an array of characters -- a string.
+
+Let's print out the value for argc and the first few elements of argv and see how this
+works.
+
+Here we are calling our executable with the commandline arguments fee fi fo fum. These are the values that get stored in the elements of argv. But wait.
+
+argc was 5. We only have 4 arguments, but the array argv has 5 elements.
+
+Notice that fee was at position 1. So what is at position 0?
+
+Here's a program to prints *all* of the command line arguments.
+
+The element at position 0 is the name of the executable -- in this case my_program.  The rest of the array elements (from 1 to argc minus 1) are the commandline arguments.
+
+The commandline arguments are always strings. If you need to use the command line arguments as integers, you can use strtol to convert the string to an integer. We'll try this -- and a few other tricks -- in the next video.

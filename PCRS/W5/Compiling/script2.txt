@@ -1,0 +1,70 @@
+In the last video, we learned about the steps that occur when you run gcc to compile your program. We used helloworld as an example, but that program is too simple to be very interesting. What happens when you compile a program with multiple files?
+
+Here is a program that compares the runtime of various sorting functions.
+
+The top of the program has some includes, some user-defined types, various function prototypes, 
+and an array of the sorting algorithms that are implemented.
+
+The sorting functions themselves are implemented in another file.
+
+If we try to compile this program, we get a set of linking errors because the functions we prototyped aren't implemented in that file.
+
+But we can compile it like this, and now it runs.
+
+We had to list all of the files that contain code to get gcc to compile it. So how does gcc do this?
+
+Here is the compiler process for compilation of a single file.
+
+When multiple files are required, each file is compiled and assembled separately. Then, the object files are combined during the linking stage to produce an executable.
+
+We could have also compiled our program into an a.out executable this way.
+This is called "separate compilation" and has a few advantages. For example, here I've separately generated the object files for my two source files and then linked them. Now, imagine that you have a very large project with thousands of files and want to make a small change to a single file.
+
+Suppose that in sorts.c we notice that we can reduce the size of the inner loop by one iteration. This change only affects a tiny part of one file. 
+
+Now instead of recompiling every file in our huge, huge project, we can just recreate the single object file that is affected and re-link. This can save significant time -- I've been on projects where building the program from scratch took over an hour.
+
+But separate compilation also has some issues. Maybe I'm working in the file of sorting algorithms and decide that my sorts should operate on longs, rather than ints.  This change happens in sorts.c.
+
+The compiler doesn't throw an error, even though I'm now using inconsistent types. My sorts are implemented with arrays of longs, but I pass in arrays of integers -- a smaller type.
+
+And this fails -- values are mis-sorted, and we even get a segmentation fault.
+
+If the sorts were implemented within the file that uses them, instead of just being prototyped, then we'd get a type mismatch when we try to compile the file. But the implementation and usage are in separate files, and we're using *separate compilation*. The types are checked for consistency separately, and as far as the compiler can tell, everything in compare_sorts is consistent.
+
+And everything in the file sorts is also consistent. It's just that they aren't consistent with each other, but the compiler won't check that.
+
+This is a serious shortcoming, but separate compilation is valuable enough that we work around it by improving the organization of our projects using *header files*.
+
+A header file is an example of an interface. A header should declare *what* functions do and what types they require, without defining *how* they are actually implemented. You can think of the header file as declaring a design and the .c files as implementing that design.
+
+Header files help us with the organization of our program too.  We might have a number of source code files in our program that use one or more of the sorting functions, and without header files we would have to find and copy in the function prototypes into each source file that used the functions -- AND -- we would have to remember to change each of them if we decided to change the function prototype.
+
+Let's create a header file for our sorting project. We start by copying the prototypes for the sorting functions into our new header file.
+
+Header files can contain more than prototypes. Let's copy the function type over, too, since it states what the sort functions should look like and therefore should be part of the "design".
+
+If I were to try to compile my program now, I get a series of errors because I'm using names that I haven't defined. I need to at least declare the functions I'm using -- and that's happening in the header file now.
+
+
+So I do that by including the header file I've just created that includes the declarations. Notice that I use quotes, rather than angle brackets, to tell the compiler that it should use the header file in my current directory, rather than a header file in the system library.
+
+This time the compilation works -- and as before, we see an error when we run the program.
+
+That's because only half of our implementation is using our design. The file that is using the sorting implementations is expecting the design in sorts.h. But the actual implementation isn't connected to sorts.h yet.
+
+We'll include our prototypes in the file that implements the sorts.
+
+
+And this time, when we compile sorts.c, we get an error because the declaration in the header file and the definition in the source file don't match. The compiler detects the type mismatch and warns us.
+
+So now we fix the mismatch -- going back to int. Putting our declarations into a header file keeps our design consistent across the multiple files that implement it.
+
+And let's compile again and see that it works.
+Notice that we don't supply the name of the header file to gcc. The #include
+statement tells the preprocessor to insert the body of the header file
+into the source code before the compiling even begins. 
+
+Very large projects will have many header files -- one for each aspect of the design.  They're an important tool for keeping projects organized, which helps the compiler toolchain provide us with useful warnings and errors.
+
+In the next video, we'll start including declarations of variables into header files.

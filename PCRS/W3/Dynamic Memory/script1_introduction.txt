@@ -1,0 +1,97 @@
+In our programs so far we have only used variables within the functions
+in which they are declared. These variables exist on the stack -- a location
+in memory reserved as a work space for functions. In this module we will
+learn about allocating space in another section of memory called the heap.
+
+Let's consider this code which defines an integer variable i and a pointer pt that
+points to i.  Nothing new here -- we can use the pointer to access the value stored
+in the integer variable.
+
+Now, let's make some changes so that i is allocated and assigned in a function.
+We'll have the function return a pointer to int which holds the address of i.
+
+Let's compile this version.
+It produces a warning message telling us that we are trying to return the address
+of a variable on the stack. This should be enough to tell us that something is wrong
+but suppose for a minute that we didn't notice this warning and we went ahead an
+ran the program.
+
+It appears to work!! But there is still a big problem -- we just can't see it yet.
+
+Let's add another function that seems to have absolutely nothing to do with i
+or pt. It simply declares an int variable and returns it. And we'll just ignore the
+return value.
+
+So now we'll compile and run this new variation. What are you expecting as the output?
+Hmmm - was that what you predicted? Why does calling this seemingly irrelevant function
+change our value of *pt? Is something wrong with the new function?
+
+No, the new function is fine.  The problem is with our earlier code.
+Variable i is declared as an int within the function set_i, so it is only available
+within the function set_i. When the function set_i runs, memory is allocated on the
+stack for i.
+
+But once function set_i returns, the memory is freed, and it can be re-allocated for
+some other purpose.
+
+one where where junk is allocated -- callout addresses]
+When the second function runs, it re-uses some locations in the stack. The same memory
+location was used for both the variable i and the variable junk.
+
+pt was set to the address of i -- which is also the address of junk. So when we print the
+dereferenced value of pt, we see the value 999.
+
+This demonstrates that we shouldn't access variables allocated on the stack after they
+have been deallocated. So how can we allocate memory in a function and have that memory
+accessible after the function returns?
+
+When a program is executing, there is another portion of memory where we can allocate
+space for variables that have to last beyond the return statement of the functions in
+which they were declared. We call this area the heap.
+
+The function malloc allocates memory on the heap. Heap memory remains available
+until the programmer explicitly deallocates it.
+
+The size parameter indicates how many bytes of memory should be allocated. Its type
+is size_t which is a type defined by the standard library as the type returned by
+sizeof. In general, size_t is an unsigned int.
+
+The return type is void *. As you might suspect, this is a pointer. It holds the
+address of the memory allocated by malloc on the heap. When we learned about pointers
+earlier in this module, you saw that pointers store the type of the information
+to which they point. Do you remember why the compiler needs to know this?
+
+Remember that pointers should always refer to a legal address for its type, so when
+we increment a pointer, it is updated to refer to the next legal address. So adding
+1 to a char pointer increases the address by 1 -- the size of a char, but adding 1
+to an integer pointer increases the address by the size of an int, which is 4 on
+my machine. This is important for explicit pointer arithmetic but also important
+if the pointer holds the first element of an array. To calculate the address of
+all the rest of the array's elements, the pointer needs to hold the element type
+information.
+
+So what type does a void * hold? A void pointer is used to return a pointer of generic
+type. Malloc returns a void pointer because it doesn't need to know how the memory being
+allocated is going to be used.
+
+It simply allocates size byes of memory on the heap, as specified by the programmer
+and then returns a pointer to that memory.
+
+When we store that address in a pointer, the type of the pointer specifies how the
+memory will be used.
+
+Now, let's change our function set_i to allocate space for i on the heap rather than
+on the stack. Instead of simply declaring i, we will declare a pointer to i. We call
+malloc and pass it sizeof(int) as the parameter so that it allocates enough space
+to hold one integer. This call returns a void pointer but we assign that directly
+to our integer pointer, indicating that we will use the allocated memory as an int.
+Now we assign 5 to the dereferenced value of i_pt.
+
+Let's verify what's happening. In set_i, space is allocated on the heap,
+and then the value 5 is placed in our newly allocated heap memory.
+
+When some_other_function is called, it continues to use stack memory. Note that our
+heap memory is still allocated. Then, when we print the contents of *pt, we get the
+correct value.
+
+In the next few videos, we'll look more closely at malloc and its partner, free.

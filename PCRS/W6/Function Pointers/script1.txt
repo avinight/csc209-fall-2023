@@ -1,0 +1,70 @@
+We have used many different types of data in this course: ints, doubles, character arrays, and even pointers. However, we have always differentiated between *data* -- values -- and *functions* -- the C code being executed, and we don't need to. Functions can be data, too. In particular, we may want to pass functions into arguments or store functions in structures. To do this, we'll need *function pointers*.
+
+First, let's find a motivating example. Here is some code we can use to explore the runtime of various sorting functions.
+
+These three sort functions are defined in another file. Each of them takes an integer pointer -- the array to be sorted -- and an integer -- the size of the array being sorted.
+
+We have two helper functions that verify that the sort worked correctly and that initialize an array to be sorted.
+
+And we have a function that times the sort.
+
+The code relies on calls to clock(). This system call returns the amount of CPU time used so far, so by subtracting the start time from the end time, we get the amount of CPU time used by the code between the clock() calls.
+
+We hard-code the name of the sort that we want to test. So, if we want to see how bubble_sort behaves, we can just
+
+compile and run the code.
+And we can run it again on a different random input.
+
+And if we want to compare it to insertion_sort,
+we have to change the function being called
+
+and recompile. We see that insertion_sort grows at the same rate as bubble_sort, but that it's roughly twice as fast on arbitrary -- well, pseudo-random -- arrays.
+
+But it turns out that the runtime of insertion_sort is very sensitive to the array being sorted. How might we explore that?
+
+Let's run insertion_sort on an array that is sorted in reverse: the largest items are at the front, and the smallest are at the back.
+
+We have to call a different function to initialize the array.
+
+And we see that now insertion_sort runs twice as slow -- as if it were bubble sort. If you know how to implement these sorts, you can probably guess why. Take a second to think about it.
+
+And now, we have the context we need to explore function pointers. The problem is that I have to change the code every time I want to explore a different sort -- or different initialization of the array to be sorted. The key is this:
+
+Both of the initialization functions have the same *signature*. That is, they have the same return type and take the same number and type of arguments.
+
+So that means that they have the same type. What is the type of a function?
+
+Well, our function returns a void and takes an integer pointer and an int. That's its type. The name doesn't really matter -- like any other variable, it's just a name we use to refer to a value. In this case, the value is a function.
+
+So how do we declare a variable of type pointer to a function?
+
+We have to give it a name, and since it is of type *pointer* to a function, the name is always preceded by a *.  Let's use this in our code.
+
+I'm changing my time_sort function to add a function pointer as an additional argument. In this case, I call the function pointer "initializer".
+
+And I call initializer as if it is a function -- which, really, it is. Notice that I do *not* have to dereference the pointer.
+
+And when I call time_spent, I pass in the name of the function I want to use as an initialization function. Notice that I do *not* call the function. I just pass in the name, as if I'm passing in a normal variable ... which, actually, I am.
+
+Just as how an array name is treated as a pointer to its first element, a function name is treated as a pointer to that function.
+
+And now we see that code runs as we expect -- the values are very similar to the last time we ran insertion_sort on a reverse-sorted array.
+
+So let's review. We wanted to change how the array was initialized by changing how we called time_sort -- not by changing the initializer within time_sort itself.
+
+So we changed the prototype of time_sort and passed the name of a function into it.
+
+And inside time_sort, we call the function that is passed to us, using the parameter name we defined.
+
+Let's do that again -- but this time, let's change *which* sort we want to test.
+
+All of our sorting functions have the same type. Can you see what type it is?
+
+double time_sort(int size, void (*sort_func)(int *, int), void (*initializer)(int *, int)) {
+So we add an argument to our time_sort code.
+
+And call it on both a sorting function and an initializer.
+
+Inside time_sort, we call the sort function that was passed to us, instead of a hard-coded sort function. Done! Function pointers are no more difficult than any other type you've seen -- they just have the address of a function as data, instead of an integer or string.
+
+But you might be grumbling -- because we haven't actually gained anything. I still have to change this line of code and recompile every time I want to change which sort I'm executing or how I want to initialize the array. We'll change that in the next video.

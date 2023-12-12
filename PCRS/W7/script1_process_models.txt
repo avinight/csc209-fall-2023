@@ -1,0 +1,38 @@
+In this video, we will start to answer the question, "What does it mean to *run a program*?" As users, we run programs by typing a command into the shell and hitting return or by double-clicking on an icon. This means that it must be possible to write programs -- like a shell -- that can run other programs. Before we can write such a program, we need to define what *programs* and *processes* are, and we need to understand how the operating system works with them.
+
+Let's start with some terminology:
+A program is the code, either the human-readable source code, or the compiled machine level code.
+
+A process is a running instance of a program.  A process includes the machine code of the program, plus information about the current state of process such as what instruction to execute next, or the current values of variables in memory.
+
+When a program is loaded into memory in preparation for executing the program, the memory layout has a structure that will already look familiar.
+
+The program code, global variables, stack, and heap all have their own regions of memory, and taken together, they represent the state of the program.  The stack tells us which function we are executing and holds the current values for any local variables.  The heap and global variable regions hold the current values for other variables in the program.
+
+The operating system keeps track of some additional state for a process.
+
+Each process has a unique identifier, or process ID. Each process is also associated with a data structure called a process control block -- or task control block -- that stores the current values of important registers, any open file descriptors, and other state that the operating system manages. The registers stored include the stack pointer, which identifies the top of the stack, and the program counter, which identifies the next instruction to be executed.
+
+Your computer is currently running a lot of processes. There is a process that is displaying this video, a process running your mail reader or instant message program, at least one process for your web browser, and many others.  On Linux you can run the program "top" to see some of the active processes on your machine.
+
+
+When I run top on the server, I can see user level processes running
+
+including "top" itself, and ....
+
+I can also see operating systems processes running owned by root.
+
+Running top also gives us some information about the some of the state information the operating system has about a process.  A process has a PID or process identifier.  This is shown in the far left column in top.  The command or program that the process is executing is in the far right column.  Notice process with PID 1 and the Command "init".  This is a special operating system process that we will talk more about in later video.
+
+The number of active processes is much larger than the number of processes executing instructions at a particular instant of time.  The number of processors -- labeled as Cpu(s) -- on the computer determines how many processes can be executing an instruction at the same time.
+
+If a computer has 4 CPUS then 4 processes can be running simultaneously.  These processes are in the Running state.  But there will also be other processes that *could* be executing if a CPU were available.  These processes are in a "Ready" state.  Finally, there will be other processes that are waiting for an event to occur.  For example, they might have made a read call and are waiting for the data to arrive, or they might have explicitly called sleep and are waiting for a timer to expire.  These processes are in a Blocked or Sleeping state.
+
+A single process will move from one state to another throughout its lifetime. For example, gcc may have been Running, but then needed to access a file. gcc is moved to the Blocked state while it waits for data from the file to arrive. Once the data arrives, gcc is moved to the Ready state. A processor isn't available yet, but when it is, gcc could be executed. Finally, once a processor becomes available, gcc is executed, and it's back in the Running state.
+
+The operating system gives us the illusion of running dozens or hundreds of processes simultaneously by switching between Ready and Running processes very quickly.
+
+Fortunately, from the programmer's point of view, we don't have to worry about how the operating system runs our program. The operating system scheduler is responsible for deciding which processes should be executed and when. You have been writing and running lots of programs without worrying about whether you process is in a blocked state or ready state.  The operating system takes care of all of those details.
+
+However, knowing a little about how the operating system schedules processes, and understanding when they block is important when you write programs that create or manange cooperating processes.  In the next videos you will learn how to create processes, how to coordinate between related processes, and how to load and run different programs.
+

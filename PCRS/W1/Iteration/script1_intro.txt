@@ -1,0 +1,63 @@
+So far, we've learned to write programs that can store, modify, and print values. We've also studied if-statements, so our programs can execute different code in various conditions. All of this, up to now, has happened in an environment where each line executes once, and then the program is finished.
+
+With what we've learned so far, if we want to do something twice, we would need to write two instructions.  So what if we want to do something a hundred times?  Or what if we don't know how many times we want to do it, and we need to calculate that number while the program is running?
+
+The programming tool for repeating a set of instructions is called a loop.  Not only can loops execute the same instructions multiple times, but each time through -- each iteration -- can use results from the previous iterations.
+
+Here's the structure for our first loop -- a "for" loop.
+
+Structurally, this code looks a great deal like an if statement. The code to be repeated multiple times goes in the loop body, which is surrounded by curly braces.
+
+But unlike an if statement, which just has a condition which is checked, a "for" loop contains three pieces.
+
+The first piece, the initialization section, is code that is executed before the loop begins. We usually use this section to set -- to initialize -- a variable that is updated throughout the loop.
+
+The next piece, the update section, is the code that performs an update after every iteration of the loop.
+
+This code is executed immediately after the loop body.
+
+The final piece, the condition, determines how long the loop runs. The condition is checked before the loop body is executed. If the condition is true, then the loop body executes. If it is false, then the loop terminates, and the next statement after the loop is executed.
+
+So the control flow through a for loop might look like this.
+
+Before the loop begins, we execute the initialization section.
+
+Then we check the condition and execute the loop body if and only if the condition is true.
+
+We execute the entire loop body. It doesn't matter if the loop condition becomes false somewhere in the body; we finish executing the entire body.
+
+And then we execute the update code before checking the condition again.
+
+Let's update our structure to make our program print the lyric from a song.  Maybe you recognize this lyric?
+
+The next part of the song repeats the word "play" 5 times, which we're going to do with a for-loop.
+
+So, we want to repeat this loop 5 times. Here's a common pattern for doing this: we'll set up an integer that is initialized to 0, increment it by 1 after every iteration of the loop, and stop the loop when the integer has the value 5.
+
+Again: we'll set up an integer that is initialized to 0.
+
+Increment it by 1 after every iteration of the loop.
+
+And stop the loop when the integer has the value 5.
+
+This kind of a loop *uses a counter*. Just for the purposes of demonstrating how it works, let's print the counter, too. Now, we'll print the value of the counter and the word play on each iteration of the loop.
+
+Before we run the code, grab a piece of paper and sketch out what you think we'll see.
+
+Does this match what you expected? We see the value 0 first, since we initialized our counter to 0. Then we see the word play. Then we see that our counter has been incremented by 1, and then we see play again. The last time we see our counter, we see a 4. Were the right number of "play"s printed? Why don't we see a 5?
+
+Because when i *is* 5, then the loop has terminated.
+
+We can check that i has the value 5 after the loop.
+
+We stop when i is 5 -- not when i is 6 -- because we started counting at 0. Computer scientists often start counting at zero. If you're curious why, check out Dijkstra's note on it, which is linked below this video. Dijkstra was a great early computer scientist, and we continue to use many of his ideas.
+
+Okay, before we finish, let's try something different.
+
+The variable that we used as a counter, 'i', is just like any other variable. If we want to use our loop to, let's say, count to ten then we can just have our loop repeat 10 times.
+
+Hmm ... that's too many plays.
+
+We can also use various different initializations and updates to i.
+
+That's better. But don't get cute. We use common patterns, like starting at 0 and increment by 1, because they're simple and easy to understand. Unless there's a reason to do something else, use the simplest code that you can.

@@ -1,0 +1,97 @@
+In the last video, we re-implemented an existing library function, fmax.  However, you'll usually need to invent your own, new functions to perform tasks specific for your project. In this video we are going to write a new function that calculates the cost of an order of ping-pong balls from an online vendor.
+
+We'll start with a comment that describes what our function needs to do. We need a function that:
+
+Returns the total purchase price for an order of ping-pong balls, given a quantity and a tax rate. Each ping-pong ball costs twenty cents.
+
+We apply discounts for large orders before tax.  They are:
+- no discount for orders of less than 100 units.
+- a 15% discount for orders with at least 100 and less than 500 units, and
+- a 35% discount for orders over 500 units.
+
+First, we'll write a function prototype. This documentation species what the function returns and what arguments it takes, so we're ready to start.
+
+What type will we need our function to return?
+
+It's calculating a currency value in cents, so an integer is suitable. We'll use a long integer. You might ask, "Why not use a double to represent dollars and cents?" Briefly: money requires exact values, and floating point numbers can't represent decimal values precisely. Using an integer is a workaround.
+
+We'll call this function "calculate_total". Function names should be verb phrases, since functions perform tasks.
+
+Alright, what parameters do we need? The comment tells us that the per-unit price is fixed at twenty cents, so we don't need a parameter for that. We also don't need parameters for the discounts, since they're also fixed values. That leaves us with the quantity of ping-pong balls, and the tax rate.
+
+These seem like clear names. Remember that we want someone else reading our program to be able to quickly understand what it is doing. It is also good practice to specifically use each of the parameter names in the function's comment.
+
+We need to provide a type for each parameter in the prototype. So what should be the type for quantity?
+It represents the number of ping-pong balls, which is going to be a whole number since nobody wants half a ping-pong ball, so we'll use an integer. 
+
+Now, what type do we want for tax_rate? If we say that our sales tax is 10%, do we want to call our function with 10 or with 0.1?
+
+Hmmm -- this shows that our description of the function wasn't quite clear enough. Let's change the description to provide a little more information about the tax rate.
+
+If we specify that the tax rate is between 0 and 1, it's clear that we're looking for a decimal representation.
+
+So the tax rate parameter should be a double.
+
+Now that we've got our function prototype figured out, we should write some example of calls to the function.
+
+We want to come up with a few different scenarios so that we can test the different conditions our function is supposed to cover.
+
+First, we'll write a call with a quantity of 125 so that the middle discount is applied. We'll also use a tax rate of 0.1. And we should add a comment to indicate what value we're expecting back from the function.
+
+125 balls times 20 cents gets us 2500 cents. Because the order is over 100, a 15% discount gets applied to the subtotal, and we also need to apply a 10% tax. The total modifier is .85 * 1.1. We multiply 2500 by .85 and 1.1 to get 2337.5 which rounds to 2338 cents.
+
+Next, we'll write an example so that the big discount will be applied. Let's use a quantity of 1000, and a tax rate of 13%. In this case, the 35% discount will be applied to the subtotal, and the tax added on top of that, for a total of 14690 cents.
+
+Finally, we'll write an example so that no discount is applied. For this, we'll use a quantity of 10 and a tax rate of 15%. With no discount applied, this function call should return 10 times $0.20, times 1 plus the tax rate, or 1.15, for a total of 230 cents.
+
+I'll add some print statements so that when we run our code, we can verify that our test cases work correctly.
+
+Now it is time to write the body of the function definition! It'll be pretty straightforward now that we've worked out some answers on our own.
+
+First, we can copy the declaration, and replace the semicolon with curly braces to enclose the body of the function.
+
+Getting the return value from our parameters is mostly a matter of some simple arithmetic, but we have three different situations we need to account for. Take a moment to think about how you could structure your code to accomplish this task.
+
+In our computation earlier, we needed to multiply the base cost of the ping pong balls, the discount for a specific quantity, and the tax rate. We already have the quantity and tax rate in variables, but we need one more variable which we'll call discount.  
+
+The value of discount *varies* depending on the quantity parameter, so we'll need to use conditional control flow to set it. However, for now, we'll just set the discount to 0.
+
+One of our testcases has a discount of 0, so this will let us test whether our computation *without a discount* works correctly. Then, we will come back and figure out how to compute the discount.
+
+So, what's next?
+
+Once have a discount, we can calculate the total cost. We want to return that cost, so we'll add a return statement.
+
+The total is going to be the quantity times the unit price, which is 20 cents, times a discount multiplier, which is 1 minus the discount, times a tax multiplier, which is 1 plus the tax rate.
+
+But we have a problem. We're multiplying a double, so our result will be a double. We want to return a precise number of cents, so we need to round the value.
+
+The math library will help us. It provides a function lround which rounds the value and returns a long. Let's check to make sure our code works when the discount is 0.
+
+Only the last case will work. We were expect 230 cents -- and that's what we got. So, now we're ready to calculate the discount.
+
+We have three distinct cases. We'll handle them in turn.
+
+Orders of less than 100 units get no discount. Let's write that first.
+
+This is the case where there's no discount.  But we have a variable called discount, and we use it in our final calculation, so we can't just ignore it.
+
+We'll set the value to 0.  That way, in our final calculation, the discount multiplier will be 1 minus 0 -- or 1.
+
+But what if the quantity is greater than 100?
+
+If we use the else-if pattern, we can assume that the first condition was not met. The else-if block only executes if the previous if condition was not true -- that is, when quantity is not less than 100.
+
+So we just need to check if the quantity is less than 500.
+
+The discount is 15% in this case.
+
+Finally, there's one more condition. At this point, if the previous two conditions weren't met, we already know that quantity is at least 500.
+
+We don't even need to check for it, but I'll add a comment for readability.
+
+In this case, discount gets a value of 0.35.
+
+So we've written an expression to calculate our discount, and we should test it.
+
+And we’re done. Our function works as documented.

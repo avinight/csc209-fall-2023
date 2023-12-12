@@ -1,0 +1,86 @@
+In the last video, we encountered a situation where source files had to be recompiled because a header file they included had been edited. Tracking these sorts of dependencies is tricky. Also, when a project has many source files and header files, it can be hard to remember which files depend on which other files. The compiler toolchain provides a tool called "make" to help manage the compilation, or build, process.
+
+The project we have been compiling consists of three files: compare_sorts and sorts, which are source files that need to be compiled and then linked, and sorts.h, a header file they include.
+
+Let's create a Makefile to build the parts of this project that need it.
+
+Makefiles are composed of a sequence of rules.
+
+Each rule has a target: the file to be constructed.
+
+And each rule also has a recipe: the command or list of commands to execute that create the target.
+
+If dependencies -- or prerequisites -- are present, the recipe are executed if one or more of the dependencies are newer than the target. If there are no dependencies, the actions are only executed if the target doesn't exist.
+
+Listen very carefully. The whitespace before the recipe is a *tab*, not just spaces. I guarantee you'll make this mistake at least once, so I'll just say "I told you so" ahead of time.
+
+This rule defines a target named compare_sorts.
+
+compare_sorts depends on two source files.
+
+If either source file has been updated, then the actions are executed to rebuild compare_sorts.
+
+Note that the file I've created is called Makefile. When I run the command make without arguments, it looks for a file named Makefile in the local directory and checks the rules it contains. In this case, it detects that there is no file named compare_sorts, so it executes the actions for the compare_sorts rule.
+
+If I run make again, it tells me that compare_sorts doesn't need to be rebuilt, and nothing is done.
+
+The touch command updates the time that a file has been modified. In this case, it made it look like the file sorts.c has been modified after compare_sorts was last built, so when I run make again, it is rebuilt.
+
+But the rule I've defined doesn't yet account for the header file, so make doesn't detect that it needs to rebuild the executable if the header file is updated. Also, we aren't taking advantage of separate compilation with this make file rule, so let's add some more rules to our makefile.
+
+compare_sorts: compare_sorts.o sorts.o
+    gcc compare_sorts.o sorts.o -o compare_sorts
+It wasn't exactly true that our executable depended on two source files. It actually depends on two object files.
+
+And now, we need to add rules to build our object files.  Each object file depends on the relevant source file and the sorts.h header file.
+
+Now, let's see what happens when we run make.  First, let's remove the object files. This should force everything to be rebuilt.
+
+Huh. But only compare_sorts.o got built.
+
+That's because I have three separate rules with named targets in the makefile.  When I ran "make" with no command-line arguments, make evaluated the *first* rule in the file.
+
+  $ make compare_sorts
+
+If I use a command-line argument to specify a particular target then it will evaluate that rule.  The real power of make is that each time it evaluates a rule, it will first check all the dependencies, and if a dependency is also a target in the makefile, it will evaluate that rule first before checking the dependencies.
+
+
+Let's modify compare_sorts.c by updating its "last modified time" using the command touch. And we will run "make compare_sorts" again ...
+
+make finds the compare_sorts rule, and checks each dependency.
+
+It finds the compare_sorts.o rule, and checks its dependencies.  It discovers that compare_sorts.c is newer than compare_sorts.o so it executes the recipe associated with the rule which updates compare_sorts.o.
+
+Now it is finished checking the compare_sorts.o dependency so next it checks the sorts.o dependency.
+
+It checks the dependencies in the sorts.o rule, and discovers that sorts.o is newer than both sorts.c and sorts.h, so it does not execute the recipe.
+
+
+Now that both compare_sorts.o and sorts.o have been updated if necessary, make checks the modified times of these two files against the file compare_sorts.  Since compare_sorts.o is newer than compare_sorts, the recipe will be executed.
+
+Note that only the files that need to be updated are compiled. But that was a bit tedious. I don't want to tell make what to build each time, and if I add extra source files, I don't want to have to create a separate rule for each one.
+
+Makefile support wildcards of various sorts. I'll use this new rule to replace all of my source file to object file rules.
+
+
+In this situation, the percent sign means that each object file that needs to be built depends on a source file of the same name.
+
+
+dollar-lessthan is a variable containing the first name in the list of dependencies.
+
+
+dollar-at is a variable containing the name of the target.
+
+So all together, this rule checks any required object file and builds it based on a similarly named source file.
+
+I'm getting tired of removing the object files each time we do an example, so let's add a new rule that will clean up for me.
+
+The word PHONY indicates that clean isn't actually a file. It's just a legal target.
+
+So building the target clean executes the remove command. Then, the next make rebuilds all of the required files. Because clean is not a file, the actions are always executed when the clean rule is evaluated.
+
+Okay, one more improvement. Makefiles can include variables. This line defines a variable named OBJFILES.
+
+Now, instead of needing to add to the list of object files everywhere, I can just update the variable when a new source file is added to the project.
+
+This is just an introduction to what make can do. It's a very powerful tool that can be used to manage complex projects. For more information, check the manual for make.

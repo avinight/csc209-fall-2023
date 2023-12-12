@@ -1,0 +1,67 @@
+In all of our file-reading examples so far, we have read the contents of the file in order, from start to finish. Recall that we used fgets to read text files from beginning to end in the files module, and we used fread to read binary files from beginning to end in the current module. This beginning to end, linear reading of a file is often useful. For example, we successfully processed wav files in this way.
+
+But sometimes, we need to jump around in a file. Perhaps we'd like to read some part of a file more than once or to skip parts of a file. C contains several functions to help us with these tasks.
+
+Let's start with a function that allows us to move around in a file. Remember that every open file maintains its current position. That position determines, for example, where the next call of fread will read from or where the next call of fwrite will write to. Each read or write call moves the file position.
+
+fseek allows us to change that file position. It takes three parameters: the first is the stream whose position we'd like to change, and the second is a byte count indicating how much the file position should change.
+
+The third parameter determines how the second parameter is interpreted. Let's see a few quick examples before we move onto a larger example.
+
+This command moves the file position to byte 50 of a file. Notice that we use SEEK_SET to make the 50 relative to the beginning of the file.
+
+In contrast, this command moves the file position to the 50th byte before the _end_ of the file. Here, we use SEEK_END to make the 50 relative to the end of the file.
+
+This command advances the file position 10 bytes forward from the current position. Note that, this time, we use SEEK_CUR to make the 10 relative to our current position.
+
+Moving backwards is similar. We simply use -10 instead of 10.
+
+You might think that moving all over a file like this could be dangerous. If so, you're programming defensively -- good thinking!
+
+For example, if we try to set the file position to byte 50 and the file has less than 50 bytes, what will happen? In situations like this, the fseek call will succeed but a later read or write will fail, so it's particularly important to check for errors in your read and write operations after using fseek.
+
+fseek itself can fail if we pass an invalid file pointer, but this can be avoided as long as you check your call to open. We do not check for fseek failure in this video, since the failure cases are better caught before or after the fseek call.
+
+Let's look at fseek in action. I've prepared a binary file called five_students containing five student structs. Each struct was written with a first name, last name, year, and GPA all filled-in. The program that creates this file doesn't introduce anything new, so we won't go through that program here.
+
+You can look at that program on your own if you are interested in an example of a program that uses an array of structs to create a file containing multiple structs.
+
+We will use fseek to help us move around that file in response to user requests.
+
+Let's first look at what the desired program does and then look at the code. The program tells us to type -1 to exit or to enter the index of the student we wish to view. Let's type 3.
+
+We see student information for a student named Daniel. Let's type 1 now.
+
+Now we see information for a student named Michelle. Let's type 1 again.
+
+Michelle's information showed up again -- so clearly, we were able to read the same location in the file a second time.
+
+Let's type 8; this is invalid because there are only five students in the file.
+
+Notice that the program detects the error.
+
+Finally, let's type -1 to exit.
+
+The program is retrieving individual student structs from the file. It's using fseek to move the file pointer's position to the desired student, and then using fread to read the student.
+
+Let's see how it's done.
+
+The top half of the file should be familiar. We're declaring struct student and defining a few useful variables.
+
+Next, we open the file five_students as a binary file and error-check the fopen call, to make sure that fseek will be operating on a valid file pointer.
+
+After providing instructions to the user and reading the index of the first student, we enter a while loop.
+
+This while-loop uses fseek to move the file position to the byte where the desired student begins. Notice that we multiply the number of the student by the size of a student struct. Forgetting to multiply by the size of the struct is a common error. If we don't do that, then we will end up moving the file position to a particular byte -- not to the beginning of a struct.
+
+It's possible for the user to give an invalid number for the student to read. In that case, fread will fail, so we error-check the fread call here.
+
+Finally, we print out the student that was successfully read.
+
+You might wonder why we used fseek at all. Couldn't we have just read all five students into an array at the outset, and then index that array appropriately? In this case, yes, because the file is very small (only five structs). But consider a huge file of millions of structs, which can easily happen when handling large datasets. In that case, it may be infeasible or impossible to load all of it into memory at once. That's where fseek can save memory and provide a convenient means of pulling out only what we want from the file.
+
+Rather than moving around arbitrarily through a file, it's also occasionally useful to move to the beginning of a file. You might do that, for example, if you wanted to read the entire file again. 
+You can do that using fseek, by supplying a value of 0 for the second parameter and SEEK_SET as the third parameter.
+
+But for this specific case, there's an easier way. The function rewind can be used to move to the beginning of a file. It takes only one parameter, for the stream, and returns nothing, so it is simpler than using fseek. Of course, for any other kind of move through a file, you'll want to use fseek.
+

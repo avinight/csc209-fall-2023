@@ -1,0 +1,49 @@
+So far, we have seen how to create a basic C program and assign different types of values to variables. All of our example programs have featured a fixed sequence of steps, but we often want to write programs that must choose between one of two possible computations. We'll use *if* statements to provide this functionality.
+
+In this main function, we see two printf statements.
+
+When I click next, and next again, we can see that they execute one after the other, each printing their message to the screen.
+
+But what if we only wanted to print one of the two messages?
+
+We could comment one out, but that would mean that the program would only ever be able to print out the one message. What we want is some way to have the program print out one message or the other, depending on some condition.
+
+We can use an *if* statement to do this. The code now has an if-else block, which does the following:
+
+First, the condition is checked. If the condition is true, all the statements in the [callout if block] if block are executed.
+
+If the condition is false, then the statements in the else block are executed instead.
+
+Let's step through this code together.
+
+First this line is executed. It evaluates the condition inside the parenthesis. 3 *is* greater than zero, so when I press next again
+
+The happy message is printed. When I press next one more time, the execution skips to the final "done sharing" message.
+
+The second printf statement (the sad message) was never executed.
+
+On the other hand, if we change the condition to "3 < 0", and rerun then only the second message is printed out, because this new condition is false.
+
+If statements are a powerful tool precisely because they let us control which statements in a program are executed.
+
+We have seen two comparison operators in C: "less than" and "greater than". Here is a table showing the six basic ones that you'll find useful when writing your code.
+
+Here is one more example program.
+
+First, we declare an integer x and assign it the value 10.
+
+Next, we have an if condition which checks whether x is greater than or equal to 5. At this point, x *is* greater that 5 so this condition evaluates to true. That means that the next statement to execute is the first one inside the if block.
+
+That statement assigns 2 to x.
+
+So notice *now* that the value of x is 2. That means that x is no longer greater than 5. The if condition isn't true any more. But that doesn't matter. The program doesn't keep checking the if condition. It is only checked once when line 5 is executed. Based on whether the condition is true or false *at the moment it is checked*, either the if block *or* the else block is executed next.
+
+So when I press next again, line 7 will be executed and x will become 1.
+
+And what will happen when I press next one more time? 
+
+Execution jumps the the first line after the else block -- which in this case is the return statement.
+
+You might be thinking that because we explicitly assigned x the value 10, we didn't need to bother with an if statement at all. We could have just written the statements that are in the if block.
+
+You're right -- but in later videos, we'll see that if statements can be used just as easily to process external inputs from the user or files, when the values of variables aren't known when we write the code.

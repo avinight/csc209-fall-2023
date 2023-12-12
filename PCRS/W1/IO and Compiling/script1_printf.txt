@@ -1,0 +1,67 @@
+Most programs interact with the user in some way. They might ask the user for input, or present the user with output, or both. For example, a program that converts centimeters to inches might ask the user for number of centimeters and output the corresponding number of inches.
+
+To write programs that interact with the user, we require ways of outputting text to the screen and reading values from the keyboard. The way we do this in C is to call the appropriate input or output function.
+
+Let's look at an example.
+
+This line of code uses a *function* that prints -- or displays -- text to the screen.
+
+A function is a self-contained piece of code that carries out a well-defined task. Functions are useful because we can ask a function to do its task without understanding how that function actually does the task. In this example, we're saying, "print this number to the screen" -- and we don't have to know how this operation works. We just need to know that it does work -- and how to use the function ourselves.
+
+And here we see that it does work. We compile the program and see that it prints what we told it to print the text "Hello, world!"
+
+Let's take a closer look at this code so that we know how to use this function in the future.
+
+To use the printf function, we have to tell C where to find it. This line of code adds the printf function -- and many other useful functions -- so that we can use them in our programs.
+
+The name of the library we are including is "standard io" -- and io stands for input-output. printf is included in the library of input and output functions.
+
+And this line, which we saw earlier, uses the printf function to display text and a number to the screen.
+
+Notice that we follow the word printf with an opening parenthesis. At the end, we have a closing parenthesis. You will see this pattern whenever we use, or _call_, a function.
+
+In this case, we are asking for some text to be printed to the screen.
+
+There are two important things about the hello world text in this line.
+
+First, the text is placed inside of quotation marks. Don't forget these quotation marks, or you will get an error saying that a variable is not defined. Putting text inside of quotation marks creates a _string_, and you will learn all about strings in a future video.
+
+Second, the string ends with \n. That looks like two characters, but C interprets it as a single character. \n stands for "end of line".
+
+printf can do more than print text strings. I can also output the value of variables. These lines of code declare an integer and then have the program print the value of that integer.
+
+To print a variable, we have to include a _format specifier_  -- like this one. This format specifier tells the program to expect an integer.
+
+And after the text we want to print, we also provide the integer we want to be placed within the text.
+
+So what does this line do? The 'here is an integer' text will get printed as usual, because it is simply text. But after that, we have a %d. The program will replace that %d with the value of an integer. In this case, that value is 50.
+
+So, how about floating point values? The format specifier this time is %f. The f here stands for float. You might wonder why we don't use %i for integer instead of %d. In fact, %i works too, but it's more common for programmers to use %d. d stands for "decimal integer".
+
+Here is another example of printing the value of a floating-point variable.
+
+Notice that in both cases, our program has printed a certain number of digits after the decimal point, and we had no control over that choice. What if we wanted a certain number of digits after the decimal point?
+
+Rather than simply using %f, we use %, a dot, the number of digits to print after the decimal point, and then the f.
+
+Then, the program only prints the precision that we specify.
+
+Notice that we always provide printf with a string, and then 0 or more values after that string. Each of these values, including the string are called *function arguments*.
+
+printf is a bit unusual in that it takes a different number of arguments depending on the number of format specifiers in the first argument. Most functions that you will write on your own will always take the same number of arguments.
+
+Here's an example of that: we include two format specifiers in the string and then provide two variables as arguments.
+
+Format specifiers are replaced in order from left to right.
+
+In this case, the first format specifier -- %d -- is replaced by the first value given after the string -- the integer age.
+
+And the second format specifier -- %f -- is replaced by the second value after the string -- the float temperature.
+
+What if we have more format specifiers than numbers?
+
+We are warned that we have more specifiers than values. And the last value gets a 0.
+
+And what if we use the 'wrong' specifier for a variable?
+
+Again, we get a warning. When you are using the printf function, watch your warnings carefully to make sure that you are producing the output you really want.

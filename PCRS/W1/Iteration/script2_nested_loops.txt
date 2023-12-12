@@ -1,0 +1,76 @@
+In the last video, we learned about the basic mechanics of the for loop. In this video we will explore a more complex example that requires that we use two for loops together to solve a problem.
+
+Here is a program that uses a for loop to print the integers from 0 to 9. As a review, pause the video, read the program and, on a scrap of paper, write your prediction of what will be printed.
+
+Have you done that?
+
+We get the integers 0 through 9 each separated by one space and then the prompt printed on the same line. The prompt shows up on the same line because we didn't print any newline characters.
+
+Let's add a statement to print a newline. I'll put it here, inside the body of the loop. Just like an if-statement body, the body of a for loop can contain multiple statements. The body is all the statements included between the curly braces.
+
+By convention, we indent the loop body, but it is the braces -- not the indentation -- that the  compiler uses to define what is contained in the loop body and what is not.
+
+So, what will be printed now?
+
+This time each integer appears on its own line. There were 10 newlines printed. On each iteration of the loop, we print the loop counter and then we print a newline character.
+
+What if we wanted to have all the integers appear on the same line and then have one newline character at the end? How would we change our program?
+
+If we move the statement to print a newline outside the loop body, it will only be executed once -- after the loop has completed the 10 iterations. This will get us what we want.
+
+But it is easier for a programmer to see that it isn't part of the loop if we outdent the statement so that it doesn't match the statements that are in the loop.
+
+Before I compile and run the code, let's make one more small change and change the space following each integer to a tab character. Like backslash n for newline, backslash t represents a single tab character.
+
+Okay, so here's what our output looks like now.
+
+What if we wanted to print 5 of these rows? Suppose for now that we just want 5 exact copies of this output. How would we do that?
+
+Forget, for a minute, how you're printing the current line. If you want to print *anything* 5 times -- or N times -- then what would you use?
+
+We would use a for loop.
+
+It would need a loop counter that we we would initialize to 0, and we would increment it by one until it is 5.
+
+Let's turn that into a program.
+
+And then let's replace the do-something-here comment with our previous code that printed the output we wanted to repeat.
+
+To be tidy, we'll move the variable declarations to the same location.
+
+And now we can see how the indentation conventions can make code easier to read.
+
+These statements are now inside the loop body for the outer loop, so we let's indent them.
+
+It is easier to see now that there is an outer loop that executes 5 times.
+
+And on each of those 5 times, this inner loop does 10 iterations and then a newline is printed.
+
+Let's compile and run our code to confirm that I haven't made any typos.
+
+In the inner loop, the loop counter is the variable i.
+
+And in the outer loop the loop counter is the variable counter.
+
+Could I have used i for the outer loop counter variable's name as well?
+
+No. I need counter and i to both exist at the same time with different values, so they
+need different names. 
+
+When there is no meaningful name of the loop counter -- it is just controlling the loop not representing something meaningful in the program -- we often use i.
+
+And if we need to have nested loops -- one loop inside another -- we often use j for the second loop counter.
+
+Before we quit, let's make a few more small changes to our program so you can see how we might use the loop counters to do something a bit more meaningful.
+
+Do you recognize what this is? Did you have to fill these out in grade school? It is a multiplication table.  We have the numbers across the top and along the side and then each square has the product of the top number multiplied by the side number. Let's modify our program to print a multiplication table.
+
+Although you *could* to a multiplication table from 0, the ones I used to have to fill out always started from 1 so let's change our loops to count from 1, and let's count up to and including 10, and each time we print a number in the table, let's print the product of i times counter
+
+That should do it. And there we have a multiplication table.
+
+But before we call it finished, we should tidy up our code. With the new application, the meaning of our variables counter and i have changed. Now, they're the row and column of the table -- so let's update the names to match.
+
+While this seems tedious, you'll save time if you ever have to edit this code -- or if someone else does.
+
+One last compilation and run to make sure we haven't broken it... and we're good.

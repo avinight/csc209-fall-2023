@@ -1,0 +1,33 @@
+The built-in C operators that you have learned so far aren't very useful for handling strings.
+
+For example, suppose you'd like to know the number of characters stored in a string variable.
+Let's examine a piece of code where we use the function sizeof on a string stored in a char array.
+
+Let's compile and run this program. 
+
+You might be surprised that the size reported is 10, not 6 (the number of characters in 'Monday') or 7 (the number of characters in 'Monday' plus a null terminator character).
+
+On an array, sizeof always gives the number of bytes occupied by the array. It is actually a compile-time operation; it doesn't look at the contents of the array at all to determine the size of that array. So, sizeof is not the way to determine the number of characters in a string.
+Nor, by the way, is sizeof useful to determine the length of an array if that length isn't known at
+compile time. A common mistake made by students is to try to use sizeof in a function that was passed
+an array as a parameter.
+
+Getting back to strings, here's one more example why built-in operators aren't useful on strings. 
+Suppose that you have two strings s1 and s2 with values "Mon" and "day" respectively, and you want to concatenate them together into a larger string of "Monday".
+
+Using the plus operator won't work. As you learned in the pointers and arrays videos, the name of an array evaluates to the address of its first element. Therefore, s1 + s2 simply adds two pointers together; it has nothing to do with string concatenation.
+
+Fortunately, the C standard library contains many functions for working with strings. Among other things, C's string functions help us determine the length of a string or concatenate two strings together.
+
+To use the C string functions, we must include the string header file in our program. This header file contains function prototypes of all of the C string functions.
+
+One of the functions we can now use is strlen.
+
+Here's the prototype for strlen.
+
+strlen returns the number of characters in the string s, not including the null termination character. size_t is simply an unsigned integer type, and you can treat it as an integer. 
+Let's compile and run this new program.
+
+Now the program produces the desired output. strlen counts the number of characters before the '\0' character.
+
+

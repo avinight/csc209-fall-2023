@@ -1,0 +1,60 @@
+In this video we are going to put together everything we have learned in this submodule.
+We'll write a program that uses commandline arguments to pass information into
+an already-compiled program at running time. Some of this information will be numeric,
+and so we'll use strtol to convert the string arguments to integers, and we will even need to
+use a cast to convert an integer to a double. Let's get started.
+
+We are going to write a program called sum_or_avg that will take one or more
+integers as part of its commandline arguments.
+
+We will run our finished program like this to calculate the average of 8 and 9
+
+or like this to calculate the sum of 5 10 and 3.
+
+One common use of commandline arguments is to pass a value to a program that changes the behaviour of the program. We sometimes call these passed-values "flags". Our program uses the first commandline argument as a flag that needs to be either an 'a' -- for average -- or an 's' -- for sum.
+
+We'll develop this program in stages. The first version only checks the value of this flag and prints what we intend to do.
+
+Recall that argv[0] holds the name of the executable, so argv[1] is the first argument.
+
+Since argv is type pointer to pointer to char, or an array of pointer to char,
+we use argv[1][0] to read the first character of the first commandline argument.
+
+Let's compile and run this simple version. It works, but we shouldn't trust the user to enter the arguments correctly. What happens if the user runs our program without specifying any arguments? Let's see.
+
+Ack! a segmentation fault. We don't want that to happen, so to ensure that our program doesn't crash we have to perform a check first.
+
+Let's check how many arguments the user provided. If we don't have the minimum, we will print a message to let the user know.
+
+We need at least three arguments -- the executable name, the flag, and at least one number.
+
+If the user doesn't give us enough arguments, we print a message but then we also exit from the program right away -- before a segmentation fault can happen. The convention is to use a non-zero exit code if the program terminated abnormally. We'll use 1.
+
+If we really wanted to program defensively -- making sure the user doesn't get any surprises -- we could add code to check that argv[1] (our flag) is infact either an 'a' or a 's' and that all remaining arguments can be converted to integers. If the flag is something other than those values, we could print the usage message and exit. Instead, we will assume that anything that isn't an 'a' means we should sum the remaining arguments, and we'll let the user encounter an error if they enter a non-numeric argument.
+
+In order to sum the numbers we need to keep a running total, which we will start at 0.
+We need to loop over the remaining arguments, adding each one into the total.
+
+Notice that we start off at argument 2 since we shouldn't include the executable name or the flag.
+
+But we can't just add argv[i] to the total. The arguments are strings.
+
+So we'll use strtol to convert argv[i] to a long before adding it to the running total.
+
+Remember that we have to include stdlib.h to be able to use strtol.
+
+So now we have calculated the sum, but we haven't printed it.
+
+We'll add it at the bottom.
+
+Here's a quick check to make sure we've entered everything correctly. Now, we need to extend our code to compute the average.
+
+To calculate the average we need to divide the sum by the number of elements that contributed to it. We already confirmed that argc was at least 3, so we know that the denominator isn't going to be zero.
+
+Let's compile and run our program. We are expecting the average 2.5. Hmm -- what happened?
+
+The problem is here.
+
+Remember that when we divide two integers, the result is an integer. We need to cast total to a double before we do this division.
+
+Now we see that it works correctly.

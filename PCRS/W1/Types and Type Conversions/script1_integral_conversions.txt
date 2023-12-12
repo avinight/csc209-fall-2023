@@ -1,0 +1,76 @@
+You've been using both integral and floating point types in your programs
+and you probably have the idea by now that we can use integers for whole numbers and doubles for
+values where we might want a fractional part. The computer uses a fixed number of bits
+to store values of these types, which necessarily limits the range and precision of
+the values that we can represent. In this video, we will further explore this idea.
+
+Here we have initialized an integer i with value 17 and a double d with the value 4.8
+Let's print both those values.
+
+What will happen if we assign d to i?
+We are assigning the value 4.8 to a variable whose type is an integer.
+We see that the fractional part of 4.8 is dropped (or truncated) and i gets the value 4.
+This is probably what you expected.
+
+But what happens when we change the double value to be really big -- larger than the maximum
+integer that can be represented on my computer?
+Now the variable i can't represent the truncated value. It is too big. My C compiler doesn't give
+any warning. It still stores an integral value in i but that value isn't helpful. You need to be careful
+when converting between types that the new type is able to represent the converted value.
+
+What if we assign an integral value to a floating point value?
+Here we assign 17 to the double variable d.
+It all seems good. 17.00 can be represented by a double.
+You might at first think that all integers can be represented by a floating point type. After
+all, the integers are a subset of the real numbers, so every integer is a real number. While that may be true in pure math, it isn't true using computer representations of numbers.
+We have to remember that we are implementing the representation of these
+values with a fixed number of bits.
+
+Let's change our program slightly and look at how many bits my computer uses to store an integer
+and a double.
+Notice that we use sizeof on a variable name to learn how many bytes are used by our compiler and
+that the resulting value is printed with the lu format specifier.
+We see that on my computer an integer uses 4 bytes and a double uses 8.
+Let's do the same for a float.
+add
+I won't run this code yet, but when I do you will see that float uses 4 bytes.
+
+Now suppose I want a big integer. INT_MAX, defined in limits.h, is the largest integer that my system
+can represent.
+
+In case you don't believe me, let's add one more.
+
+See that warning? The compiler knows that we're going to overflow the integer, and sure enough, we see
+a negative value when we print that variable.
+
+But now let's assign our big integer to a float variable.
+What do you think will be printed?
+
+Is that what you expected? It's off by one. Let's try a different large integer.
+Oddly, there's a bigger difference.
+
+Remember that both the float and the int are using 4 bytes. So they can each have 2 to the 32 different
+bit patterns -- that's 2 to the 32 possible different values that they can represent. So it isn't possible for
+the floating point number to be able to represent all those 2 to the 32 integers and then also be able to
+represent various fractional values in between them. If the integer is larger than the float can precisely
+represent, it stores an estimate -- a value that is accurate to a certain precision. So our unusual result
+isn't that surprising.
+
+Let's consider one more kind of conversion. Suppose we are converting between two different
+sizes of integral types. A char is represented by 1 byte.
+Let's print out the value of ch, interpreting the value as both a char (using the percent c format
+specifier)
+and as an integer (using the percent d format specifier.)
+Now if we assign the value from ch (the char) to integer j, we know that j will be able to hold any value
+that is represented by ch. We say that an integer is "wider" than a char. We will get what we expect when
+we run this code.
+
+But what about when we take an integer value that is too large to fit into a char?
+Let's make i 320 and see what happens.
+We see that 320 doesn't fit into ch. The conversion drops the higher order
+bytes (256 in this case) and ends up storing 64 (320-256) in ch. And 64 is the ascii code for the at symbol.
+
+The take-home message here is that you need to remember that integral variables (integers, chars, shorts, longs)
+are limited in range and that floating point variables (floats, doubles, long doubles) are limited both in
+range and in precision. When you convert from one type to another, you need to think carefully about whether
+the value you plan to represent can be stored in the new type.

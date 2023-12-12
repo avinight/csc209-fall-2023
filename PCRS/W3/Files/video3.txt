@@ -1,0 +1,26 @@
+Let's move on to another stream-reading function -- fscanf. fscanf and scanf are very similar. The only difference between them is that scanf is forced to read from standard input, whereas fscanf can read from any stream.
+
+The prototype of fscanf is very similar to scanf's prototype. 
+
+fscanf has a new argument giving the stream from which to read. Like scanf, fscanf returns the number of items successfully read. The number of items will be equal to the number of format specifiers, unless something goes wrong when reading.
+
+We can use fscanf to read the top ten scores file. In the previous video, we used fgets to read entire lines from the top ten scores file. But notice that each line of this file is actually made up of two different fields: the person's name and the person's score. Knowing this structure, we can use fscanf to pick apart these two pieces of the line and store them in separate variables.
+
+Most of the file looks the same as when we used fgets.
+
+This line contains our call of fscanf. There are three important things to note about this line.
+
+First, we must include two format specifiers because we want to read two fields.
+
+The first specifier tells fscanf to read a string of at most 80 characters. fscanf stops reading a string at a space character, but that's OK for our purposes because people's names in our top ten scores file don't have spaces. We have declare name to have space for 81 characters, at most
+80 read from the file and then a null terminator.
+
+Following the first specifier, we have a space and our second format specifier -- %d -- indicating that we want to read a space and then an integer from each line.
+
+The second important thing is the lack of & in front of name. Remember that the name of an array is interpreted as a pointer to its first element, so name is already a char pointer. Using &name would be incorrect: that would be a pointer to a pointer to char. Notice that we do use & in front of total, since total is an integer, and we need a pointer to the location where fscanf should store the integer.
+
+Third, we compare the return value of fscanf to 2. This is because we expect fscanf to find two things on each call: a string and an integer. If fscanf does not read 2 values, then this program will end. We expect this to occur at the end of the file, but it might also occur if we provide a badly formatted top 10 list.
+
+Since scanf and fscanf are so similar, you might wonder: if fscanf is the stream-reading version of scanf, why don't we have a gets function related to fgets? In fact, there is. However, like strcpy or strcat, gets is an unsafe function and should not be used in practice. gets does not let you specify the maximum number of characters to read, so user input can cause your program to write past the end of the memory allocated for a string. This can lead to hard-to-find bugs in your programs. We recommend using fgets to read strings from both files and standard input.
+
+

@@ -1,0 +1,63 @@
+In the last video, we saw how to pass functions as arguments. This let us write a general timing function that could execute and time any sorting function that is passed in as an argument.
+
+However, we still had to change the line of code that called our timing function and recompile our program to have it time a different sort. In this video, we'll extend our code to allow the user to select the sort to run from the command line.
+To do this, we need to accept data from the command line.
+And we need to use that command line argument to select which sort function to execute. We could use another command line argument to determine how we initialize the array, but for the purposes of this example, I'll just implement code to let us choose the sort to call.
+
+This loop iterates through an array called SORTS and checks if the name associated with the sort is the name our user typed in. So what is SORTS?
+
+We know it's an array. And we know it's an array of structs. Each element has a string name and a function pointer sort_func.
+
+Let's define that struct. It has a string name, which we will compare to the string the user provides on the command line. It also has a function pointer that is the right type to store a sorting function.
+
+And here we initialize a couple of constants, so that we can call any of the three sort functions available to us. This syntax may be new to you. Let's just dissect it a bit.
+Here we have an array whose name is SORTS
+and each element is of type sort_info (which is the struct we just defined)
+and here each of the 3 elements of SORTS (each a struct) are assigned initial values.
+
+Let's compile and run this code. <pause>
+And there we have it. Now, we don't need to recompile for our code to execute a different sorting function.
+
+The two elements we had to add were an array that contained the functions and code to identify which element of the array contains the function the user has asked to execute. At the moment, that code is in main.
+
+And it looks like that code could should be improved. It doesn't do any error checking yet. If we were to run our code without a command line argument, we'd get a segmentation fault.
+
+Just for cleanliness, let's move the argument parsing to its own function. What should the return type of this function be?
+
+One answer is "int". We could return the index of the SORTS array that contains the function we want to execute.
+
+But if we're going to do that, why not return the function pointer itself?
+
+Now, we need to write our helper function.
+
+I'll just copy in our code from before.
+
+I'll clean that up a bit. Since we want to return the function pointer, we can do that in the loop, once the right function is found.
+
+There are two places where there could be errors. First, argv[1] could fail if we don't have enough arguments. Second, if we exit the loop without finding the right function, then the user didn't enter a valid sort.
+
+This handles the case where no argument was provided.
+
+And then we print a helpful error message for both cases. Our function body is finished.
+
+But I've avoided the question of the return type.
+
+We know it's a function pointer.  But how do we declare a function pointer return value?
+
+The syntax is ugly. Let's start by looking at how we declared a variable. Here's our sort function pointer.
+
+Note that the name is in the middle of the type.
+
+We do the same thing when we declare a function that returns a function pointer. The name and arguments are in the middle of the type!
+
+This might look odd, but it's consistent. We read it as "the function parse_command line, which takes an int and a pointer to pointer to char, returns a pointer to a function that takes an int pointer and an int and returns void."
+
+But now that we're comfortable with the syntax, here's a trick to clean up the code. You can use a typedef to create an alias for the function pointer type.
+
+This line of code defines a new type, SortFunc_t, that is a function pointer. Now, we just change our code whenever we declared a variable -- or a return value -- that was a function pointer, to use our new SortFunc type.
+
+And there we go. function pointers have let us do two nice things with this program.
+
+First, the timing function is a general function: we don't need a different function for each sort function or a messy if statement at the point where the sort function is being called.
+
+Second, we can change the sort that is run based on the user's input -- again, without a messy if statement. We typically use this kind of functionality when we have a struct which may need to be handled in different ways depending on the value it stores. Then, the struct stores both the value and the function used to handle it. Those of you who have done object oriented programming might recognize this idea: it's the beginning of the idea of an object.

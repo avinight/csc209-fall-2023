@@ -1,0 +1,45 @@
+When studying arrays, you learned that you cannot really "pass an array to a function". What you end up doing is passing a pointer to the first element of the array. And as a result, the function can make changes to the array.
+
+Here is an example.
+
+We have a function here that changes the first element of the array to 80.
+
+In these lines, we declare an array called my_array that holds 5 values, set the value at index 0 to 40, and then call the function that changes the first value to 80. When we run this, what will you see? 40 or 80?
+
+We see that the output is 80. Change has modified the original array because the array was not copied when it was passed as an argument. Instead, a pointer to the first item of the array was passed to the function.
+
+Structs don't work that way, and that's a very important difference between structs and arrays.
+
+Here is a program that is very similar to our previous example.
+
+This program uses the same struct student as we used in the previous video, with the first name, last name, year, and GPA. We are defining the struct globally -- outside of any function -- so that it is available in all functions in the file.
+
+Unlike our previous example, the function in this program takes a struct, rather than an array.
+
+The question is: does the GPA change to 4 point oh as would be expected if s were an array? Or does it remain 3 point 2?
+
+As you can see, the GPA stays at 3 point 2.
+
+So, structs are not passed to functions in the same way as arrays. An array gets passed as a pointer to its first element; the function is not operating on a copy of the array. But, for structs, a function does get a copy of the struct. Any change that the function makes is only a change to the copy, not the original struct.
+
+Furthermore, note that a function gets a copy of the entire struct, including arrays.
+
+Let's initialize one of the character arrays in our struct student. Then, let's try to change it.
+
+We'll start with our existing program and use strcpy to set the first name of good student to "Jo".
+
+Then inside our change function, we will change it to "Adam".
+
+Here we will print out the name after we have called change.
+
+When we run our program, are you expecting to see Jo or Adam?
+
+As you can see, any array inside of a struct is copied, too.
+
+What if we really want to retain changes to a struct by a function?
+
+One approach is to have the function return the struct back to the caller after making its changes. This works, but it is an ugly solution because you end up copying the struct twice: once when calling the function and once when assigning the return value to the original struct variable. This is wasteful and will be particularly noticeable if the struct is large.
+
+Instead, it is more effective to have your function operate directly on the original struct by passing a pointer to the struct as parameter. Pointers avoid copying the struct back and forth between functions, so it's a more elegant -- and efficient -- solution.
+
+In the next video, we'll take a deeper look at pointers to structs.

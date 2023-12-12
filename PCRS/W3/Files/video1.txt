@@ -1,0 +1,44 @@
+So far in our programs we have stored values using variables in memory, but these saved values go
+away when our program stops running. We need a way to store values that will last between executions
+of our program.
+Files are powerful tools for both retaining results of our programs and reading in new data. Many programs use files for these purposes. 
+
+Here is a file that could have been produced by a game. The file records the names and high scores of the top ten scorers.
+
+Remember from a previous video that C programs can access streams (such as standard input), and that we can open our own streams. We use the fopen function to open a file and make it available as a stream.
+
+fopen takes two arguments. The first is the filename to open. The second describes how we want to use the file.
+
+The second argument requires a string -- a "mode string" -- that indicates whether we'd like to read from an file -- mode r -- or write to a file -- modes w and a. The file must exist if the file is being read from. If the file is being written to, an empty file will be created if it does not already exist.
+
+The difference between the two writing modes is that mode w writes from the beginning of a file while mode a appends to the end of the file. If the file already contains data, mode w empties it before writing.
+
+fopen returns a file pointer that we will use when we want to close the file, read from the file, or write to the file. Think of the file pointer as referring to a file on the computer. After we open a file, we access that file through its file pointer.
+
+Here is an example that uses fopen.
+
+In these lines, we declare a file pointer called scores_file and call fopen. Note that the name of the file and the mode are both strings.
+
+In this case, the filename refers to a file that is in the same directory as our executable. However, by entering a path to a file, we can access a file anywhere on our machine. We'll see an example of this in a few moments.
+
+fopen may fail for a variety of reasons; for example, the file might not exist, or we might not have the proper permissions to open the file. If fopen fails, then it returns NULL instead of a valid file pointer. It's always good practice to check the return value of any function call that might fail. In this case, we check if the return value is null and then print an error message.
+
+Notice that we output an error message to standard error, not standard output. It's good practice to put expected results on standard output and error messages on standard error. Then, we exit the program and return a value other than 0 to show that the program terminated with an error.
+
+Let's look at what happens if we enter an incorrect filename.
+
+We entered a path to a file that lives in the folder "sourcefiles." However, our program can't find it.
+
+It was just a typo -- we didn't enter our name correctly.
+
+Our program works -- we just have to be careful to name the file correctly and, if the file isn't in the same directory as our program, to provide the path to find it.
+
+Typically, in C, you should clean up after yourself, so if we open a file, we should also close it. The typical pattern when dealing with files is to open a file, read from or write to the file, and then close the file after you're done using it.
+
+Let’s add to our program.
+
+
+To call fclose, we pass it a file pointer that was previously returned by fopen. fclose returns 0 if the fclose call is successful, and a nonzero value if the fclose call failed. The fclose call could fail, for example, if you call fclose with an invalid file pointer. As with fopen, we test the return value of fclose to ensure that fclose succeeded.
+
+Now we know how to open and close files. We are now ready to read from and write to files that we have opened. We will begin doing so in the next video.
+

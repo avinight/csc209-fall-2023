@@ -1,0 +1,70 @@
+In the previous video we learned that you can assign an expression of one
+type to a variable of another type. We saw that sometimes this can result in the loss
+of information because the variable can not represent the exact value that results from
+evaluating the expression. Here we want to spend some more time considering types and
+values of expressions.
+
+Let's consider this tiny C program.
+What do you think it will print?
+
+If you guessed zero you would be right.
+
+Consider the right-hand side of this line.
+
+i has the value 5 and j has the value 10 so you *might* think that i divided by j
+has the value one half [reveal double half = 0.5]
+so that when this value is assigned to the integer variable k, 
+the fractional part is truncated leaving the value of 0 in k. 
+
+That would produce the correct 0 output, but that's NOT what's going on.
+Instead of assigning i divided by j to an integer variable k, let's assign it to
+a double variable d. 
+
+Now what are you expecting to be printed? 
+Hmmm -- was that what you were expecting? Let's break it down carefully.
+
+On the right-hand side of this line 
+integer i is divided by integer j and the result of that expression has a value
+*and a type*. The important rule here is that the type of the result of an
+expression depends on the operator (in this case the slash for division) and the *type*
+of the operands (in this case both integers.) In C, when we perform division on two
+integers the type of the result is integer. I'll say that again because it is bound to
+trip you up at some point in your C-programming career. When you divide an integer
+by an integer, the type of the result is integer ... and this doesn't depend at all
+on the specific values you're dividing or the variable you're storing into.
+
+So in our program the result of dividing the integer 5 by the integer 10 is the integer 0 --
+NOT the floating point value 0.5. So in this line, the double variable d is being assigned
+the integer value 0.
+
+So how could we get a floating point result from dividing two integers? Surely we
+are going to need this regularly in our programs.
+
+Well suppose we changed one of the operands in our division (either the numerator or
+the denominator) to be a double. Let's pick the numerator but either would work fine.
+
+Now we see that k remains 0 while d now has the value 0.5. The type of the result of
+dividing a double by an integer is a double -- but as we speculated earlier, if you don't have
+the correct value to store it in, it won't matter.
+
+But this solution isn't going to work for us all the time. Maybe we have other good
+reasons for wanting i to be an integer. Perhaps it represents something that can't
+have a fractional value. It would be bad practice to use a double for i just so that
+we could later divide and get a double result. Let's put i back to what it should be.
+
+Instead we can tell the compiler to convert i to a double within this
+expression before doing the division operation. Let's copy the lines so you can see both versions.
+
+We put the type name (double) in parenthesis before i 
+is referred to as "casting" i to a double.  It doesn't change i's representation
+in memory but uses the double representation while evaluating the rhs expression.
+
+Let's run our code. We see that (double) i -- that's like 5.0 divided by integer j
+(10) gives us a double result 0.5 and then when we assign that to d, we keep the
+fractional piece.
+
+In summary, when you're doing arithmetic, you need to consider both (1) the location where
+the result will be stored as well as (2) the type of the expression being
+computed 
+If you want the result of an arithmetic expression
+to be of a different type than the values used to compute it, you'll need to add a cast.

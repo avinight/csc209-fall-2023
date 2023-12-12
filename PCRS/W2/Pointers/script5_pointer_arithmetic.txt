@@ -1,0 +1,101 @@
+We've seen the basic mechanics of pointers -- declaring, assigning, and dereferencing -- and we've seen how useful pointers are when used as function parameters. Next, we will introduce a powerful new idea called pointer arithmetic to explain how pointers are used with arrays.
+
+Let's look at this expression.  Remember how the slash symbol gives you integer division if x and y are both integer type but floating point division if either operand (those are the values being operated on) is a float? The operator performs a different operation depending on the types of the operands.
+
+In this case, the result will be the total of x added to y and it's type will be integer if x and y are both integer and floating point if either x or y is a float.
+
+But what will be the result if x is a pointer? What happens when we add an integer to a pointer? Let's develop a small program to explore this.
+
+Here we've declared a pointer p and set its value to the address of i.
+
+Now I'm going to add 1 to p. Remember that p's value is an address. The result of adding 1
+to p is also going to be an address.
+
+I'll assign that to variable s.
+
+And so s's type needs to be int * or pointer to int.
+
+Our program doesn't print anything so it won't be very exciting to run. Let's look
+at it in the memory visualizer.
+
+Here we see the state of the memory after line 4 has executed but before line 5. So s
+has been declared but its value hasn't been set.
+
+Notice that the value in p is an address. When I execute the next line, what will the value of s be? Do you have a prediction?
+
+Is that what you predicted? It is an address just a little bigger.
+
+How much bigger? 4 bytes. So we added 1 to p and got an address that was 4 bytes larger. Why 4? Because that's the size of an integer.
+
+Let's change our program so that we add 4 to p.
+
+What will the value of s be?
+
+The hex addresses make it challenging, eh? The second-to-last digit in the address increases by 1, but since the representation is in hex, that's a difference of 16 bytes -- or 4 times 4. We added 4 to p, and the result is that the address changes by 4 times the size of an int.
+
+So now what do you think will happen if I change p to be a pointer to a char? We needed to change the type of s to be pointer to char as well -- to keep the compiler happy. Our initialization is still ok since we can set a char's value with it's ASCII code. Let's switch back to just adding 1 to the pointer, as well.
+
+The character associated with ASCII code 77 must be M.
+
+Note that these two addresses aren't the same. The pointer p tells us exactly where the character is -- but the address at the front of the line is slightly different. How different?
+
+It's 3 bytes. The visualizer shows 4 bytes at a time -- what we call a *word* of memory. However, a character only takes one byte. The compiler chose to place it in the last byte of the word the visualizer is showing. The address at the beginning of the line is the address of the first byte in the word, and the address that p stores is the exact address where the character is stored.
+
+Now, back to our original question. How many bytes does +1 add to a character pointer?
+
+Just one byte. So when p is a pointer to an int, and we add 1, the result is 4 bytes larger and when p is a pointer to a char, and we add 1, the result is 1 byte larger.
+
+When we use the + operator on a pointer, its behaviour depends on the type of the pointer. Really, it depends on the size of the type that is being pointed at.
+
+So for a pointer p and an integer n, the result of p + n is the address of p plus n times the size of the data pointed at by p.
+
+Ok, I'll bet about now you are asking, why on Earth would you design it this way? What good is it? And why would I want to add to a pointer address anyway? It has to do with arrays.
+
+Let's start with a program that has an array of 3 integers called A.
+
+I'll declare a pointer to int, P, and set it to hold the address of A. Remember that when we use the array name without indexing into the array (without any square brackets), we get the address of the first element of A (which is the address of A).
+
+If I dereference p like this, what value will be printed?
+
+13 -- the first element of A.
+
+And if I add 1 to p first?
+
+According to our pointer arithmetic rules, p + 1 will evaluate to the address of p plus 1 times the size of data pointed at by p. So that's the address of p plus the size of 1 integer. So that's the address of the next element of A.
+
+And then dereferencing that address would give us 55.
+
+Got that? If you need to, take a minute to pause the video and make sure you understand why this line would print 55.
+
+Let's add one more line.
+
+C also allows us to use array syntax with a pointer. We can use p as if it were an array. This statement would print 13 -- the first element of A.
+
+And this one would print 55.
+
+Just to make sure you believe me -- let's run it. Sure enough, pointer arithmetic and array indexing both work. We have multiple ways to access the items in memory.
+
+This might look seem odd at first, but remember how it is that C evaluates the array syntax.
+
+
+The address of the ith element of A is the address of A plus (i * size of one element of A)
+
+So the address accessed by p[1] is the address of p + 1 * size of item pointed to by p. Does that sound familiar?
+
+That's the address we would get by adding 1 to p using pointer arithmetic. In general, the address we calculate to access p[k] is the address of p + k * size of data pointed to by p And that's just p + k using pointer arithmetic.
+
+So the element p[k] is the value when we dereference pointer p + integer k.
+
+Before we quit, let's do one more neat thing. Right now p points to the beginning of A.
+
+But what if I add 1 to p? Now the address stored in p is th address of the second element of A.
+
+So when I dereference p, I would get 55.
+
+And when I dereference p[0], I would get 55 as well.
+
+And when I deference p[1], I would get 20.
+
+And if I were to subtract 1 and dereference it, I would get 13. Subtraction works exactly like addition.
+
+Before you move on, download the code associated with this video and play with it in the memory visualizer. Make sure you understand how pointer arithmetic allows us to manipulate memory addresses.

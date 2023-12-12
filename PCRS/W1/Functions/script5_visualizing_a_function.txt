@@ -1,0 +1,105 @@
+There's a lot happening behind the scenes when we call a function.  Understanding what's happening in memory can help you write better programs and find solutions when things go wrong. In this video, we'll learn about the concepts of scope and the call stack by looking at a tool that helps us visualize the state your program is using.
+
+In the last video, we created a function called "calculate_total" and we made a few different calls to it.  This is the same program, but with some changes to the second and third function calls.
+
+Let's quickly review the interface of the memory visualizer -- the tool we'll be using today.
+
+We start by placing our code in the code editor. I've copied it in, but you could edit code directly in this window.
+
+The "Trace" button runs our code and brings up a window that lets us step through execution one line at a time.
+
+If the code has any issues, they'll show up in the space below the code window -- red for errors and yellow for warnings. If there are any errors, the visualizer won't launch.
+
+Let's replace the semicolon I removed. Looks like we're error free!
+
+This is the visualizer interface. To the right of the code window, we have two columns:
+
+The first one is for name tables.  The names and declared types of our variables will show up here.
+
+The second column is the memory map.  Each variable name is associated with a particular location, or address, in memory, and the memory locations used in the program are showed in this map.
+
+In both the name tables and the memory map, you can see headings for "Data" and "Stack". The memory map section also has a heading for the "Heap".
+
+These are areas of memory that are used for different purposes. For now we'll only see variables showing up on the stack. The other two will become important later.
+
+Let's start stepping through our program.  Click the "Next" button to execute the first line.
+
+The first executable line of our program is the header for the main function. We mentioned in the first video that whenever a C program starts running, the first thing it does is execute main, and this is confirmation.
+
+The pound-include directives and the function prototype are just instructions for the compiler, so while we can see them in the code window, they don't actually get executed.
+
+The first thing to notice is that new boxes appeared under "Stack" with the name "main."
+
+The visualizer is showing us what is called a "stack frame."  
+
+This is a section of memory created for the main function, where all of the variables in main will be stored.
+
+The stack operates like, well, a stack. Whenever a stack frame is created, it is placed on top of the stack, so the stack is constantly growing up. When a function exits, the stack frame will be removed -- and functions will exit in last in, first out -- or LIFO -- order. That means that we only remove items from the top of the stack.
+
+Since the main function is first, it is effectively the bottom of the stack. Each time we call a function, we'll add a new frame to the top of the stack.
+
+Let's see this in action.  The line we're executing contains a variable assignment and the first call to the calculate_total function.
+
+The function call will execute first, because we need a return value before we can assign it to a variable.
+
+So we're entering the function.
+
+And to prepare for the function to execute, the program adds a stack frame for the new function.
+
+The visualizer is telling us that this stackframe is associated with the call to calculate_total on line 8 of the program.
+
+When the stackframe is loaded, new variables are created from the function's parameters.
+
+They are assigned the values that were passed in the function call.
+
+These variables exist within the "scope" of the calculate_total function. They are created when the function is called, the names are only usable within the code for that function, and they are deallocated when the function ends. You could also say that these variables are "local to" the function.
+
+The same applies to variables declared in the function body.
+
+Here we've declared a variable called discount, and it also goes into the stackframe for calculate_total as a local variable.
+
+In the conditional statement, the local variable discount takes on the value 0.15.
+
+Now we've reached the return statement. The first thing that happens here is that the expression is evaluated.
+
+You can see the return keyword, along with the calculated value, in the name table for our function.
+
+Return isn't a variable -- the visualizer is just telling us that a value has been calculated and will be returned by this function.
+
+Instead of assigning the value to a variable, the function returns the value to whatever called it. In this case, "whatever called it" is the main function!
+
+So when I press next, the stack frame for calculate_total is removed, or popped, from the stack.  All of the local variables for that function have been deallocated. They're no longer being used.
+
+The visualizer is telling us that we have a value returned from the function calculate_total.  Just like the return keyword in the name table for calculate_total, this isn't really a variable -- the visualizer is just showing us the intermediate step between the called function returning a value, and the main function using that value.
+
+You can see that the value has been assigned to the variable order1_owed in the main function.
+
+Those are the basic mechanics of a function call.
+
+So next, let's take a closer look at scope and passing arguments.
+
+I'll declare a couple of new variables: an integer 'main_quantity', set to 1000, and a double main_tax, set to 0.11.
+
+We'll pass these into the function to see what happens with the parameters.
+
+First, we create two variables in the main function.
+
+Now, as before, we have a function call to calculate_total -- but this time, we're passing in local variables from main instead of fixed values.
+
+When we use a variable as an argument to a function, the program will first get the value of the variable, and then copy that *value* into the space allocated for the parameters.  This is called "pass-by-value."
+
+Now we have two separate pairs of variables: one pair from the main function, and one pair from the calculate_total function.
+
+See? If I hover over the variable name, I can see where it is being stored. main_quantity is stored in memory at the highlighted area.
+
+And quantity is here. They have the same value, but they're stored in different locations. They are completely separate variables!
+
+The rest of the function continues as before: the function computes a result using its local variables, and then returns the result to the main function, which assigns that returned value to a new variable.
+
+Let's make one additional change.
+
+We saw that when we used a variable as an argument, the program first got the value of the variable and then copied it. But what about an expression?
+
+And we can see that the expression was evaluated before it was copied, because 2000 was stored in the location for quantity.
+
+Visualization is a great tool for understanding your programs. When you run into an error you don't understand or encounter a new concept, try a small program in the visualizer to see how your program is interacting with memory.

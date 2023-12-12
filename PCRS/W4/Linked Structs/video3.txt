@@ -1,0 +1,74 @@
+In the last video, we built a basic traversal over a linked list. Now, we'll modify that traversal to add notes to any position in a linked list. When working with linked lists, it's really important to make sure you know where your pointers need to be. Draw diagrams on paper, like the ones we use, to keep track of what you need to do.
+
+Here's a diagram of a linked list with 3 nodes.
+
+
+Suppose we want to insert a node here --- after the  
+current first item but before the current second item. To insert a node, we'll do two things:
+
+First, we'll create a new node to be added. We have a variable new_node referring to it.
+
+Second, we'll add it to the list by modifying pointers *in the correct order*. If we build our links in the wrong order, we could lose part of our list.
+
+We'll need to have a pointer to the location where we're going to insert.
+
+We duplicate the link to the node after our insertion point, so we don't lose the tail of our list.
+
+And then we replace the original link with a link to our new node.
+
+Does it make sense that we have to create a link from the new_node to the rear of the list before we insert new_node into the list? If that's not clear, pull out some paper and draw a diagram of this process. We'll wait.
+
+Now, let's write some code to complete this insertion.
+
+Here's some starter code. It defines a node structure, provides a helper function for creating a new node, and recreates the situation from our diagram. We have both a front pointer -- the linked list we're inserting into -- and three nodes with the values 1, 3, and 4.
+
+Now, we'll need to define our code for inserting into a list. Let's define a function insert that takes the value to insert, the list to insert into, and the position to insert to.
+
+Now, remember our diagram. We found the location where we want to insert, then created a node to be added, and then linked the new node into the list. So, let's use a traversal to find the location to insert.
+
+First, we'll create a new node to be added. We have a variable new_node referring to it.
+
+Second, we'll add it to the list by modifying pointers *in the correct order*. If we build our links in the wrong order, we could lose part of our list.
+
+We'll need to have a pointer to the location where we're going to insert.
+
+We duplicate the link to the node after our insertion point, so we don't lose the tail of our list.
+
+And then we replace the original link with a link to our new node.
+
+Does it make sense that we have to create a link from the new_node to the rear of the list before we insert new_node into the list? If that's not clear, pull out some paper and draw a diagram of this process. We'll wait.
+
+Now, let's write some code to complete this insertion.
+
+Here's some starter code. It defines a node structure, provides a helper function for creating a new node, and recreates the situation from our diagram. We have both a front pointer -- the linked list we're inserting into -- and three nodes with the values 1, 3, and 4.
+
+Now, we'll need to define our code for inserting into a list. Let's define a function insert that takes the value to insert, the list to insert into, and the position to insert to.
+
+Now, remember our diagram. We found the location where we want to insert, then created a node to be added, and then linked the new node into the list. So, let's use a traversal to find the location to insert.
+
+Let's just copy our basic traversal to start. The traversal from main starts at the front of the list and goes to the end. Our traversal needs to stop at a specific index.
+
+One detail from the diagram. Our current pointer actually stops at the node *before* the location where we want to insert. Let's change our while loop to a for loop -- and make sure we stop one location early.
+
+Just to verify what we've done so far, let's print the value at the node we've stopped at -- and then exit. I'll add a print statement and a call to our new insert function.
+
+So far so good.
+
+Now, we need to create our node and then link it in. We need to be very careful about the order of our assignment statements.
+
+First, we create a new node with the correct value. 
+We also make sure that its next pointer refers to the node that should follow it in the list.
+
+Second, we break the original link and replace it with a link to our new node. 
+
+We return the newly created node.
+
+Let's review. 
+After this code finishes, curr points to the node that should come BEFORE our new node.
+In this line we take the next pointer of that BEFORE node and point it to the new node.
+But before we reset that next pointer, we use it's value to set the next pointer of the node
+we are inserting.
+
+Let's try our code.
+
+Success! However, we'll need to do some more testing before we're confident that we've solved the problem. In the next video, we'll do a quick case analysis and test our code.

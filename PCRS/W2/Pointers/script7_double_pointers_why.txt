@@ -1,0 +1,51 @@
+In the last video we learned about pointers to pointers. Here, we will develop an example of them in use.
+
+Let's start with this function that takes an array of 2 integers and sets the variable pointed to by largest_pt to the larger of these values. This program only uses concepts that you've already seen, but let's review a few things.
+
+Remember that when we pass an array into a function, the function is only getting the address of the array. So while we could give the type as int A followed by square brackets, it is more conventional to show that A is type int *.
+
+We also pass the size of the array, since we need it to search the entire array for the largest element.
+
+And here we are passing in a pointer to an int. The integer it points to must already be allocated,
+
+because in these two statements we dereference largest.
+
+As an aside, the function assumes that the array has at least one element. This is a pretty typical way of searching an array.
+
+So we call find_largest like this,
+
+passing it an array of 2 integers,
+
+and the address of the integer that will be set by the function.
+
+Now, let's change things up. What if, instead of holding two integers, A held 2 integer pointers?
+
+You might think that it would be wierd to have an array of pointers, but it is actually very common. Soon we will start working with programs where the main function receives information from the operating system using an array of pointers.
+
+So the values of A are now the addresses of i and j
+and the type of A is array of int *.
+
+Now our function should take an array of two integer pointers and set largest_pt to point to the larger of the two integers that are *pointed-at* by those two pointers.
+
+Does anything need to change here?
+
+The function still doesn't return anything, so a void return type remains correct.
+
+The function is still called find_largest.
+
+It still takes an array,
+but now the type of each element is int *, so A itself is int **.
+
+Does this need to change? Let's look at where we will call the function.
+
+This hasn't changed. In the end largest will still be an integer so the parameter in the function is ok.
+
+Now what about the function body. What has to change here?
+
+A is a pointer to pointer to int, so we need to dereference it twice to get an integer.
+
+We'll need to make similar changes elsewhere.
+
+Instead of just getting an integer from the array, we'll need to dereference the pointer we get from the array.
+
+And that should be it. Let's compile and run to confirm that it works.

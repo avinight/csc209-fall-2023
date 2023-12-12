@@ -1,0 +1,51 @@
+Throughout these videos we've been using the PCRS visualizer to show you how various C statements
+change variables in memory. You have seen how each function call has its own name table and space
+on the stack. You have also seen that there is an area of memory called the heap. In this module,
+we will review some of those concepts and add a few new ideas about the layout of memory.
+
+When we are programming, we like to imagine memory as a single, vast array that houses all of our data.
+
+This array is the programmer’s view -- a logical view -- of memory.
+
+This memory array is divided into segments.
+
+Each segment stores one particular type of data.
+
+In this video, we'll explore the code and stack.
+
+Let’s say we want to write a program in C.
+
+Here have a main function that, at some point, calls the function sum, which takes two arguments
+and returns an integer. We also have a single global integer variable z that has some value.
+
+This code, once it is compiled into machine instructions, is stored near the top of our array in
+the code segment.
+
+Though the array starts at 0, the code segment would be very close to, but not at 0.
+
+As this code executes, it will call the functions main and sum. Each function invocation is
+allocated space in the stack to store local variables. This stack space functions similarly
+to the stack data structure, in that the most recent function call is at the top of the stack
+and, that function calls are removed in last-in-first-out order.
+
+Lets focus on the call to the sum function. We will need to store all the local variables
+and arguments of the sum function somehow.
+
+So we will allocate a stack frame, which is enough memory on the stack to store these variables.
+
+The stack frame is located on the top of the stack, above the stack frame for its caller, the
+function main.
+
+Once sum is finished executing, it no longer needs its stack memory. We will pop the sum stack
+frame from the stack and return a value to our caller, main.
+
+By popping off the sum stack frame, we free the resources assigned to it, so they could be used
+by another function call. Furthermore, main's stack frame is now at the top of the stack, where
+it should be. The top frame in the stack is always for the function that is currently being
+executed.
+
+This stack behaviour implements the rules for variable scope that we have become accustomed to: local
+variables are only accessible while the function that defines them is active. Once the stack space
+has been deallocated, the variable is no longer a valid memory location.
+
+In the next video we will learn about the rest of the memory array.

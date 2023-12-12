@@ -1,0 +1,25 @@
+Now that we know how to look at the sample values in a wav file, we can understand a program that quadruples the volume in the file.
+
+Here is the program that increases the volume of a wav file.
+
+Commandline arguments are useful when writing file-processing programs, since they allow the user to specify the files that will be processed. Our program will take two commandline arguments. The first will be the existing wav file to read, and the second will be the name of a new wav file to write. If the user fails to supply enough parameters -- or supplies too many -- then we remind the user of the correct way to call this program.
+
+Now we are ready to open our files. We open both files here in binary mode. The first file is opened for reading; the second is opened for writing. It's especially important that we check the return value of these fopen calls, since we are using user input as a parameter. It's very possible that the user provided an incorrect filename.
+
+Our next task is to read the header from the input file and write the header to the output file. Since we need the header size multiple times, we define a useful constant to represent it and then use fread and fwrite to copy the header from our source file to the new audio file.
+
+To increase the volume of the sound in a wav file, we must multiply each of the samples by a number greater than 1. We need to access each sample individually, so we use a while-loop that reads one short integer at a time from the input file. If fread does not return 1, then we have reached the end of the file, so our while-loop terminates.
+
+Inside the while-loop, we multiply our sample value by 4 to make it four times as loud as the original sound, and then we write the new sample to the output file using fwrite.
+
+Finally, we close both files to complete the program.
+
+Now let's compile and run our program and use od to test the results.
+
+We now have a new file called short_loud.wav. Let's look at the output of od on the original short.wav file and also on the new short_loud.wav file that we just created.
+
+Notice that each sample in short_loud.wav is four times as large as the corresponding sample in short.wav. It looks like our program is working as it should!
+
+And now, since we've used commandline arguments, it's very easy to run our program on other files. In particular, let's increase the volume of that door-slamming noise we used in the previous video.
+
+Let's listen to the original file and now the louder one [door_loud.wav].

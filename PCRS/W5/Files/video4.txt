@@ -1,0 +1,28 @@
+In previous videos, we have seen how to read the contents of files using fgets and fscanf. Now, let's learn about writing into files.
+
+Whenever we intend to write into a file, then we must use 'w' or 'a' as the mode when calling fopen. This line of code uses fopen in 'w' mode to open a file for writing. If the file already exists, then its contents will be deleted as part of the fopen call. We could also use 'a' if we wanted to append to the end of a file rather than deleting its contents. We will use mode 'w' in our examples.
+
+You have been using printf to write output to standard out. There is a related fprintf function that is very similar except that it additionally allows you to specify the stream where the output should go.
+
+Here is an example that writes several types of values to a file.
+
+Since we're writing to the file, we use fopen in 'w' mode to write to file myfile.txt.
+
+fprintf uses the same format specifiers as printf, so what you learned for printf is immediately useful. The fprintf calls look just like printf calls, except that each call includes the output_file stream as the first argument. Each line writes the given string to the stream.
+
+Let's run the program from the commandline so that we can observe what it does.
+
+We see no output on the screen, and that's expected. Instead of printing to the screen, like printf, the three lines of output were written to myfile.txt.
+
+Let's open that file and verify that the expected contents are there. The file contains the three lines we expected -- one for each of the three fprintf calls in our program. 
+
+This is a good time to dive a little deeper into file I/O to describe a potential error. When we said that fprintf caused each string to be written to the stream, we very carefully didn't say that the file was being written. That's the desired result, but your operating system is involved.
+
+When our program writes to a stream, it's actually writing to a location in memory controlled by the operating system. That memory is periodically written to the file on disk -- when, exactly, the write-backs occur depends on how the stream is set up -- but in almost every case, the contents of the file will be what you've written.
+
+But what happens if your computer loses power in the middle of your program? If you look at the file after rebooting your machine, will you see the results of some of your fprintf statements? None of them? All of them?
+
+The short answer is: we don't know. That's one reason why we don't recommend that you use I/O -- either file I/O or standard output -- for debugging. If the program crashes or terminates abnormally, fprintf -- and printf -- statements that were executed may not actually be written to disk, or in the case of STDIN, to the screen. If you're relying on printed statements to debug, this could lead you to look for the bug far earlier in your program than it actually is. Learn to use gdb or another debugger of your choice instead.
+
+If you absolutely need to make sure that key modifications have been made to a stream you're writing, then you can "flush" the stream. You won't typically need to do this: the operating system will handle it for you. But if you need it, the fflush function requests that the operating system write any changes that are in its buffer.
+

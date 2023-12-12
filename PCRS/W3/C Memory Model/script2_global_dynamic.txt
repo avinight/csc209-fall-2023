@@ -1,0 +1,61 @@
+In the previous video, we looked at the locations of the code and stack segments in memory -- where
+we store code and local variables for functions. Now, we'll look at global and dynamic memory.
+
+
+If we assign a variable outside of main, than it is a global variable that exists everywhere. That is,
+we can access z in both the main method and the sum function.
+
+We can’t store global variables in the stack because it only contains variables that have been
+defined for a certain function. So turns out that global variables are stored in their own global
+variable segment right below the code segment.
+
+Unlike, the stack and its stack frames, the global variables are not connected to any particular function.
+That way, the variable z remains allocated for the entire program.
+
+But the global data segment doesn't just hold global values. It also holds some values, such as string literals.
+
+
+While the variable c_ptr is allocated on the stack
+
+the value of c_ptr is the address where the string "Hi!" is stored 
+-- and that can't be on the stack.
+
+String literals aren't always being assigned to variables, after all. 
+So, that string -- a constant --
+is also stored in the global data segment, where it can be used anywhere in the code.
+
+That leaves one more type of memory -- dynamic allocations. 
+Malloc or "Memory Allocation" allows us
+to allocate memory while the program runs.
+
+If we use malloc to create an array with 500 items, where will that array be located?
+
+It can't go on the stack frame for sum since we might want to access the array after sum has returned. Remember that dynamically allocated memory *should* have a lifetime longer than the function in which it was allocated.
+
+All dynamically allocated data is stored right below the global segment in an area called the heap.
+
+When we malloc 500 integers, we are reserving 500 integer-sized locations, in a single uninterrupted chunk of the heap.
+
+Over time, as we malloc more things, the heap will begin to fill up.
+
+Whenever we free an allocated piece of memory, it is marked as being available for allocation.
+
+And future malloc calls can re-allocate some or all of the freed memory.
+
+At this point we have our stack growing up and our heap growing down. Both have a maximum size, so if your
+program exceeds the maximum size of the stack or heap, your program will  encounter an out of memory error,
+or ENOMEM.
+
+But wait -- there's space in the middle. Why didn't the stack and heap meet? We won't discuss it in detail,
+but other segments, like a file buffer segment, may be created in the middle.
+
+And what about the free space at the bottom of our array? The OS reserves the largest addresses in memory
+for its own use.
+
+These OS segments cannot be accessed by normal programs. If you do somehow try to address OS memory, you will
+get something called a Segmentation Fault -- or segfault. You've probably already seen a few of these!
+
+A segfault results when we try to access something we don’t have access to or something that does not exist.
+You can get a segfault in a few other ways. Remember that the Code segment does not start at 0?
+
+One of the most common problems is an uninitialized variable or pointer, which results to it pointing to the zero, resulting in a segfault. As a result, zero and anything close to zero is used as a buffer for failure.

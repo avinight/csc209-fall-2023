@@ -1,0 +1,52 @@
+In the previous video, we learned how to write binary files.
+
+We created two files: my_data containing some variable values, and array_data containing an array. Now we'll learn about a function fread, for reading this kind of binary data back into our programs.
+
+Like fwrite, fread takes four parameters.
+
+The first is a pointer to the memory where the data from the file will be stored.
+
+The second is the size of one element.
+
+The third is the number of elements to read.
+
+Finally, the fourth is the stream to read from.
+
+Notice the similarity between the prototypes for fwrite and fread. There is only one difference in the prototypes: whereas fwrite takes a constant pointer as its first argument, fread takes a non-constant pointer. This reflects how the memory is being used: fwrite is writing data from memory to the file, so the memory does not need to be modified. However, fread is writing data from the file to memory, so the parameter cannot be const.
+
+fread returns the number of elements successfully read from the file. In particular, if fread returns 0, then no elements were successfully read. This signals either that an error has occurred or that the end of the file has been reached
+
+
+Let's use fread to read the my_data file that we created in the previous video. Remember that the my_data file has three values in it: an integer, a character, and a floating-point number.
+
+First, we declare three variables of appropriate types to store the data we're reading. We're going to fill in their values by reading them from my_data.
+
+When we open the file, we use mode rb to open a binary file for reading.
+
+We use one fread call for each piece of data being read. Each fread specifies a value of 1 for the third parameter, since only one item is being read. The differences between these calls are in the first two parameters, where we must specify the correct memory location to store the data and the appropriate size for the element being read.
+
+Notice that we are reading the integer first, then the character, then the floating-point number. It's important that the order in which we read values is the same order that we wrote them to the file.
+
+This printf call is used to print the three values to the screen, so we can verify that fread works as we expect. Notice that we aren't checking the return values for fread in this program. Typically, we would check the return values for errors, but in this case, since we're printing these values, we will be able to see if the program is not running correctly.
+
+We see that we have successfully read the values from a binary file.
+
+In the previous video, we also wrote a five element array to a file called array_data. Let's modify our fread program to read the array data.
+
+First, let's introduce a constant that holds the number of elements in our array. This is also the number of elements to read from the file.
+
+Next, let's remove our existing declarations and add a new one for our array. We'll use the constant here to make the array the proper size.
+
+We'll keep the first fread call and remove the others. Our first argument to fread is a pointer to where we want to store the data. We want to store it in the array we just defined, so 'numbers' is our first parameter. We still use sizeof(int) for the second argument, but since we're reading more than one element, we'll use the NUM_ELEMENTS constant for the third argument.
+
+We need to verify that we read the data correctly. Typically, you'd check fread's return value, but since we're just verifying that we know how fread works, we can print each item in the array instead. We'll use a for-loop, so define an integer to use as a counter. Then, write the loop to iterate over every item in the array. We'll print each item.
+
+And we see the five values that we wrote to the file.
+
+So, now that we know that fread and fwrite are duals. We use fwrite to place data from C programs into a binary file, and we use fread to bring binary data from a file into a program. However, there's a complication. You might expect that you can use fwrite to create a binary file, and then use fread on a different computer to read that data back. Unfortunately, this isn't guaranteed to work.
+
+Here, we are running our fwrite program on two different machines. When we compare the files -- they're not the same! Different computers may represent data in different ways.
+
+In this case, we're seeing the effective of endianness. One machine stores numbers in a little endian format: the digits should be read from right to left -- the opposite of how we read numbers normally. The other machine is storing numbers in a big endian format: the digits should be read from left to right, as we normally do. We won't go into the details in these videos, but when you are transferring binary data between machines, you need to be aware of how the computer represents data internally.
+
+

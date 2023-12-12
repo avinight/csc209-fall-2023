@@ -1,0 +1,23 @@
+In the previous video, you saw how strcpy and strncpy can be used to copy strings. In this video, you'll learn how to concatenate strings. Remember, _concatenating_ to a string means that we are adding to the end of what was previously there. You may also hear it referred to as _appending_ to a string.
+
+The string function that concatenates strings is strcat.
+
+strcat adds the characters from s2 _to the end_ of string s1. Both s1 and s2 must be strings prior to calling strcat.
+
+Here is an example of using strcat.
+First we use strcpy to copy s2 into s1.
+Then we use strcat to add s3 to the end of s1.
+
+Now s1 holds all characters from s2 followed by all characters from s3.
+
+Notice that we had to explicitly include a space in s3. strcat doesn't do anything
+special with the spaces or the characters in the strings. It simply copies each character
+from string s3, into the memory of s1 starting at the location of s1's first null terminator.
+
+Like strcpy in the previous video, strcat is an unsafe function. s1 may not have enough space to store its contents as well as s3's contents. Similar to the case for strcpy, we have an n function called strncat that is a safe version of strcat.
+
+The new n parameter indicates the maximum number of characters, not including the null terminator, that should be copied from s2 to the end of s1. Unlike strncpy, strncat always adds a null terminator to s1.
+
+Here is the correct way to call strncat. The maximum number of characters to copy into s1 is the size of s1, minus the number of characters already in s1, minus 1 to make room for the null terminator.
+
+Using strncpy and strncat are tricky. Does the n parameter include the null terminator in the count? Does the function guarantee that a null terminator is added? Questions like these remind us that these functions have edge cases and that we should carefully check our calls of these functions.

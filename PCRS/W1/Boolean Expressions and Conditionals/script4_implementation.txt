@@ -1,0 +1,46 @@
+You've learned how to use relational and logical operators. Now let's dig a little deeper into what
+these operators are really doing.
+
+It's important to recognize that operators like less than and logical or are not so different from operators like plus or minus. All of these operators take operands and return values. It is true that we usually use relational and logical operators with if-statements, but that isn't a necessity. In fact, these operators can show up anywhere that other operators can show up.
+
+When we write 3 + 5, we know that this expression will evaluate to 8.
+
+But what happens when we write 3 < 4? What does an expression containing < evaluate to? To answer these kinds of questions, it's useful to assign the result of a relational or boolean expression to a variable, and then inspect that variable.
+
+We have three variables here; we're going to assign the result of a relational or logical expression to each one.
+
+Here we assign the result of 4 < 5 to x. The parentheses are optional here, because the precedence of the assignment operator is lower than that of the < operator. But we have included the parentheses for clarity. 4 < 5 is true.
+
+This line includes an expression that is false, and this line contains an expression that is true.
+
+So we have a true, then a false, then a true expression. And the question is: how are true and false represented? What values get assigned to the variables x, y, and z?
+
+Let's run our code.
+
+We see that true is represented as value 1 and false is represented as value 0. So, the relational and logical operators return value 1 for true and value 0 for false, and then those values are used to control our if-statements.
+
+Now let's consider three strange-looking if-statements. Which of the three messages are going to print?
+
+Remember that 0 is the representation of false. This if-statement is therefore using a false value as its condition, and of course false is not true. So "first" will not be printed.
+
+Let's take a look at our second if-statement. 
+
+Remember that 1 is the representation of true, so this if-condition is always true. "second" should be printed.
+
+What happens with the third if-statement? This one is most strange of all, because it doesn't use a 0 or a 1. Is 2 true? Is 2 false? Well, it turns out that every numeric value _except_ 0 is considered to be true. So "third" gets printed because 2 is interpreted as true.
+
+You're probably wondering why we'd write if-statements like this. Wouldn't every conceivable reasonable if-statement use a relational or logical operator, as we did in previous videos? In fact, no. C programmers frequently use if-statement constructions with no operators at all, relying on the interpretation of 0 as false and everything else as true to write concise if-statements.
+
+For example, consider the program fragment here.
+
+When does the code of this if-statement run? Think about it for a minute.
+
+It runs whenever the value x is interpreted as true. This occurs when x is not 0.
+
+The if-statement protects against the undefined operation of dividing 5 by 0. Of course, we could have written "x != 0" here to be more explicit, but it's common for C programmers to take advantage of shortcuts when they can.
+
+Is it better to do it this way? Not necessarily, but it certainly isn't wrong.
+
+If it is easier for you to think of writing x != 0, then do it that way in your own code.
+
+But you are going to have to read and understand code written by other programmers. So even if you choose not to use these shortcuts in your programs, you will need to be able to interpret them correctly.

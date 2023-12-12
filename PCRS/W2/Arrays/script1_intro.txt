@@ -1,0 +1,37 @@
+In this module, we will learn about arrays. Arrays are a very powerful tool for programming. They are a basic building block and form the underlying basis for the implementation of many sophisticated data structures, such as lists in Python, ArrayLists in Java, or Heaps. In this video, we introduce the concept of an array.
+
+Consider this program that takes the daily high  temperatures over four days and calculates the average.
+
+Our program uses one floating point variable for each day's temperature. This is manageable because we *only* have four day's worth of data.
+
+But it would become very cumbersome if we were calculating the average temperature over a month -- or even a year. Imagine declaring 365 individual variables!
+
+Instead, most programming languages have a data-type that can hold multiple values that share the same name. Let's add a new statement to our program.
+
+This statement declares an *array* of 4 floating point numbers.
+
+First we specify the type of one element of the array -- in this case a float. In C, all the elements in a given array must be the same type.
+
+Next comes the name of the array
+
+followed by square brackets. The square brackets aren't part of the name. We use them to specify the number of elements in the array. In this case, we're allocate space for 4 floating point numbers.
+
+Now we have to change the code where we assign the 4 temperatures.
+
+In the original code, we assigned values to 4 different variables. Now, we want to assign all four values to the array -- one to each element.
+
+We access an element of an array by providing the name of the array followed by the specific index to access, in brackets.
+
+The indices start at 0, so this line assigns 16.0 to the first element in the array.
+
+The next index is 1, so to assign the second value, we access the array again, but at index 1 rather than 0.
+
+The last two values are placed at indices 2 and 3. We often refer to array elements by saying the array name *at* some index, so I would read the last line as "daytime_high AT 3 is assigned 19.1".
+
+We need to use the same bracket notation to access the array values when we compute the average.
+
+You may be wondering "How is this any better than simply using 4 different variables?" In our example with one month of variables, for instance, we'd still have 31 assignments statements. However, using arrays allows us to use a variable as the index.
+
+For example, here we access a particular day using the variable index. We just set index to 1, but you could imagine the index being set while the program runs -- from user input, for example, or by computing a value. If we were still using different variables, we would be unable to change the variable name being accessed in the code, so we wouldn't be able to change the value being printed at runtime.
+
+Later, we will use variables and loops to systematically access all the elements of an array, and this will help us write clear code and to avoid repetition like the 4 assignment statements we used to set daytime highs.

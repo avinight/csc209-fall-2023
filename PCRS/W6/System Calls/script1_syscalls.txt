@@ -1,0 +1,15 @@
+A system call is a function that requests a service from the operating system.
+
+You have already used a number of system calls in your programs.
+
+The easiest system call to explain is exit. An exit call is a request to the operating system to terminate the program. When exit is called, the operating system executes instructions to clean up the data structures that represent the running process and to terminate the process.
+
+The I/O calls are more interesting example of system calls. The low level I/O calls read and write are system calls. Higher level calls, like scanf and printf, also use read and write in their implementations.
+
+For example, the printf statement in the displayed program sends "The length of Hello World is 11" to standard output.
+
+printf itself isn't a system call. Instead, it is a library function that executes several helper functions before calling the write system call. The diagram shows the key helper functions it calls before calling write.  In particular, it constructs the output string from the format string and the arguments. Then, it calls write, which is a system call. write causes the program to switch to executing operating system code that will actually take the output string and display it. When control returns to the program that called write, the return value of write is used to determine if the call was successful or if an error occured, and control returns back to the printf function and the user program.
+
+It is important to contrast system calls and library functions.  Calling a library function such as printf works exactly the same way as calling a function that you wrote. A system call is different because when a system call occurs, control is given to the operating system and the operating system executes code on behalf of the program. Library functions such as printf, scanf, fopen, fgets will call system calls as part of their operation.
+
+How do you know if a function you're calling is a library call or system call? From a user's perspective, there isn't a huge difference -- they both act like functions. However, each operating system has a list of system calls that it supports. On a linux machine, those calls are roughly divided into low-level process management, file management, and interprocess communication calls.

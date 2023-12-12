@@ -1,0 +1,33 @@
+We have already seen how to read and write binary data to files using fread and fwrite. In particular, we saw how to read and write individual values and also arrays of values. There's one more popular use of fread and fwrite, however, and that is for reading and writing structures. There is no new syntax or concept to learn; think of this as an important application of what you already know about structures and files.
+
+If we had a struct student and we wanted to write such a structure to a file, we _could_ separately write the first name, write the last name, write the year, and then the GPA. But this is tedious, especially with a large number of structure members. Reading or writing entire structures at once greatly simplifies our code.
+
+Let's work through an example of writing structs to a file.
+
+We are going to write some student structs to a file, so we declare a file pointer and then open a binary file for writing. The file is called student_data.
+
+These four lines populate the four members of a struct student variable s.
+
+And then we write the struct s to the open file, using fwrite. Most of the parameters are the same as when we were writing individual values.
+
+The interesting parameter is the second one, where we use sizeof to determine the size of the struct that we are writing.
+
+It's very important we used sizeof instead of manually computing the value of the struct. It seems possible for us to compute the struct size: we know that the first name is allocated 14 bytes and the last name is allocated 20 bytes. Most likely, the year will be 4 bytes, and the GPA will be 4 bytes. So perhaps the entire struct is 14+20+4+4 = 42 bytes.
+
+
+Moving the members a little in memory can speed up memory accesses -- and it may even be required by the computer running the code. For example, most machines require that integers start on an address that is a multiple of four, so the compiler will add two bytes of padding after the characters to make this happen.
+
+Fortunately, we don't need to guess what the compiler has to do: we can ignore it as long as we use sizeof!
+
+Let's go ahead and write a second struct to the file too. Here, we change some of the struct's members and then write the struct to the file again. Now the file has two structs in it.
+
+Notice that our first name is allowed to be up to 13 characters (plus a null terminator). But the name doesn't always take up the full space. For example, Betty is only 5 characters plus a null terminator. What happens when we write the entire struct to a file? Let's find out.
+
+Let's compile and run the program.
+
+Running the program creates a file called student_data that contains the two structs that we wrote to the file. Let's use od to see how the name "Betty" is being written.
+
+We know that characters are one byte, so we have od present the data as one-byte unsigned decimal values.
+
+We also know that the characters should be encoded as ascii. Looking at the first seven characters, we see B-e-t-t-y. The sixth character is a 0 -- our null terminator. Now, we need to find the start of "Holberton". The value for H is 72, and we see it at position 15. fwrite places all 14 bytes of the first name field into the file, even though we only use the first 6!
+

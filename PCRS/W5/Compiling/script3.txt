@@ -1,0 +1,40 @@
+In the last video, we introduced the idea of using header files to define a design to be implemented in source files. The example we used contained type and function declarations, and it allowed us to detect a type mismatch between one source file that implemented some functions and another source file that used the functions that were defined. It also allowed us to put the function prototypes in one place so that we don't have to type them into every source code file that uses them.
+
+But we haven't moved the entire design into the header file. Here, we're defining an array that depends on the sorting functions that were implemented in another file. That doesn't feel right.
+
+As a first attempt, let's just move the definition of the sort_info type and the array of sorts into the header file. This might also feel a bit wrong -- but compare_sorts needs access to the variables, even if they really shouldn't be implemented in the header file.
+
+Now let's compile it. Each of the separate source files compiles fine, but when we try to link them, we get an error indicating that symbols have been duplicated. Can you see why?
+
+The variables being duplicated are *defined* in the header file. And when each file is compiled separately, that means that the variable is being *created* in each object file. Defining a variable creates space for the variable. When we try to link the object files, the linker sees that each object file has a copy of the variable.
+
+What we need to do is separate the *declaration* of the variable's name and type from the *definition* that creates it. Where should these variables actually be created?
+
+The actual definitions should probably be in sorts.c. That's where the functions themselves are being defined.
+
+But compare_sorts needs to know the variables exist, so they must be declared in the header file. To do this, we remove assignment of values to the variables and declare them to be *extern*. extern stands for *externally defined*.
+
+Now, when I recompile, I don't get a duplicate symbol error. That's because the extern statement creates the names of the variables -- so that each source file can compile separately -- without actually defining space for the variables. The variables only exist in one place: in sorts, where they were defined.
+
+What if we accidentally create a duplicate symbol? x is a very common bad variable name. What happens if we happen to create a global variable x in multiple files in our project?
+
+Sure enough, we get the same duplicate symbol error. But in this case, maybe we want x in each of our source files. It's not part of the design; it's part of the implementation in each file, so there should be two variables: one for each file.
+
+In this case, we use the *static* keyword. By default, symbol names in C are externally visible -- that is, they are available globally, everywhere in a program. *static* makes a symbol name local: it becomes available only in the file that defined it. You should rarely need to use the static keyword.
+
+Lets make one more change to our header file. I'm adding a *guard condition*. The goal is to keep the header file from being included more than once in any compilation. A multiply included header will generate errors like the duplicate symbols we just fixed. This isn't happening in our project right now, but it's a very common issue, so best practice is to *always* add a guard condition.
+
+The first line in the guard is an if statement. Read it as "if not defined SORTS_H".
+
+In the next line, we define SORTS_H. The first time this header file is encountered, SORTS_H doesn't exist, so the definition is executed. If the header is included again, then the condition will be true, and the contents of the header file will not be processed.
+
+We have to tell the compiler where the body of the if statement ends. endif provides this information, and to make it easier for a human reader, I add a comment stating which if statement is being terminated.
+
+You might be wondering why I recompiled the source files even though I didn't change either one. That's because I changed the header file they include. This is called a *dependency*. The source files rely on the contents of the header file, so I have to recompiled when the header file changes. Tracking these dependencies is difficult, so the compiler toolchain includes a tool, makefiles, for tracking which files need to be recompiled. We'll discuss makefiles in the next video.
+
+Before moving on, though, let's digress and talk about static one more time.
+
+The static keyword has several related meanings. We've already seen it used to denote that a global variable cannot be visible outside the file where it is defined. If it's used in the definition of a local, rather than global, variable it takes on a different meaning. It means that the variable should keep its value across function executions.
+
+In this case, even though x is initialized to 3 at the beginning of the function, the value of x remains updated since it was initialized static.
+

@@ -1,0 +1,22 @@
+In previous videos you have seen both fprintf and fscanf used independently but doing this is
+is uncommon. Typically, we read an existing file, process the contents, and write the new results to an output file.
+
+For example, suppose that we have our top ten scores file, and we want to create a new file that contains only the names, not the scores, with one score per line. We can use a combination of fscanf and fprintf to accomplish this.
+
+Let's start with our earlier program that uses fscanf to read the names and scores on each line of the file. We have only one file pointer for reading the input file, and now we'll want a second file pointer to refer to the output file. Let's add an output_file file pointer.
+
+In addition to opening the top ten scores input file, we'll have to open the names.txt output file that will contain our names. Let's copy the fopen code we used before and change the file pointer used for its return value.
+
+We also need to change the name of the file to open and have to update the mode from 'r' to 'w'.
+
+We should also add code for checking that this fopen call succeeds. Again, let's copy the existing error-checking code and simply change the name of the file pointer.
+
+We'll need to change the code inside of the loop. In the original program, we were just printing the scoreboard. This time, we want to output only the name, and we want that output to go to a file. We'll use fprintf.
+
+Finally, we should close the output file and ensure that fclose was successful. Let's do so in the same way that we close the input file, and begin by copying its code. We change the name of the file pointer appropriately, and we are done.
+
+Now, let's run our new program from the commandline.
+
+And now we can compare the output file with our original file. We see that we have successfully extracted the names.
+
+

@@ -1,0 +1,59 @@
+In this video, we will explore the use of flag bits. Flag bits are commonly used by system calls, when a single argument is used to transmit data about multiple options. That variable is treated as an array of bits, where each bit represents an option -- or flag -- that can be turned on and off. We will explore how this concept is used to implement file permissions.
+
+Let's look at how file permissions work in Linux. Here is the contents of a directory.
+
+The first column in the output is the permission string. This represents who can read, write, or execute the file.
+
+The third column is the owner of the file, and the fourth column is the group.
+
+The owner and group fields are relevant to permissions because Linux allows us to set separate permission for the owner of the file, the group, and every other user in the system.
+
+Let's look more closely at the permissions for syscall_cost.
+
+The leftmost dash in the permission string identifies the file type. The dash means that it is a regular file. "results" which is a directory, has a d in this position, and a link would have an l.
+
+The owner of the file  has read, write, and execute permissions on the file.
+
+The members of the group instrs have read and execute permissions on the file but cannot write the file.
+
+Everyone else also has read and execute permissions.
+
+How does this relate to bit manipulation operators and flag bits? If you ignore the first dash that represents the file type, each file permission is essentially an on/off switch, so we can represent each one with a flag bit.
+
+We need nine bits to represent each permissions setting, so we need a variable with enough space for 9 bits. This rules out storing it in a byte.  The system calls that operate on file permissions use a mode_t type for the permissions string.
+
+On my system, this is defined as an unsigned int -- a 32-bit value.
+
+The permissions will be stored in the 9 low-order bits -- or rightmost -- bits.
+
+The first step is to see how to turn the permissions string into a sequence of bits.  Each character in the permissions string becomes a bit in our variable representing the permissions.
+
+Bits 8, 7, 6 represent the read, write, and execute permissions for the user.
+
+Bits 5, 4, and 3 represent the permissions for the group, and bits 2, 1, and 0 represent the permissions for everyone else.
+
+What if we wanted to represent a file with read-only permissions?
+
+The permissions string for a read-only file would be r--r--r--
+
+So we'd represent it with the binary value 100100100. As we know from the past few videos, we could construct that value with bitwise operators. Fortunately, the system calls that take a permissions varaible as an argument use several constants to make it easier for us to construct these values.
+
+One of the system calls that operates on file permissions is the chmod system call. Looking at the man page, we see that the arguments to chmod are the path to file we want to set permissions for, and the mode or permissions to set.
+
+Looking farther down the man page, we see a set of defined constants which will make it easier to set a value for the mode.
+
+Note that these constants are defined in octal or base 8.  Base 8 is convenient for representing permissions because one digit in base 8 is three binary digits.
+
+An octal or base 8 constant in C is written with a preceding 0.
+
+The library defines constants for each possible permission. Here, for example, are the three constants for setting the read permission.
+
+Now, we can go back to our problem.
+
+We can create the permission value using the bitwise operators we learned about in previous videos. In this case, to set bits, we use bitwise OR with the appropriate constants.
+
+Similarly, we can check if bits are set using bitwise AND.
+
+In this case, we combine the two flags for the group and other users using bitwise OR. Then, we use bitwise AND to check if either bit is set.
+
+Flag bits are a compact, efficient method for representing data with multiple boolean components. The use of individual bits, rather than whole characters or integers, saves space, while the use of bitwise operators is clean and fast.

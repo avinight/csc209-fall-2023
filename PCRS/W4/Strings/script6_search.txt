@@ -1,0 +1,21 @@
+The C standard library contains several functions for searching through strings. We will look at two functions here. The first searches for a single character in a string; the second searches for multiple characters -- another string! -- inside a string.
+
+Let's start with searching for an individual character in a string.
+
+The strchr function takes two parameters: the first is the string to search; the second is the character to search for in the string. It searches for the character from left to right in the string.
+
+You might expect that strchr would return the index in the string where the character was found. However, this is not what strchr does. Instead, strchr returns a pointer to the character that was found, or returns NULL if the character was not found in the string.
+
+This code shows an example of calling strchr. Notice how the first argument to strchr is a string and the second is a character.
+
+If strchr returns NULL, then the if-condition is true, and we print an appropriate message.
+
+If we reach the else clause, then the character 'v' is found in s1. We can use pointer arithmetic to determine the index of 'v' in s1. Notice that both s1 and p are pointers into the same array, so pointer subtraction is well-defined.
+
+Let's move on to a function that we can use to find a longer sequence of characters in a string. We call the string we're searching for the "substring".
+
+strstr searches left to right in s1 for the first occurrence of the substring s2. If s2 is found in s1, strstr returns a pointer to the character of s1 that begins the match with s2.
+
+Let's add to our program to include an example for strstr.
+
+Notice that in the call to strstr both arguments are strings. The program prints that the substring starts at index 6, because index 6 in s1 is the start of 'sity' which matches our second parameter.

@@ -1,0 +1,84 @@
+In the previous video, we introduced the concept of arrays. 
+This time, we will show you the syntax for initializing an array as it is being declared, 
+and we will discuss what happens when you use an invalid index to access an array.
+
+Let's start by looking at a tiny program that declares an array in the visualizer.
+
+When the first line is executed, an array of 3 elements is declared on the stack. 
+The initial values are just junk -- whatever was previously in those memory addresses. Then, in turn
+
+A[0] is set to 13, A[1] is set to 55, and A[2] is set to 20.
+
+We can accomplish the same result in fewer lines of code using some new syntax.
+
+This line also declares the array and initializes it with the same values.
+
+See how these addresses are 4 bytes apart? On my machine an integer takes 4 bytes, so when A is declared, the compiler sets aside 12 contiguous bytes -- 12 bytes in one chunk.
+
+In C, arrays are *always* laid out like this: the space for the entire array is allocated when the array is declared, 
+and all of the elements are allocated in one place, with no gaps between them. This has a number of consequences.
+
+The first consequence is that arrays cannot change in size. You can't increase the size of an array by adding extra elements. Once we declare A to have 3 elements, and the 12 bytes are allocated, there is no way to go back and make A have a 4th element. We can make a brand-new larger array and copy all the elements of the original array into it, but we can't just allocate a little more space for A.
+
+The second consequence of the fact that arrays are contiguous pieces of memory is that once we know the address where the array starts and the size of each element, we can calculate the address of each element. We rely on that fact when we use indexes to access elements of the array.
+
+Here's an example. In our visualization, the array A starts at this address. We call that the address of the array A. It's also the address of element 0 of the array.
+
+The address of the next element is the address of element 0 plus 4 -- the size of an int on my machine.
+
+That's the same as address of A plus 1 times that size of one element.
+
+The address of element 2 is the address of A plus 2 times the size of one element.
+
+In general, we can find the address of any element i by taking the address of the array and adding i times the
+size of a single element.
+
+In the statement I just added, the variable in_bounds is declared and initialized using the element at index 2 in the array. What value does it have?
+
+It gets the value 20. Make sure you understand why.
+The value 20 is in the third cell of the array.
+The first cell is located at the address of the array. That's A + 0.
+The second cell is 4 bytes -- the size of an int -- later. That's A + 4. And then the third cell is at A + 8 -- the address of A plus 2 times the size of an integer.
+
+Notice that there's nothing in the visualizer at A + 12 or A + 16. It hasn't been allocated.
+So what happens if we try to access it?
+
+This address is the address of the array A plus 4 times the size of an int. That's A + 16, which wasn't allocated. 
+Let's try to visualize it.
+
+The visualizer reports some warnings because we don't use the variables we're declaring -- but it doesn't care that we're accessing memory out of bounds. On my machine, the compiler does not detect that this is a problem -- even though it is wrong for us to do this! The issue is that C doesn't generally check that an array access is within the bounds of the array. In fact, it doesn't typically store the array bounds anywhere that it could be checked.
+
+When we get to the assignment statement, we see that out_of_bounds is assigned the value 0. 
+So the memory in the bytes after the end of A must have held the value 0 and that's what was accessed by A[4]. 
+But just because it worked, doesn't make it ok. The problem is that we don't know that this will always be the case. 
+The memory accessed by A + 16 isn't in our array. It could have any data at all in it.
+
+This line takes the issue even further. It assigns a value to memory that is outside the bounds of the array. 
+This is really bad because it might be replacing a value that another variable is using -- and this could cause an error that will be very difficult to find. Let's change our program a bit to demonstrate this.
+
+Here I'm adding another array of 3 elements and initialize them to 1, 2 and 3.
+
+When we visualize this, we notice that B is allocated space on the stack slightly after the space for A. That doesn't always happen, so this program may behave differently if you try it on your own machine at home.
+
+Stepping through, we see that the variable out_of_bounds now takes the value 1. How did that happen?
+
+Here is the address of A. So the address of A[4] is 16 bytesmore. Where is A + 16 in the stack?
+
+Is it already used?
+
+So when we set A[5] to 999, what do you think will happen?
+
+This address is 20 larger than this one.
+
+Remember these addresses are in hexadecimal.
+
+So this is the address that the compiler calculates for A[5]. And setting this value to 999 replaces the value that was previously in B[1]. You can see that this can lead to nasty hard-to-find bugs in your code.
+
+Before we finish, let's try one more thing.
+
+Let's change this access from A[4], which was wrong but ran, to A[3000].
+
+Let's compile. No warnings or errors.
+
+But when we run we get a Segmentation fault! This means that the address that was accessed was not legal. 
+You may grow to hate seeing a segmentation fault, but this is actually a better result than having an incorrect program run without revealing the problem. This way you can fix the bug now rather than having it bite you (or someone else using your code) later when it is harder to figure out what is causing the problem.

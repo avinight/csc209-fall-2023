@@ -1,0 +1,20 @@
+Many of the programs we've looked at have used printf to produce output on the screen. You have also seen that scanf can retrieve input typed at the keyboard. In addition to the screen and keyboard, we may wish to write or read contents from files on disk. For example, we might like to read the contents of a webpage to extract data, or our program might save its result in a spreadsheet file for later processing.
+
+C's input and output functions read and write from streams. An input stream is a source of data that provides input to our program, and an output stream is a destination for data output by our program.
+
+When using scanf to read data from the keyboard, we are actually reading from an input stream called standard input. 
+By default, any program you run automatically has standard input set to read from your keyboard. 
+This is why scanf reads keyboard input. Similarly, when using printf to write to the screen, what actually happens is that data is written to standard output. And in the same way that
+standard input is set to default to your keyboard, standard output automatically defaults to refer to
+your screen.
+
+So, now we know that two streams are automatically open and available when a program runs: standard input and standard output. There is a third stream that is automatically open too, called standard error. Standard error is another output stream, like standard output. 
+The default behaviour is that standard error also refers to your screen.  
+So why would you want to have two different streams for output?  Programmers typically use standard output for normal program output and standard error for error output.  Although their default location is the same (your screen), there is a way to change the location of any stream. For example, you might want the normal output for your program to be saved in a file but any error messages to appear on your screen.
+
+For example, recall that printf can be used to produce output on standard output. printf cannot be told to write anywhere else except for standard output. However, there is a related function, fprintf, that sends its output to the stream that you specify.
+
+These three streams have names that can be used to refer to them; we will see that using their names is sometimes required when using C input/output functions.
+
+The concept of streams is a powerful one. Not only can streams refer to the keyboard or screen, but they can also refer to disk files, network connections, and computer devices. In addition, we can open our own streams to add these input/output capabilities to our programs.
+

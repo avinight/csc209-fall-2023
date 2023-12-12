@@ -1,0 +1,59 @@
+In the last video we saw that we needed to be able to allocate memory for variables
+that would persist beyond the end of the function in which they were declared. We
+learned that C's malloc provides this ability by allocating memory on the heap. In
+this video we will examine a longer example involving malloc.
+
+Together we are going to write a program that creates an array that holds the
+squares of the integers between 1 and 10 inclusive.
+
+You possibly already saw something similar to this in a rehearse question. In this
+problem, we want to store these squares in an array, and more importantly, we want
+to write a helper function to build the array of squares.
+
+Our function will be called squares, and it will take one parameter -- the largest
+squared value to be stored in the array.
+
+The variable squares_to_10 is of type pointer to int. It will hold the address of the
+first element of the array holding the squares.
+
+Once we've called our function and the array is created, we can loop over the array
+to print out the values in the normal way.
+
+Now, let's get to the important part: Where is the memory for this array being allocated?
+
+This variable declaration allocates space for the address of one int. That space
+is on the stack. It will store the address of our array or, more precisely, the address
+of the first element of our array, but this statement does NOT allocate space for the
+array itself. Instead, we need to allocate the array inside our function.
+
+Let's write the function now.
+
+We will use malloc to allocate space on the heap for the array. The void pointer it returns
+is being assigned to an int pointer, since we're allocating space for an int array.
+
+Let's go over this again. The memory for the pointer result, with space for 1 integer pointer,
+is on the stack. It is in the frame for squares and is safe to use until the function squares
+returns. But the memory pointed to by result, which we allocated with malloc, is on the heap,
+and it will still be usable after the function returns.
+
+So how much space should we allocate? What parameter do we give malloc?
+
+We need space for max_val integers, so should we put max_val here? NO! That would only
+allocate max_val bytes, and integers are more than one byte.
+
+Instead, use sizeof(int) * max_val. That way the amount will be correct even if you run
+your program on a machine with different sized integers from where you wrote your code.
+
+Now we can loop over our array and set the squares. This should be easy for you now.
+Notice that result was type int *, but we are accessing result using the array notation.
+Code is usually easier to read using array notation, so we recommend using it rather than
+pointer notation where possible.
+
+Now what should we return from the function?
+
+result is the address of our newly created array on the heap. That's what we need to pass
+back to main. The variable "result" itself is local to squares, but its value (the address
+of the array on the heap) will be copied to the variable squares_to_10 and then used in the
+printf statements we wrote earlier.
+
+You can download and run this code to see that it works as expected.

@@ -1,0 +1,48 @@
+In the last video, we demonstrated that we can modify data in a function by passing a pointer to the data as an argument. Arrays can be used in a similar manner, but it turns out that we generally want to think of passing pointers, rather than passing arrays.
+
+Here we have a program where we define an array of 4 integers and call a function to calculate the sum of all the elements in that array.
+
+The body of the function is straightforward. We loop over the four array elements, adding them to a running total that we return at the end.
+
+So what should be the parameter in our function header?
+
+We are passing in an array,
+and using it with the name A inside the function.
+
+So we need the parameter to be an array with the name A. And A is an array of integers.
+
+So you might be tempted to write it this way. And that *would* work. But the problem is that you aren't passing an array of 4 integers so this is misleading. All that is being passed to the function is the *address of the array*. The address where the array starts -- not the whole array.
+
+Let me demonstrate. Lets use sizeof to print the size of the array in two places.
+
+In the function main where we defined scores, we see that sizeof understands that scores is an array with 4 integer elements.
+
+But in the function sum, despite declaring an integer array of size 4, what is passed is the pointer to the front of the array. On my machine the size of a pointer to an int is 8.
+
+So lots of people argue that it is clearer to use int * as the type of A. I recommend that you do it this way now that you know about pointers. This way you are reminded that you are just getting a pointer to the first array element.
+
+Our program works but there is a pretty serious drawback to writing our function this way.
+Suppose that I add another array of integers.
+
+and I want to call sum to add up the 3 ages. Will this work? What's wrong?
+
+Here's a problem! We explicitly looped over 4 elements of A. But now we want to call the function on an array that is only 3 elements long. How can we fix this?
+
+Sometimes students try to fix this problem by using sizeof on A. But sizeof(A) gives the size of a pointer to int -- not the number of array elements. So using sizeof(A) gives us 8 and the function will tried to access 8 array elements. Using sizeof here is a mistake.
+
+The only way that the function can know the size of the array, is if we pass in the size as an additional parameter. So we change it here in the header,
+
+provide it here in the function calls,
+
+and change the loop condition to use the new parameter.
+
+There. Now our function is correct and gives the right sum for both arrays.
+
+It's important to remember that you're passing a pointer to the first element of an array and not a copy of the array. Here's an example why.
+
+This function simply changes the element at index 0 of the array to 50.
+
+Before we call it, we set the element at index 0 to 4.
+
+If we were to see value 4 here, then we'd know that the array was being copied into the change function. But that isn't what happens. We see value 50, proving that the function directly changes our array through the A pointer. When you make a change to the array in the function, then that change happens to the array as seen by the calling function too.
+

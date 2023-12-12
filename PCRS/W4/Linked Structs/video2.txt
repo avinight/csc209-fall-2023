@@ -1,0 +1,57 @@
+In the last video, we introduced the idea of a linked list -- a data structure composed of nodes, each of which contains a piece of data and a pointer to the next item in the list.
+
+A program that uses a linked list starts by creating an empty list. Here, we have an empty list; its front pointer is NULL. As the program runs, items are added to the list.
+
+Every time a node is added, we allocate a new node and connect it to the list.
+
+Unlike declaring an array, where the entire array is created at once, we often create linked list nodes one at a time, and we usually allocate nodes on the heap.
+
+Here is a piece of code where we create two nodes 
+and between the allocations for the
+nodes, the program made other calls to malloc that we aren't showing. 
+We can connect our two nodes into a linked-list
+and print their addresses
+
+But that doesn't put them in adjacent memory addresses.
+
+In general since the nodes of a linked list are being created at different times, 
+they may be scattered throughout memory. 
+
+And this causes a problem. The syntax we use to access items from an array relies on items being next to each other in memory. 
+
+The array syntax we've used, literally translates to "add the index to the pointer and dereference", so we can't use it to access list nodes that are scattered across memory. For that matter, we can't even access arbitrary positions in the list without starting at the front and following a trail of next pointers. That's called "traversing" the list.
+
+In our diagram, node_a is the beginning, or the "head", of our list. It's the node that "front" refers to. Its "next" variable points to the second node in the list, node_b.
+
+node_b's "next" points to node_c.
+
+And node_c's "next" points to NULL, since node_c is the last item in the list -- or the "tail" of the list. This NULL value will be very useful when we do a traversal, since it tells us when to stop.
+
+This program creates the list in our diagram. Let's take a look at how we build the list.
+
+First, we define our struct node. We also use typedef to give the struct node a new name -- Node with a capital N. That's just for convenience, so we don't have to type "struct" all the time.
+
+Next, we declare a Node pointer called front. This creates our list. It's an empty list at first, but all we need for a linked list is a front pointer.
+
+Note that our only Node variable is "front" -- we don't have variables named "node_a", "node_b", and "node_c". The links to these nodes will be stored in our "next" pointers.
+
+We created the last node first. Can you see why?
+
+We've written a function to set up a new node, since we're going to do this a few times. Our function takes the value to be stored and a pointer to the next node -- which is why we chose to create the nodes in reverse order. 
+To create a node, we need the node that follows it.
+
+And then we create the first two nodes in reverse order.
+
+Let's say we want to print each node's value. To do so, we'll need to visit each node in the list -- that is, we'll need to "traverse" the list. We will use a while loop and a temporary node pointer to do this.
+
+First, let's add a temporary pointer.
+
+We want to print the value at every node, so we'll start at the front, and we'll update curr to point to the next node at every iteration of the loop.
+
+We want to stop when curr is no longer pointing at a node. This will happen when we set curr's value to the next pointer of the last node in the list.
+
+We just want to print the value, so we add a print statement as the body of our loop.
+
+As you can see, this correctly prints the value of every node in the list.
+
+This code implements a basic traversal. In the next few videos, we'll be modifying this loop to perform other actions -- to insert an item into the list anywhere in the list, for example, or to remove an item from the list. We'll need to add additional pointers to the traversal to make this work, but the core code will remain the same.

@@ -1,0 +1,55 @@
+So far in this series of videos we have mostly been running our programs inside the PCRS-C visualizer. 
+
+This has allowed us to explore the values of variables in memory as the program is executing. But we won't always have PCRS-C available and it has some limitations. 
+
+For example, PCRS-C won't allow us
+to use C statements that read input from the user while the program is executing. In this video we will demonstrate how to compile and run your C programs from the Unix commandline.
+
+Before we run the compiler, it is helpful to know a little about how the command line works.  The shell or command line has the notion of a current working directory.  
+
+You can use the cd command to change to the directory or folder that contains your source code file 
+The ls command will list the contents of the current working directory.
+
+When I run ls in this directory, you can see that there is only one file in the current working directory: hello.c.
+
+The name of the C compiler we will use is gcc.  To compile hello.c on the command line, we type "gcc hello.c". 
+
+hello.c is information that we are providing to gcc to tell it the name of the file that contains our source program. This extra information is called an argument. 
+
+So this line tells gcc to read the hello.c source file and produce an executable file that we can run. 
+
+Let's execute this command by pressing enter.
+
+Now when I run ls again, I see two files: a.out and hello.c.  
+
+Unless I provide other arguments to gcc, the executable file that is produced by gcc will be saved to a file called a.out.
+
+I can run a.out just by typing a.out. 
+
+Depending on how the shell is configured, I might
+have to type ./a.out to tell the shell that a.out is in my current directory.
+
+When we run a.out, we see the output of the program.
+
+One question you might ask is how do we know that a.out is an executable file?  
+
+One way to do it is to use the -F option for ls to print an extra character for different types of files.  
+a.out has an asterisk at the end which indicates it is an executable file.  
+
+Another way to find out is to use the -l option for ls to see the permissions on the file.  
+
+The set of characters at the beginning of each line tell us what permissions are set for the file.
+
+The x's in the permissions for a.out means that everyone has execute permissions for the file.  
+
+Notice that there is no x in the hello.c permissions because it is not a file that can be executed.
+
+There are two options for gcc that I'd like to show you.  
+
+First, the -Wall option will print out additional warning messages.  It is strongly recommended that you always compile with -Wall, and that you fix the problems that -Wall reports.  They usually indicate issues that will lead to problems later if they are not fixed.
+
+The second option that you will find useful is the -o option which allows you to specify the name of the executable file where gcc will save its output.
+
+For example, we can run "gcc -Wall -o hello hello.c" and instead of putting the output into a.out, it will put it in an executable file called hello.
+
+Now when we run hello, we see the output of the hello.c program.

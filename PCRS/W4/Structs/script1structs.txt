@@ -1,0 +1,33 @@
+We've seen that arrays can help organize multiple values of the same type by placing them into one larger structure. For example, if we have the daily temperature for several days, then an array is a useful way to collect those temperatures together. This module will introduce structs which are used to organize related data where the values are not necessarily all the same type.
+
+Let's consider how we might store student data. We might like to keep information such as a student's first name, last name, year of study, and GPA.
+
+These values are not of the same type. For example, a GPA is a floating-point number, but a first name is a string. An array cannot be used to organize this data. In addition, arrays use numeric indices to name each item in the collection: for example, first name might be stored at index 0 and last name might be stored at index 1. But numerical indices have no meaning in our student data example.
+
+For these reasons, C includes structs -- or structures -- to store collections of related data.
+
+There are three important differences between arrays and structs. [callout the lines in the table as they are mentioned] First, as mentioned above, all elements of an array must be of the same type, but members of a structure can be of different types. Did you hear that difference in terminology?
+
+We typically use the word "element" when referring to an item in an array, but we use the word "member" when referring to an item in a structure.
+
+Second, declaring an array requires us to use subscript notation to indicate the number of elements in the array, whereas declaring a struct requires us to list the names and types of each member.
+
+Finally, accessing a struct requires different syntax than accessing an array. We use a dot notation, rather than numeric indices, because each member of a struct has a name, rather than a position.
+
+Here is a program that stores data for one student in a struct, and then prints that data.
+
+To begin, we use the struct keyword to declare a structure. The word 'student' here is known as a structure tag. It gives the struct type a name so that we can later define variables of that type.
+
+The body of the struct declaration declares the members of the student struct. We have four members: first name and last name are arrays of 20 characters, year is an integer, and GPA is a float.
+
+Now, we can create variables that have the type "struct student". Here, we define such a variable. This means that good student has four members that belong to it. Every variable we create of type struct student will have its own independent members.
+
+Notice that we write 'struct student', not just 'student'. The word struct is required whenever we declare a variable of a structure type. 'student' on its own will not work.
+
+As usual with C variables, you should not assume that they are initialized to any reasonable value; you should explicitly initialize them. These lines initialize the four members of good student. For first name and last name, we use strcpy to initialize their contents. Note that we are able to use the unsafe strcpy function, rather than the safe strncpy function, because we are hard-coding strings that are much shorter than 20 characters.
+
+These lines also demonstrate the dot syntax used to access members of structs. We use the name of a struct variable, a dot, and then the name of the struct member that we wish to access.
+
+Having filled-in all 4 members of the struct, we can go ahead and print their values. Again we use dot syntax to access each of the 4 members in turn.
+
+Now that we know how to define structs, we will want to use them to pass data into a function. In the next video, we explore how to use structs as function parameters.

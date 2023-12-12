@@ -1,0 +1,28 @@
+In the last video, you saw one way we can initialize a string variable: by specifying the character to be stored at each index. This is time-consuming and error-prone, so C offers more convenient ways to initialize a string variable. Let's look at a few of them.
+
+The first way is to provide an array initializer with each of the string's characters. If you do this, don't forget that the null terminator is a character, too. Be sure to allocate space for it.
+
+In this example, 'text' is an array of 20 characters; the first five elements hold 'hello' and the remaining 15 characters hold '\0'. Initializing a string in this way causes all characters of the array after the text to be set to the null character.
+
+The second way to initialize a string variable is to give the characters of the string in double quotes [highlight line 4]. This is really just an abbreviation for the array initializer version we just saw.
+Again the first 5 characters are set to 'h', 'e', 'l', 'l', 'o' and the remaining 15 elements
+of the array are set to '\0'. It is illegal for the initializer (the double-quoted portion) to be longer
+than the size of the char array but it *is* legal for the array and the initializer to be the same
+size. And this is a common source of bugs. If the initializer specifies a character for each position
+in the array, then there is no room for the null terminator, so the compiler will not add one.
+
+We can change the contents of string variables at any time. After all, they are just char arrays.
+
+C also offers you a short-cut for declaring and initializing string variables. You are allowed to omit the array size completely.
+
+When you do this, the compiler will allocate a char array with enough space for each character of the initializer plus one more character for the null-terminator. So in this example, text will become of char array of size 6.
+
+Omitting the size in the declaration does NOT mean that the size of text can change during the execution of the program. Once the array is declared it is a fixed size.
+When you do this, the compiler will allocate a char array with enough space for each character
+
+The double-quoted initializer for string variables is easily confused with the syntax used to create string literals. A string literal is a string constant that cannot be changed.
+
+Notice that text is now a pointer, not an array. In this context, "hello" is a string literal -- a string constant that cannot be changed -- and text points to the first character of that string.
+
+Remember that 'hello' is constant. Trying to change the string like this will cause undefined behaviour at runtime. It's perfectly OK to change a string variable but not a string constant. Be careful to choose the appropriate initialization syntax depending on whether you want an initialized string variable or a string literal.
+

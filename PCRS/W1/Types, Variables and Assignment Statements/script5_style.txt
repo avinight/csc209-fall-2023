@@ -1,0 +1,45 @@
+Before we go further, we need to have a serious talk.
+
+Software is not created in a vacuum; writing programs is a highly social activity.  At the very least, somebody needs to grade your assignments, but if you work for a company, you can be assured that many other people will need to read and understand the software that you write. If you have a stubborn bug in your code, you'll want to ask someone else to take a look at it.
+
+As you work on more complex software projects, you'll be working in strongly collaborative environments, on projects with thousands of lines of code, where other programmers will likely rely on code you've written to complete their own tasks.
+
+This is where readability and documentation come in.
+
+In C, whitespace between words and operators has no effect on the execution of your program.
+
+Each of these three programs contains exactly the same code and works exactly the same.  The only difference is whitespace.  But even though they all work, you can probably imagine how difficult it would be to read and understand a program with statements that are not clearly separated and formatted.
+
+There are some very important style conventions that every programmer should follow.  Operators should always have a space on both sides.  Statements should always be on separate lines.
+
+Now let's talk about variables and documentation.  This program does something very specific and potentially useful, but it'd take you some time to figure it out just from looking at it.  Again, imagine how much worse this would be if our program was 300 lines long, or more. 
+
+The general layout isn't bad, but we can clear up a lot of the ambiguity just by changing the names of our variables!
+
+This example is a lot clearer. 
+
+Although the code is a bit cluttered because we haven't yet shown you how to exponentiate quickly, it's very easy to see what each part of the code does just by reading the names of the variables. You might recognize this program as calculating the result of 6 months of compound interest on a principal of $500.
+
+As well, there are conventions for how to format variable names.  
+
+In these course modules, we're going to stick to a convention called "snake case", or "pothole case" , which means words begin only with lowercase letters, and are separated with underscores, just like our earlier example -- "canada_population."  
+
+There's also a convention called camelCase, where the first letter is lowercase, there are no underscores, and each new word starts with a capital letter.  
+
+When you're writing your own programs, the most important consideration when naming variables is to adopt whatever convention your organization, company, or coding community is using.
+
+We've also declared several different variables within the same statement.  It's good practice to keep closely related variables grouped together, and as you can see, we've made separate variable declarations for the initial value and the calculated final result.
+
+Looking at this line, you'll notice we've broken the statement into two lines. To help with readability, we prefer to limit each line to a length of 79 characters or less, and since whitespace won't affect our program we can simply put the rest of the statement onto the next line.  We add an indentation to show that this is still part of the statement on the line above.
+
+Now what would make this code even easier to read?
+
+One of the most important tools available to you as a programmer is "commenting".
+
+Comments are english descriptions of what your software does, written by you for the benefit of any person that will be reading the code -- including yourself!  
+
+Comments are not executed as instructions.
+
+At the top, we've included a brief description of what this program does. The slash followed by a star begins a comment that will continue on as many lines as you like, until the closing star followed by a slash.
+
+The single line comments are denoted by a double slash, and they can also be included at the end of a line of executable code.  Here, we've written descriptions of each group of variables, followed by step-by-step descriptions of the algorithm to produce the final result.
