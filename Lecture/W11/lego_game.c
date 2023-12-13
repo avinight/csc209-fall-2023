@@ -7,7 +7,7 @@
 #include <arpa/inet.h>     /* only needed on mac */
 
 // change this value to customize the port per student (step 2)
-#define PORT 54321
+#define PORT 56781
 #define LEGO_PIECES 10
 #define MAX_BUF 128
 #define MAX_QUEUE 2
